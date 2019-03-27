@@ -92,10 +92,38 @@ atomExp returns[ Expression expression ]
     ;
 
 
+
+IDENT
+    :   LETTER (LETTER | DIGIT)*
+    ;
+
+INTEGERCONST
+    :   NUMBER
+    ;
+
+STRINGCONST
+    :   LETTER (LETTER)*
+    ;
+
+LETTER
+    :   [a-z] | [A-Z]
+    ;
+
+DIGIT
+    : [0-9]
+    ;
+
 NUMBER
     :    [1-9][0-9]* | [0]
     ;
 
 WS: [ \t\n] -> skip
+    ;
 
+KEYWORD
+    :   [if] | [else] | [bool] | [string] | [int] | [class] | [function]
+      | [print] | [private] | [field] | [self] | [false] | [true] | [while]
+      | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
+      | [begin] | [end] | [public] | [var] | [inherits]
+      ;
 ;
