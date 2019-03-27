@@ -6,7 +6,8 @@ grammar Toorla;
 {
     import toorla.ast.expression.binaryExpression.*;
     import toorla.ast.expression.value.*;
-    import toorla.ast.*;
+    import toorla.ast.expression.*;
+    import toorla.ast.statement.*;
 }
 
 
@@ -96,4 +97,5 @@ NUMBER
     ;
 
 WS: [ \t\n] -> skip
+
 ;
