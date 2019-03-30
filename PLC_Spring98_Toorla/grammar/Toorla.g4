@@ -58,7 +58,7 @@ temp_add[ Expression operand ] returns[ Expression expression ] locals[ BinaryEx
 
 
 
-;
+    ;
 
 multiplyExp returns[ Expression expression ] locals[ BinaryExpression immediate ]
     :    first=atomExp
@@ -125,5 +125,9 @@ KEYWORD
       | [print] | [private] | [field] | [self] | [false] | [true] | [while]
       | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
       | [begin] | [end] | [public] | [var] | [inherits]
-      ;
-;
+     ;
+//
+//SPECIAL
+//    :   [+] | [-] | [*] | [/] | [!] | [%] | [&&] | [||] | [=] | [==] | [,]
+//      | [[] | []] | [.] | [!] | [<] | [>]
+//    ;
