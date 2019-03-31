@@ -27,29 +27,32 @@ public class ToorlaParser extends Parser {
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
 		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, T__36=37, T__37=38, 
-		T__38=39, T__39=40, T__40=41, T__41=42, T__42=43, ID=44, LETTER=45, STRINGCONST=46, 
-		NUMBER=47, CHARACTER=48, WS=49, KEYWORD=50;
+		T__38=39, T__39=40, T__40=41, T__41=42, T__42=43, T__43=44, Main=45, ID=46, 
+		LETTER=47, STRINGCONST=48, NUMBER=49, CHARACTER=50, WS=51, KEYWORD=52, 
+		SPECIAL=53;
 	public static final int
-		RULE_program = 0, RULE_classStar = 1, RULE_class = 2, RULE_entryClass = 3, 
+		RULE_program = 0, RULE_classStar = 1, RULE_class1 = 2, RULE_entryClass = 3, 
 		RULE_mainFunc = 4, RULE_classBody = 5, RULE_classItemStar = 6, RULE_field = 7, 
 		RULE_access_modifier = 8, RULE_idPlus = 9, RULE_idStar = 10, RULE_primitiveType = 11, 
-		RULE_type = 12, RULE_method = 13, RULE_argumentList = 14, RULE_tmpArgument = 15, 
+		RULE_type = 12, RULE_method = 13, RULE_argumentList = 14, RULE_argumentStar = 15, 
 		RULE_argument = 16, RULE_funcBody = 17, RULE_statementStar = 18, RULE_statement = 19, 
-		RULE_singleStatement = 20, RULE_assign = 21, RULE_block = 22, RULE_break = 23, 
-		RULE_if = 24, RULE_continue = 25, RULE_dec = 26, RULE_inc = 27, RULE_print = 28, 
-		RULE_return = 29, RULE_while = 30, RULE_expression = 31, RULE_expressionL1 = 32, 
-		RULE_expressionL2 = 33, RULE_expressionL3 = 34, RULE_expressionL4 = 35, 
-		RULE_expressionL5 = 36, RULE_expressionL6 = 37, RULE_expressionL7 = 38, 
-		RULE_singleExpression = 39;
+		RULE_singleStatement = 20, RULE_declaration = 21, RULE_assignListPlus = 22, 
+		RULE_assignListStar = 23, RULE_assignID = 24, RULE_assign = 25, RULE_block = 26, 
+		RULE_breakRole = 27, RULE_ifRole = 28, RULE_continueRole = 29, RULE_dec = 30, 
+		RULE_inc = 31, RULE_printRole = 32, RULE_returnRole = 33, RULE_whileRole = 34, 
+		RULE_expression = 35, RULE_expressionL1 = 36, RULE_expressionL2 = 37, 
+		RULE_expressionL3 = 38, RULE_expressionL4 = 39, RULE_expressionL5 = 40, 
+		RULE_expressionL6 = 41, RULE_expressionL7 = 42, RULE_singleExpression = 43;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "classStar", "class", "entryClass", "mainFunc", "classBody", 
+			"program", "classStar", "class1", "entryClass", "mainFunc", "classBody", 
 			"classItemStar", "field", "access_modifier", "idPlus", "idStar", "primitiveType", 
-			"type", "method", "argumentList", "tmpArgument", "argument", "funcBody", 
-			"statementStar", "statement", "singleStatement", "assign", "block", "break", 
-			"if", "continue", "dec", "inc", "print", "return", "while", "expression", 
-			"expressionL1", "expressionL2", "expressionL3", "expressionL4", "expressionL5", 
-			"expressionL6", "expressionL7", "singleExpression"
+			"type", "method", "argumentList", "argumentStar", "argument", "funcBody", 
+			"statementStar", "statement", "singleStatement", "declaration", "assignListPlus", 
+			"assignListStar", "assignID", "assign", "block", "breakRole", "ifRole", 
+			"continueRole", "dec", "inc", "printRole", "returnRole", "whileRole", 
+			"expression", "expressionL1", "expressionL2", "expressionL3", "expressionL4", 
+			"expressionL5", "expressionL6", "expressionL7", "singleExpression"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -57,11 +60,11 @@ public class ToorlaParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'class'", "'inherits'", "':'", "'end'", "'entry'", "'public'", 
-			"'function'", "'main()'", "'returns'", "'int'", "'field'", "';'", "'private'", 
-			"','", "'string'", "'bool'", "'['", "']'", "'('", "')'", "'='", "'begin'", 
-			"'break'", "'if'", "'else'", "'continue'", "'--'", "'++'", "'print'", 
-			"'return'", "'while'", "'||'", "'&&'", "'=='", "'<>'", "'>'", "'<'", 
-			"'-'", "'+'", "'/'", "'*'", "'%'", "'!'"
+			"'function'", "'()'", "'returns'", "'int'", "'field'", "';'", "'private'", 
+			"','", "'string'", "'bool'", "'['", "']'", "'('", "')'", "'var'", "'='", 
+			"'begin'", "'break'", "'if'", "'else'", "'continue'", "'--'", "'++'", 
+			"'print'", "'return'", "'while'", "'||'", "'&&'", "'=='", "'<>'", "'>'", 
+			"'<'", "'-'", "'+'", "'/'", "'*'", "'%'", "'!'", "'main'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -70,8 +73,8 @@ public class ToorlaParser extends Parser {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, "ID", "LETTER", "STRINGCONST", 
-			"NUMBER", "CHARACTER", "WS", "KEYWORD"
+			null, null, null, null, null, null, null, null, null, "Main", "ID", "LETTER", 
+			"STRINGCONST", "NUMBER", "CHARACTER", "WS", "KEYWORD", "SPECIAL"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -167,11 +170,11 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(80);
+			setState(88);
 			classStar();
-			setState(81);
+			setState(89);
 			entryClass();
-			setState(82);
+			setState(90);
 			classStar();
 			}
 		}
@@ -187,8 +190,8 @@ public class ToorlaParser extends Parser {
 	}
 
 	public static class ClassStarContext extends ParserRuleContext {
-		public ClassContext class() {
-			return getRuleContext(ClassContext.class,0);
+		public Class1Context class1() {
+			return getRuleContext(Class1Context.class,0);
 		}
 		public ClassStarContext classStar() {
 			return getRuleContext(ClassStarContext.class,0);
@@ -216,15 +219,15 @@ public class ToorlaParser extends Parser {
 		ClassStarContext _localctx = new ClassStarContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_classStar);
 		try {
-			setState(88);
+			setState(96);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__0:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(84);
-				class();
-				setState(85);
+				setState(92);
+				class1();
+				setState(93);
 				classStar();
 				}
 				break;
@@ -249,7 +252,7 @@ public class ToorlaParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ClassContext extends ParserRuleContext {
+	public static class Class1Context extends ParserRuleContext {
 		public List<TerminalNode> ID() { return getTokens(ToorlaParser.ID); }
 		public TerminalNode ID(int i) {
 			return getToken(ToorlaParser.ID, i);
@@ -257,53 +260,53 @@ public class ToorlaParser extends Parser {
 		public ClassBodyContext classBody() {
 			return getRuleContext(ClassBodyContext.class,0);
 		}
-		public ClassContext(ParserRuleContext parent, int invokingState) {
+		public Class1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_class; }
+		@Override public int getRuleIndex() { return RULE_class1; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterClass(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterClass1(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitClass(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitClass1(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitClass(this);
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitClass1(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ClassContext class() throws RecognitionException {
-		ClassContext _localctx = new ClassContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_class);
+	public final Class1Context class1() throws RecognitionException {
+		Class1Context _localctx = new Class1Context(_ctx, getState());
+		enterRule(_localctx, 4, RULE_class1);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(90);
+			setState(98);
 			match(T__0);
-			setState(91);
+			setState(99);
 			match(ID);
-			setState(94);
+			setState(102);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__1) {
 				{
-				setState(92);
+				setState(100);
 				match(T__1);
-				setState(93);
+				setState(101);
 				match(ID);
 				}
 			}
 
-			setState(96);
+			setState(104);
 			match(T__2);
-			setState(97);
+			setState(105);
 			classBody();
-			setState(98);
+			setState(106);
 			match(T__3);
 			}
 		}
@@ -358,33 +361,33 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(100);
+			setState(108);
 			match(T__4);
-			setState(101);
+			setState(109);
 			match(T__0);
-			setState(102);
+			setState(110);
 			match(ID);
-			setState(105);
+			setState(113);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__1) {
 				{
-				setState(103);
+				setState(111);
 				match(T__1);
-				setState(104);
+				setState(112);
 				match(ID);
 				}
 			}
 
-			setState(107);
+			setState(115);
 			match(T__2);
-			setState(108);
+			setState(116);
 			classItemStar();
-			setState(109);
+			setState(117);
 			mainFunc();
-			setState(110);
+			setState(118);
 			classItemStar();
-			setState(111);
+			setState(119);
 			match(T__3);
 			}
 		}
@@ -400,6 +403,7 @@ public class ToorlaParser extends Parser {
 	}
 
 	public static class MainFuncContext extends ParserRuleContext {
+		public TerminalNode Main() { return getToken(ToorlaParser.Main, 0); }
 		public FuncBodyContext funcBody() {
 			return getRuleContext(FuncBodyContext.class,0);
 		}
@@ -429,29 +433,31 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(114);
+			setState(122);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__5) {
 				{
-				setState(113);
+				setState(121);
 				match(T__5);
 				}
 			}
 
-			setState(116);
+			setState(124);
 			match(T__6);
-			setState(117);
+			setState(125);
+			match(Main);
+			setState(126);
 			match(T__7);
-			setState(118);
+			setState(127);
 			match(T__8);
-			setState(119);
+			setState(128);
 			match(T__9);
-			setState(120);
+			setState(129);
 			match(T__2);
-			setState(121);
+			setState(130);
 			funcBody();
-			setState(122);
+			setState(131);
 			match(T__3);
 			}
 		}
@@ -501,23 +507,23 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(126);
+			setState(135);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				{
-				setState(124);
+				setState(133);
 				field();
 				}
 				break;
 			case 2:
 				{
-				setState(125);
+				setState(134);
 				method();
 				}
 				break;
 			}
-			setState(128);
+			setState(137);
 			classItemStar();
 			}
 		}
@@ -565,29 +571,29 @@ public class ToorlaParser extends Parser {
 		ClassItemStarContext _localctx = new ClassItemStarContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_classItemStar);
 		try {
-			setState(137);
+			setState(146);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(132);
+				setState(141);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 				case 1:
 					{
-					setState(130);
+					setState(139);
 					field();
 					}
 					break;
 				case 2:
 					{
-					setState(131);
+					setState(140);
 					method();
 					}
 					break;
 				}
-				setState(134);
+				setState(143);
 				classItemStar();
 				}
 				break;
@@ -645,23 +651,23 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(140);
+			setState(149);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__5 || _la==T__12) {
 				{
-				setState(139);
+				setState(148);
 				access_modifier();
 				}
 			}
 
-			setState(142);
+			setState(151);
 			match(T__10);
-			setState(143);
+			setState(152);
 			idPlus();
-			setState(144);
+			setState(153);
 			type(0);
-			setState(145);
+			setState(154);
 			match(T__11);
 			}
 		}
@@ -703,7 +709,7 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(147);
+			setState(156);
 			_la = _input.LA(1);
 			if ( !(_la==T__5 || _la==T__12) ) {
 			_errHandler.recoverInline(this);
@@ -756,9 +762,9 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(149);
+			setState(158);
 			match(ID);
-			setState(150);
+			setState(159);
 			idStar();
 			}
 		}
@@ -801,17 +807,17 @@ public class ToorlaParser extends Parser {
 		IdStarContext _localctx = new IdStarContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_idStar);
 		try {
-			setState(156);
+			setState(165);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__13:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(152);
+				setState(161);
 				match(T__13);
-				setState(153);
+				setState(162);
 				match(ID);
-				setState(154);
+				setState(163);
 				idStar();
 				}
 				break;
@@ -864,7 +870,7 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(158);
+			setState(167);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__9) | (1L << T__14) | (1L << T__15))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -929,11 +935,11 @@ public class ToorlaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(161);
+			setState(170);
 			primitiveType();
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(168);
+			setState(177);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -944,16 +950,16 @@ public class ToorlaParser extends Parser {
 					{
 					_localctx = new TypeContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_type);
-					setState(163);
+					setState(172);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(164);
+					setState(173);
 					match(T__16);
-					setState(165);
+					setState(174);
 					match(T__17);
 					}
 					} 
 				}
-				setState(170);
+				setState(179);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			}
@@ -1010,35 +1016,35 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(172);
+			setState(181);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__5 || _la==T__12) {
 				{
-				setState(171);
+				setState(180);
 				access_modifier();
 				}
 			}
 
-			setState(174);
-			match(T__6);
-			setState(175);
-			match(ID);
-			setState(176);
-			match(T__18);
-			setState(177);
-			argumentList();
-			setState(178);
-			match(T__19);
-			setState(179);
-			match(T__8);
-			setState(180);
-			type(0);
-			setState(181);
-			match(T__2);
-			setState(182);
-			funcBody();
 			setState(183);
+			match(T__6);
+			setState(184);
+			match(ID);
+			setState(185);
+			match(T__18);
+			setState(186);
+			argumentList();
+			setState(187);
+			match(T__19);
+			setState(188);
+			match(T__8);
+			setState(189);
+			type(0);
+			setState(190);
+			match(T__2);
+			setState(191);
+			funcBody();
+			setState(192);
 			match(T__3);
 			}
 		}
@@ -1057,8 +1063,8 @@ public class ToorlaParser extends Parser {
 		public ArgumentContext argument() {
 			return getRuleContext(ArgumentContext.class,0);
 		}
-		public TmpArgumentContext tmpArgument() {
-			return getRuleContext(TmpArgumentContext.class,0);
+		public ArgumentStarContext argumentStar() {
+			return getRuleContext(ArgumentStarContext.class,0);
 		}
 		public ArgumentListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1083,16 +1089,16 @@ public class ToorlaParser extends Parser {
 		ArgumentListContext _localctx = new ArgumentListContext(_ctx, getState());
 		enterRule(_localctx, 28, RULE_argumentList);
 		try {
-			setState(189);
+			setState(198);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case ID:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(185);
+				setState(194);
 				argument();
-				setState(186);
-				tmpArgument();
+				setState(195);
+				argumentStar();
 				}
 				break;
 			case T__19:
@@ -1115,48 +1121,48 @@ public class ToorlaParser extends Parser {
 		return _localctx;
 	}
 
-	public static class TmpArgumentContext extends ParserRuleContext {
+	public static class ArgumentStarContext extends ParserRuleContext {
 		public ArgumentContext argument() {
 			return getRuleContext(ArgumentContext.class,0);
 		}
-		public TmpArgumentContext tmpArgument() {
-			return getRuleContext(TmpArgumentContext.class,0);
+		public ArgumentStarContext argumentStar() {
+			return getRuleContext(ArgumentStarContext.class,0);
 		}
-		public TmpArgumentContext(ParserRuleContext parent, int invokingState) {
+		public ArgumentStarContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_tmpArgument; }
+		@Override public int getRuleIndex() { return RULE_argumentStar; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterTmpArgument(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterArgumentStar(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitTmpArgument(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitArgumentStar(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitTmpArgument(this);
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitArgumentStar(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final TmpArgumentContext tmpArgument() throws RecognitionException {
-		TmpArgumentContext _localctx = new TmpArgumentContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_tmpArgument);
+	public final ArgumentStarContext argumentStar() throws RecognitionException {
+		ArgumentStarContext _localctx = new ArgumentStarContext(_ctx, getState());
+		enterRule(_localctx, 30, RULE_argumentStar);
 		try {
-			setState(196);
+			setState(205);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__13:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(191);
+				setState(200);
 				match(T__13);
-				setState(192);
+				setState(201);
 				argument();
-				setState(193);
-				tmpArgument();
+				setState(202);
+				argumentStar();
 				}
 				break;
 			case T__19:
@@ -1209,11 +1215,11 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(198);
+			setState(207);
 			match(ID);
-			setState(199);
+			setState(208);
 			match(T__2);
-			setState(200);
+			setState(209);
 			type(0);
 			}
 		}
@@ -1257,7 +1263,7 @@ public class ToorlaParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(202);
+			setState(211);
 			statementStar();
 			}
 		}
@@ -1302,15 +1308,15 @@ public class ToorlaParser extends Parser {
 		StatementStarContext _localctx = new StatementStarContext(_ctx, getState());
 		enterRule(_localctx, 36, RULE_statementStar);
 		try {
-			setState(208);
+			setState(217);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(204);
+				setState(213);
 				statement();
-				setState(205);
+				setState(214);
 				statementStar();
 				}
 				break;
@@ -1339,11 +1345,11 @@ public class ToorlaParser extends Parser {
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
 		}
-		public IfContext if() {
-			return getRuleContext(IfContext.class,0);
+		public IfRoleContext ifRole() {
+			return getRuleContext(IfRoleContext.class,0);
 		}
-		public WhileContext while() {
-			return getRuleContext(WhileContext.class,0);
+		public WhileRoleContext whileRole() {
+			return getRuleContext(WhileRoleContext.class,0);
 		}
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1368,37 +1374,37 @@ public class ToorlaParser extends Parser {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
 		enterRule(_localctx, 38, RULE_statement);
 		try {
-			setState(216);
+			setState(225);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(210);
+				setState(219);
 				singleStatement(0);
-				setState(211);
+				setState(220);
 				match(T__11);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(213);
+				setState(222);
 				block();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(214);
-				if();
+				setState(223);
+				ifRole();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(215);
-				while();
+				setState(224);
+				whileRole();
 				}
 				break;
 			}
@@ -1418,11 +1424,11 @@ public class ToorlaParser extends Parser {
 		public AssignContext assign() {
 			return getRuleContext(AssignContext.class,0);
 		}
-		public BreakContext break() {
-			return getRuleContext(BreakContext.class,0);
+		public BreakRoleContext breakRole() {
+			return getRuleContext(BreakRoleContext.class,0);
 		}
-		public ContinueContext continue() {
-			return getRuleContext(ContinueContext.class,0);
+		public ContinueRoleContext continueRole() {
+			return getRuleContext(ContinueRoleContext.class,0);
 		}
 		public DecContext dec() {
 			return getRuleContext(DecContext.class,0);
@@ -1430,11 +1436,14 @@ public class ToorlaParser extends Parser {
 		public IncContext inc() {
 			return getRuleContext(IncContext.class,0);
 		}
-		public PrintContext print() {
-			return getRuleContext(PrintContext.class,0);
+		public PrintRoleContext printRole() {
+			return getRuleContext(PrintRoleContext.class,0);
 		}
-		public ReturnContext return() {
-			return getRuleContext(ReturnContext.class,0);
+		public ReturnRoleContext returnRole() {
+			return getRuleContext(ReturnRoleContext.class,0);
+		}
+		public DeclarationContext declaration() {
+			return getRuleContext(DeclarationContext.class,0);
 		}
 		public SingleStatementContext singleStatement() {
 			return getRuleContext(SingleStatementContext.class,0);
@@ -1473,58 +1482,64 @@ public class ToorlaParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(227);
+			setState(237);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
 				{
-				setState(219);
+				setState(228);
 				assign();
 				}
 				break;
 			case 2:
 				{
-				setState(220);
-				break();
+				setState(229);
+				breakRole();
 				}
 				break;
 			case 3:
 				{
-				setState(221);
-				continue();
+				setState(230);
+				continueRole();
 				}
 				break;
 			case 4:
 				{
-				setState(222);
+				setState(231);
 				dec();
 				}
 				break;
 			case 5:
 				{
-				setState(223);
+				setState(232);
 				inc();
 				}
 				break;
 			case 6:
 				{
-				setState(224);
-				print();
+				setState(233);
+				printRole();
 				}
 				break;
 			case 7:
 				{
-				setState(225);
-				return();
+				setState(234);
+				returnRole();
 				}
 				break;
 			case 8:
+				{
+				setState(235);
+				declaration();
+				}
+				break;
+			case 9:
 				{
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(233);
+			setState(243);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,16,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -1535,14 +1550,14 @@ public class ToorlaParser extends Parser {
 					{
 					_localctx = new SingleStatementContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_singleStatement);
-					setState(229);
+					setState(239);
 					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-					setState(230);
+					setState(240);
 					match(T__11);
 					}
 					} 
 				}
-				setState(235);
+				setState(245);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,16,_ctx);
 			}
@@ -1555,6 +1570,212 @@ public class ToorlaParser extends Parser {
 		}
 		finally {
 			unrollRecursionContexts(_parentctx);
+		}
+		return _localctx;
+	}
+
+	public static class DeclarationContext extends ParserRuleContext {
+		public AssignListPlusContext assignListPlus() {
+			return getRuleContext(AssignListPlusContext.class,0);
+		}
+		public DeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_declaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final DeclarationContext declaration() throws RecognitionException {
+		DeclarationContext _localctx = new DeclarationContext(_ctx, getState());
+		enterRule(_localctx, 42, RULE_declaration);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(246);
+			match(T__20);
+			setState(247);
+			assignListPlus();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class AssignListPlusContext extends ParserRuleContext {
+		public AssignIDContext assignID() {
+			return getRuleContext(AssignIDContext.class,0);
+		}
+		public AssignListStarContext assignListStar() {
+			return getRuleContext(AssignListStarContext.class,0);
+		}
+		public AssignListPlusContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_assignListPlus; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterAssignListPlus(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitAssignListPlus(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitAssignListPlus(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final AssignListPlusContext assignListPlus() throws RecognitionException {
+		AssignListPlusContext _localctx = new AssignListPlusContext(_ctx, getState());
+		enterRule(_localctx, 44, RULE_assignListPlus);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(249);
+			assignID();
+			setState(250);
+			assignListStar();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class AssignListStarContext extends ParserRuleContext {
+		public AssignIDContext assignID() {
+			return getRuleContext(AssignIDContext.class,0);
+		}
+		public AssignListStarContext assignListStar() {
+			return getRuleContext(AssignListStarContext.class,0);
+		}
+		public AssignListStarContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_assignListStar; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterAssignListStar(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitAssignListStar(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitAssignListStar(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final AssignListStarContext assignListStar() throws RecognitionException {
+		AssignListStarContext _localctx = new AssignListStarContext(_ctx, getState());
+		enterRule(_localctx, 46, RULE_assignListStar);
+		try {
+			setState(257);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(252);
+				match(T__13);
+				setState(253);
+				assignID();
+				setState(254);
+				assignListStar();
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class AssignIDContext extends ParserRuleContext {
+		public TerminalNode ID() { return getToken(ToorlaParser.ID, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public AssignIDContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_assignID; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterAssignID(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitAssignID(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitAssignID(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final AssignIDContext assignID() throws RecognitionException {
+		AssignIDContext _localctx = new AssignIDContext(_ctx, getState());
+		enterRule(_localctx, 48, RULE_assignID);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(259);
+			match(ID);
+			setState(260);
+			match(T__21);
+			setState(261);
+			expression();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
 		}
 		return _localctx;
 	}
@@ -1587,15 +1808,15 @@ public class ToorlaParser extends Parser {
 
 	public final AssignContext assign() throws RecognitionException {
 		AssignContext _localctx = new AssignContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_assign);
+		enterRule(_localctx, 50, RULE_assign);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(236);
+			setState(263);
 			expression();
-			setState(237);
-			match(T__20);
-			setState(238);
+			setState(264);
+			match(T__21);
+			setState(265);
 			expression();
 			}
 		}
@@ -1635,15 +1856,15 @@ public class ToorlaParser extends Parser {
 
 	public final BlockContext block() throws RecognitionException {
 		BlockContext _localctx = new BlockContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_block);
+		enterRule(_localctx, 52, RULE_block);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(240);
-			match(T__21);
-			setState(241);
+			setState(267);
+			match(T__22);
+			setState(268);
 			statementStar();
-			setState(242);
+			setState(269);
 			match(T__3);
 			}
 		}
@@ -1658,36 +1879,34 @@ public class ToorlaParser extends Parser {
 		return _localctx;
 	}
 
-	public static class BreakContext extends ParserRuleContext {
-		public BreakContext(ParserRuleContext parent, int invokingState) {
+	public static class BreakRoleContext extends ParserRuleContext {
+		public BreakRoleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_break; }
+		@Override public int getRuleIndex() { return RULE_breakRole; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterBreak(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterBreakRole(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitBreak(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitBreakRole(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitBreak(this);
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitBreakRole(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final BreakContext break() throws RecognitionException {
-		BreakContext _localctx = new BreakContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_break);
+	public final BreakRoleContext breakRole() throws RecognitionException {
+		BreakRoleContext _localctx = new BreakRoleContext(_ctx, getState());
+		enterRule(_localctx, 54, RULE_breakRole);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(244);
-			match(T__22);
-			setState(245);
-			match(T__11);
+			setState(271);
+			match(T__23);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1701,7 +1920,7 @@ public class ToorlaParser extends Parser {
 		return _localctx;
 	}
 
-	public static class IfContext extends ParserRuleContext {
+	public static class IfRoleContext extends ParserRuleContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -1711,45 +1930,66 @@ public class ToorlaParser extends Parser {
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
 		}
-		public IfContext(ParserRuleContext parent, int invokingState) {
+		public IfRoleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_if; }
+		@Override public int getRuleIndex() { return RULE_ifRole; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterIf(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterIfRole(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitIf(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitIfRole(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitIf(this);
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitIfRole(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final IfContext if() throws RecognitionException {
-		IfContext _localctx = new IfContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_if);
+	public final IfRoleContext ifRole() throws RecognitionException {
+		IfRoleContext _localctx = new IfRoleContext(_ctx, getState());
+		enterRule(_localctx, 56, RULE_ifRole);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(247);
-			match(T__23);
-			setState(248);
-			match(T__18);
-			setState(249);
-			expression();
-			setState(250);
-			match(T__19);
-			setState(251);
-			statement();
-			setState(252);
-			match(T__24);
-			setState(253);
-			statement();
+			setState(287);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(273);
+				match(T__24);
+				setState(274);
+				match(T__18);
+				setState(275);
+				expression();
+				setState(276);
+				match(T__19);
+				setState(277);
+				statement();
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(279);
+				match(T__24);
+				setState(280);
+				match(T__18);
+				setState(281);
+				expression();
+				setState(282);
+				match(T__19);
+				setState(283);
+				statement();
+				setState(284);
+				match(T__25);
+				setState(285);
+				statement();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -1763,36 +2003,34 @@ public class ToorlaParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ContinueContext extends ParserRuleContext {
-		public ContinueContext(ParserRuleContext parent, int invokingState) {
+	public static class ContinueRoleContext extends ParserRuleContext {
+		public ContinueRoleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_continue; }
+		@Override public int getRuleIndex() { return RULE_continueRole; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterContinue(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterContinueRole(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitContinue(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitContinueRole(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitContinue(this);
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitContinueRole(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ContinueContext continue() throws RecognitionException {
-		ContinueContext _localctx = new ContinueContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_continue);
+	public final ContinueRoleContext continueRole() throws RecognitionException {
+		ContinueRoleContext _localctx = new ContinueRoleContext(_ctx, getState());
+		enterRule(_localctx, 58, RULE_continueRole);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(255);
-			match(T__25);
-			setState(256);
-			match(T__11);
+			setState(289);
+			match(T__26);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1831,16 +2069,14 @@ public class ToorlaParser extends Parser {
 
 	public final DecContext dec() throws RecognitionException {
 		DecContext _localctx = new DecContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_dec);
+		enterRule(_localctx, 60, RULE_dec);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(258);
+			setState(291);
 			expression();
-			setState(259);
-			match(T__26);
-			setState(260);
-			match(T__11);
+			setState(292);
+			match(T__27);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1879,16 +2115,14 @@ public class ToorlaParser extends Parser {
 
 	public final IncContext inc() throws RecognitionException {
 		IncContext _localctx = new IncContext(_ctx, getState());
-		enterRule(_localctx, 54, RULE_inc);
+		enterRule(_localctx, 62, RULE_inc);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(262);
+			setState(294);
 			expression();
-			setState(263);
-			match(T__27);
-			setState(264);
-			match(T__11);
+			setState(295);
+			match(T__28);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1902,42 +2136,43 @@ public class ToorlaParser extends Parser {
 		return _localctx;
 	}
 
-	public static class PrintContext extends ParserRuleContext {
+	public static class PrintRoleContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(ToorlaParser.ID, 0); }
 		public TerminalNode STRINGCONST() { return getToken(ToorlaParser.STRINGCONST, 0); }
-		public PrintContext(ParserRuleContext parent, int invokingState) {
+		public TerminalNode NUMBER() { return getToken(ToorlaParser.NUMBER, 0); }
+		public PrintRoleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_print; }
+		@Override public int getRuleIndex() { return RULE_printRole; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterPrint(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterPrintRole(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitPrint(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitPrintRole(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitPrint(this);
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitPrintRole(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final PrintContext print() throws RecognitionException {
-		PrintContext _localctx = new PrintContext(_ctx, getState());
-		enterRule(_localctx, 56, RULE_print);
+	public final PrintRoleContext printRole() throws RecognitionException {
+		PrintRoleContext _localctx = new PrintRoleContext(_ctx, getState());
+		enterRule(_localctx, 64, RULE_printRole);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(266);
-			match(T__28);
-			setState(267);
+			setState(297);
+			match(T__29);
+			setState(298);
 			match(T__18);
-			setState(268);
+			setState(299);
 			_la = _input.LA(1);
-			if ( !(_la==ID || _la==STRINGCONST) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ID) | (1L << STRINGCONST) | (1L << NUMBER))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1945,10 +2180,8 @@ public class ToorlaParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(269);
+			setState(300);
 			match(T__19);
-			setState(270);
-			match(T__11);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1962,38 +2195,38 @@ public class ToorlaParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ReturnContext extends ParserRuleContext {
+	public static class ReturnRoleContext extends ParserRuleContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public ReturnContext(ParserRuleContext parent, int invokingState) {
+		public ReturnRoleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_return; }
+		@Override public int getRuleIndex() { return RULE_returnRole; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterReturn(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterReturnRole(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitReturn(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitReturnRole(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitReturn(this);
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitReturnRole(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ReturnContext return() throws RecognitionException {
-		ReturnContext _localctx = new ReturnContext(_ctx, getState());
-		enterRule(_localctx, 58, RULE_return);
+	public final ReturnRoleContext returnRole() throws RecognitionException {
+		ReturnRoleContext _localctx = new ReturnRoleContext(_ctx, getState());
+		enterRule(_localctx, 66, RULE_returnRole);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(272);
-			match(T__29);
-			setState(273);
+			setState(302);
+			match(T__30);
+			setState(303);
 			expression();
 			}
 		}
@@ -2008,47 +2241,47 @@ public class ToorlaParser extends Parser {
 		return _localctx;
 	}
 
-	public static class WhileContext extends ParserRuleContext {
+	public static class WhileRoleContext extends ParserRuleContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public StatementContext statement() {
 			return getRuleContext(StatementContext.class,0);
 		}
-		public WhileContext(ParserRuleContext parent, int invokingState) {
+		public WhileRoleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_while; }
+		@Override public int getRuleIndex() { return RULE_whileRole; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterWhile(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).enterWhileRole(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitWhile(this);
+			if ( listener instanceof ToorlaListener ) ((ToorlaListener)listener).exitWhileRole(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitWhile(this);
+			if ( visitor instanceof ToorlaVisitor ) return ((ToorlaVisitor<? extends T>)visitor).visitWhileRole(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final WhileContext while() throws RecognitionException {
-		WhileContext _localctx = new WhileContext(_ctx, getState());
-		enterRule(_localctx, 60, RULE_while);
+	public final WhileRoleContext whileRole() throws RecognitionException {
+		WhileRoleContext _localctx = new WhileRoleContext(_ctx, getState());
+		enterRule(_localctx, 68, RULE_whileRole);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(275);
-			match(T__30);
-			setState(276);
+			setState(305);
+			match(T__31);
+			setState(306);
 			match(T__18);
-			setState(277);
+			setState(307);
 			expression();
-			setState(278);
+			setState(308);
 			match(T__19);
-			setState(279);
+			setState(309);
 			statement();
 			}
 		}
@@ -2091,26 +2324,26 @@ public class ToorlaParser extends Parser {
 
 	public final ExpressionContext expression() throws RecognitionException {
 		ExpressionContext _localctx = new ExpressionContext(_ctx, getState());
-		enterRule(_localctx, 62, RULE_expression);
+		enterRule(_localctx, 70, RULE_expression);
 		try {
-			setState(286);
+			setState(316);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(281);
+				setState(311);
 				expressionL1();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(282);
+				setState(312);
 				expressionL1();
-				setState(283);
-				match(T__31);
-				setState(284);
+				setState(313);
+				match(T__32);
+				setState(314);
 				expressionL1();
 				}
 				break;
@@ -2155,26 +2388,26 @@ public class ToorlaParser extends Parser {
 
 	public final ExpressionL1Context expressionL1() throws RecognitionException {
 		ExpressionL1Context _localctx = new ExpressionL1Context(_ctx, getState());
-		enterRule(_localctx, 64, RULE_expressionL1);
+		enterRule(_localctx, 72, RULE_expressionL1);
 		try {
-			setState(293);
+			setState(323);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(288);
+				setState(318);
 				expressionL2();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(289);
+				setState(319);
 				expressionL2();
-				setState(290);
-				match(T__32);
-				setState(291);
+				setState(320);
+				match(T__33);
+				setState(321);
 				expressionL2();
 				}
 				break;
@@ -2219,27 +2452,27 @@ public class ToorlaParser extends Parser {
 
 	public final ExpressionL2Context expressionL2() throws RecognitionException {
 		ExpressionL2Context _localctx = new ExpressionL2Context(_ctx, getState());
-		enterRule(_localctx, 66, RULE_expressionL2);
+		enterRule(_localctx, 74, RULE_expressionL2);
 		int _la;
 		try {
-			setState(300);
+			setState(330);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(295);
+				setState(325);
 				expressionL3();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(296);
+				setState(326);
 				expressionL3();
-				setState(297);
+				setState(327);
 				_la = _input.LA(1);
-				if ( !(_la==T__33 || _la==T__34) ) {
+				if ( !(_la==T__34 || _la==T__35) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -2247,7 +2480,7 @@ public class ToorlaParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(298);
+				setState(328);
 				expressionL3();
 				}
 				break;
@@ -2292,27 +2525,27 @@ public class ToorlaParser extends Parser {
 
 	public final ExpressionL3Context expressionL3() throws RecognitionException {
 		ExpressionL3Context _localctx = new ExpressionL3Context(_ctx, getState());
-		enterRule(_localctx, 68, RULE_expressionL3);
+		enterRule(_localctx, 76, RULE_expressionL3);
 		int _la;
 		try {
-			setState(307);
+			setState(337);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(302);
+				setState(332);
 				expressionL4();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(303);
+				setState(333);
 				expressionL4();
-				setState(304);
+				setState(334);
 				_la = _input.LA(1);
-				if ( !(_la==T__35 || _la==T__36) ) {
+				if ( !(_la==T__36 || _la==T__37) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -2320,7 +2553,7 @@ public class ToorlaParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(305);
+				setState(335);
 				expressionL4();
 				}
 				break;
@@ -2365,27 +2598,27 @@ public class ToorlaParser extends Parser {
 
 	public final ExpressionL4Context expressionL4() throws RecognitionException {
 		ExpressionL4Context _localctx = new ExpressionL4Context(_ctx, getState());
-		enterRule(_localctx, 70, RULE_expressionL4);
+		enterRule(_localctx, 78, RULE_expressionL4);
 		int _la;
 		try {
-			setState(314);
+			setState(344);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(309);
+				setState(339);
 				expressionL5();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(310);
+				setState(340);
 				expressionL5();
-				setState(311);
+				setState(341);
 				_la = _input.LA(1);
-				if ( !(_la==T__37 || _la==T__38) ) {
+				if ( !(_la==T__38 || _la==T__39) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -2393,7 +2626,7 @@ public class ToorlaParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(312);
+				setState(342);
 				expressionL5();
 				}
 				break;
@@ -2438,27 +2671,27 @@ public class ToorlaParser extends Parser {
 
 	public final ExpressionL5Context expressionL5() throws RecognitionException {
 		ExpressionL5Context _localctx = new ExpressionL5Context(_ctx, getState());
-		enterRule(_localctx, 72, RULE_expressionL5);
+		enterRule(_localctx, 80, RULE_expressionL5);
 		int _la;
 		try {
-			setState(321);
+			setState(351);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(316);
+				setState(346);
 				expressionL6();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(317);
+				setState(347);
 				expressionL6();
-				setState(318);
+				setState(348);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__39) | (1L << T__40) | (1L << T__41))) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__40) | (1L << T__41) | (1L << T__42))) != 0)) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -2466,7 +2699,7 @@ public class ToorlaParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(319);
+				setState(349);
 				expressionL6();
 				}
 				break;
@@ -2508,10 +2741,10 @@ public class ToorlaParser extends Parser {
 
 	public final ExpressionL6Context expressionL6() throws RecognitionException {
 		ExpressionL6Context _localctx = new ExpressionL6Context(_ctx, getState());
-		enterRule(_localctx, 74, RULE_expressionL6);
+		enterRule(_localctx, 82, RULE_expressionL6);
 		int _la;
 		try {
-			setState(326);
+			setState(356);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__18:
@@ -2520,17 +2753,17 @@ public class ToorlaParser extends Parser {
 			case NUMBER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(323);
+				setState(353);
 				expressionL7();
 				}
 				break;
-			case T__37:
-			case T__42:
+			case T__38:
+			case T__43:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(324);
+				setState(354);
 				_la = _input.LA(1);
-				if ( !(_la==T__37 || _la==T__42) ) {
+				if ( !(_la==T__38 || _la==T__43) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -2538,7 +2771,7 @@ public class ToorlaParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(325);
+				setState(355);
 				expressionL7();
 				}
 				break;
@@ -2582,9 +2815,9 @@ public class ToorlaParser extends Parser {
 
 	public final ExpressionL7Context expressionL7() throws RecognitionException {
 		ExpressionL7Context _localctx = new ExpressionL7Context(_ctx, getState());
-		enterRule(_localctx, 76, RULE_expressionL7);
+		enterRule(_localctx, 84, RULE_expressionL7);
 		try {
-			setState(333);
+			setState(363);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case ID:
@@ -2592,18 +2825,18 @@ public class ToorlaParser extends Parser {
 			case NUMBER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(328);
+				setState(358);
 				singleExpression();
 				}
 				break;
 			case T__18:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(329);
+				setState(359);
 				match(T__18);
-				setState(330);
+				setState(360);
 				singleExpression();
-				setState(331);
+				setState(361);
 				match(T__19);
 				}
 				break;
@@ -2647,12 +2880,12 @@ public class ToorlaParser extends Parser {
 
 	public final SingleExpressionContext singleExpression() throws RecognitionException {
 		SingleExpressionContext _localctx = new SingleExpressionContext(_ctx, getState());
-		enterRule(_localctx, 78, RULE_singleExpression);
+		enterRule(_localctx, 86, RULE_singleExpression);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(335);
+			setState(365);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ID) | (1L << STRINGCONST) | (1L << NUMBER))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -2700,116 +2933,127 @@ public class ToorlaParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\64\u0154\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\67\u0172\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
 		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \4!"+
-		"\t!\4\"\t\"\4#\t#\4$\t$\4%\t%\4&\t&\4\'\t\'\4(\t(\4)\t)\3\2\3\2\3\2\3"+
-		"\2\3\3\3\3\3\3\3\3\5\3[\n\3\3\4\3\4\3\4\3\4\5\4a\n\4\3\4\3\4\3\4\3\4\3"+
-		"\5\3\5\3\5\3\5\3\5\5\5l\n\5\3\5\3\5\3\5\3\5\3\5\3\5\3\6\5\6u\n\6\3\6\3"+
-		"\6\3\6\3\6\3\6\3\6\3\6\3\6\3\7\3\7\5\7\u0081\n\7\3\7\3\7\3\b\3\b\5\b\u0087"+
-		"\n\b\3\b\3\b\3\b\5\b\u008c\n\b\3\t\5\t\u008f\n\t\3\t\3\t\3\t\3\t\3\t\3"+
-		"\n\3\n\3\13\3\13\3\13\3\f\3\f\3\f\3\f\5\f\u009f\n\f\3\r\3\r\3\16\3\16"+
-		"\3\16\3\16\3\16\3\16\7\16\u00a9\n\16\f\16\16\16\u00ac\13\16\3\17\5\17"+
-		"\u00af\n\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\20"+
-		"\3\20\3\20\3\20\5\20\u00c0\n\20\3\21\3\21\3\21\3\21\3\21\5\21\u00c7\n"+
-		"\21\3\22\3\22\3\22\3\22\3\23\3\23\3\24\3\24\3\24\3\24\5\24\u00d3\n\24"+
-		"\3\25\3\25\3\25\3\25\3\25\3\25\5\25\u00db\n\25\3\26\3\26\3\26\3\26\3\26"+
-		"\3\26\3\26\3\26\3\26\5\26\u00e6\n\26\3\26\3\26\7\26\u00ea\n\26\f\26\16"+
-		"\26\u00ed\13\26\3\27\3\27\3\27\3\27\3\30\3\30\3\30\3\30\3\31\3\31\3\31"+
-		"\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\33\3\33\3\33\3\34\3\34\3\34"+
-		"\3\34\3\35\3\35\3\35\3\35\3\36\3\36\3\36\3\36\3\36\3\36\3\37\3\37\3\37"+
-		"\3 \3 \3 \3 \3 \3 \3!\3!\3!\3!\3!\5!\u0121\n!\3\"\3\"\3\"\3\"\3\"\5\""+
-		"\u0128\n\"\3#\3#\3#\3#\3#\5#\u012f\n#\3$\3$\3$\3$\3$\5$\u0136\n$\3%\3"+
-		"%\3%\3%\3%\5%\u013d\n%\3&\3&\3&\3&\3&\5&\u0144\n&\3\'\3\'\3\'\5\'\u0149"+
-		"\n\'\3(\3(\3(\3(\3(\5(\u0150\n(\3)\3)\3)\2\4\32**\2\4\6\b\n\f\16\20\22"+
-		"\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNP\2\13\4\2\b\b\17\17"+
-		"\4\2\f\f\21\22\4\2..\60\60\3\2$%\3\2&\'\3\2()\3\2*,\4\2((--\4\2..\60\61"+
-		"\2\u014c\2R\3\2\2\2\4Z\3\2\2\2\6\\\3\2\2\2\bf\3\2\2\2\nt\3\2\2\2\f\u0080"+
-		"\3\2\2\2\16\u008b\3\2\2\2\20\u008e\3\2\2\2\22\u0095\3\2\2\2\24\u0097\3"+
-		"\2\2\2\26\u009e\3\2\2\2\30\u00a0\3\2\2\2\32\u00a2\3\2\2\2\34\u00ae\3\2"+
-		"\2\2\36\u00bf\3\2\2\2 \u00c6\3\2\2\2\"\u00c8\3\2\2\2$\u00cc\3\2\2\2&\u00d2"+
-		"\3\2\2\2(\u00da\3\2\2\2*\u00e5\3\2\2\2,\u00ee\3\2\2\2.\u00f2\3\2\2\2\60"+
-		"\u00f6\3\2\2\2\62\u00f9\3\2\2\2\64\u0101\3\2\2\2\66\u0104\3\2\2\28\u0108"+
-		"\3\2\2\2:\u010c\3\2\2\2<\u0112\3\2\2\2>\u0115\3\2\2\2@\u0120\3\2\2\2B"+
-		"\u0127\3\2\2\2D\u012e\3\2\2\2F\u0135\3\2\2\2H\u013c\3\2\2\2J\u0143\3\2"+
-		"\2\2L\u0148\3\2\2\2N\u014f\3\2\2\2P\u0151\3\2\2\2RS\5\4\3\2ST\5\b\5\2"+
-		"TU\5\4\3\2U\3\3\2\2\2VW\5\6\4\2WX\5\4\3\2X[\3\2\2\2Y[\3\2\2\2ZV\3\2\2"+
-		"\2ZY\3\2\2\2[\5\3\2\2\2\\]\7\3\2\2]`\7.\2\2^_\7\4\2\2_a\7.\2\2`^\3\2\2"+
-		"\2`a\3\2\2\2ab\3\2\2\2bc\7\5\2\2cd\5\f\7\2de\7\6\2\2e\7\3\2\2\2fg\7\7"+
-		"\2\2gh\7\3\2\2hk\7.\2\2ij\7\4\2\2jl\7.\2\2ki\3\2\2\2kl\3\2\2\2lm\3\2\2"+
-		"\2mn\7\5\2\2no\5\16\b\2op\5\n\6\2pq\5\16\b\2qr\7\6\2\2r\t\3\2\2\2su\7"+
-		"\b\2\2ts\3\2\2\2tu\3\2\2\2uv\3\2\2\2vw\7\t\2\2wx\7\n\2\2xy\7\13\2\2yz"+
-		"\7\f\2\2z{\7\5\2\2{|\5$\23\2|}\7\6\2\2}\13\3\2\2\2~\u0081\5\20\t\2\177"+
-		"\u0081\5\34\17\2\u0080~\3\2\2\2\u0080\177\3\2\2\2\u0081\u0082\3\2\2\2"+
-		"\u0082\u0083\5\16\b\2\u0083\r\3\2\2\2\u0084\u0087\5\20\t\2\u0085\u0087"+
-		"\5\34\17\2\u0086\u0084\3\2\2\2\u0086\u0085\3\2\2\2\u0087\u0088\3\2\2\2"+
-		"\u0088\u0089\5\16\b\2\u0089\u008c\3\2\2\2\u008a\u008c\3\2\2\2\u008b\u0086"+
-		"\3\2\2\2\u008b\u008a\3\2\2\2\u008c\17\3\2\2\2\u008d\u008f\5\22\n\2\u008e"+
-		"\u008d\3\2\2\2\u008e\u008f\3\2\2\2\u008f\u0090\3\2\2\2\u0090\u0091\7\r"+
-		"\2\2\u0091\u0092\5\24\13\2\u0092\u0093\5\32\16\2\u0093\u0094\7\16\2\2"+
-		"\u0094\21\3\2\2\2\u0095\u0096\t\2\2\2\u0096\23\3\2\2\2\u0097\u0098\7."+
-		"\2\2\u0098\u0099\5\26\f\2\u0099\25\3\2\2\2\u009a\u009b\7\20\2\2\u009b"+
-		"\u009c\7.\2\2\u009c\u009f\5\26\f\2\u009d\u009f\3\2\2\2\u009e\u009a\3\2"+
-		"\2\2\u009e\u009d\3\2\2\2\u009f\27\3\2\2\2\u00a0\u00a1\t\3\2\2\u00a1\31"+
-		"\3\2\2\2\u00a2\u00a3\b\16\1\2\u00a3\u00a4\5\30\r\2\u00a4\u00aa\3\2\2\2"+
-		"\u00a5\u00a6\f\3\2\2\u00a6\u00a7\7\23\2\2\u00a7\u00a9\7\24\2\2\u00a8\u00a5"+
-		"\3\2\2\2\u00a9\u00ac\3\2\2\2\u00aa\u00a8\3\2\2\2\u00aa\u00ab\3\2\2\2\u00ab"+
-		"\33\3\2\2\2\u00ac\u00aa\3\2\2\2\u00ad\u00af\5\22\n\2\u00ae\u00ad\3\2\2"+
-		"\2\u00ae\u00af\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0\u00b1\7\t\2\2\u00b1\u00b2"+
-		"\7.\2\2\u00b2\u00b3\7\25\2\2\u00b3\u00b4\5\36\20\2\u00b4\u00b5\7\26\2"+
-		"\2\u00b5\u00b6\7\13\2\2\u00b6\u00b7\5\32\16\2\u00b7\u00b8\7\5\2\2\u00b8"+
-		"\u00b9\5$\23\2\u00b9\u00ba\7\6\2\2\u00ba\35\3\2\2\2\u00bb\u00bc\5\"\22"+
-		"\2\u00bc\u00bd\5 \21\2\u00bd\u00c0\3\2\2\2\u00be\u00c0\3\2\2\2\u00bf\u00bb"+
-		"\3\2\2\2\u00bf\u00be\3\2\2\2\u00c0\37\3\2\2\2\u00c1\u00c2\7\20\2\2\u00c2"+
-		"\u00c3\5\"\22\2\u00c3\u00c4\5 \21\2\u00c4\u00c7\3\2\2\2\u00c5\u00c7\3"+
-		"\2\2\2\u00c6\u00c1\3\2\2\2\u00c6\u00c5\3\2\2\2\u00c7!\3\2\2\2\u00c8\u00c9"+
-		"\7.\2\2\u00c9\u00ca\7\5\2\2\u00ca\u00cb\5\32\16\2\u00cb#\3\2\2\2\u00cc"+
-		"\u00cd\5&\24\2\u00cd%\3\2\2\2\u00ce\u00cf\5(\25\2\u00cf\u00d0\5&\24\2"+
-		"\u00d0\u00d3\3\2\2\2\u00d1\u00d3\3\2\2\2\u00d2\u00ce\3\2\2\2\u00d2\u00d1"+
-		"\3\2\2\2\u00d3\'\3\2\2\2\u00d4\u00d5\5*\26\2\u00d5\u00d6\7\16\2\2\u00d6"+
-		"\u00db\3\2\2\2\u00d7\u00db\5.\30\2\u00d8\u00db\5\62\32\2\u00d9\u00db\5"+
-		"> \2\u00da\u00d4\3\2\2\2\u00da\u00d7\3\2\2\2\u00da\u00d8\3\2\2\2\u00da"+
-		"\u00d9\3\2\2\2\u00db)\3\2\2\2\u00dc\u00dd\b\26\1\2\u00dd\u00e6\5,\27\2"+
-		"\u00de\u00e6\5\60\31\2\u00df\u00e6\5\64\33\2\u00e0\u00e6\5\66\34\2\u00e1"+
-		"\u00e6\58\35\2\u00e2\u00e6\5:\36\2\u00e3\u00e6\5<\37\2\u00e4\u00e6\3\2"+
-		"\2\2\u00e5\u00dc\3\2\2\2\u00e5\u00de\3\2\2\2\u00e5\u00df\3\2\2\2\u00e5"+
-		"\u00e0\3\2\2\2\u00e5\u00e1\3\2\2\2\u00e5\u00e2\3\2\2\2\u00e5\u00e3\3\2"+
-		"\2\2\u00e5\u00e4\3\2\2\2\u00e6\u00eb\3\2\2\2\u00e7\u00e8\f\4\2\2\u00e8"+
-		"\u00ea\7\16\2\2\u00e9\u00e7\3\2\2\2\u00ea\u00ed\3\2\2\2\u00eb\u00e9\3"+
-		"\2\2\2\u00eb\u00ec\3\2\2\2\u00ec+\3\2\2\2\u00ed\u00eb\3\2\2\2\u00ee\u00ef"+
-		"\5@!\2\u00ef\u00f0\7\27\2\2\u00f0\u00f1\5@!\2\u00f1-\3\2\2\2\u00f2\u00f3"+
-		"\7\30\2\2\u00f3\u00f4\5&\24\2\u00f4\u00f5\7\6\2\2\u00f5/\3\2\2\2\u00f6"+
-		"\u00f7\7\31\2\2\u00f7\u00f8\7\16\2\2\u00f8\61\3\2\2\2\u00f9\u00fa\7\32"+
-		"\2\2\u00fa\u00fb\7\25\2\2\u00fb\u00fc\5@!\2\u00fc\u00fd\7\26\2\2\u00fd"+
-		"\u00fe\5(\25\2\u00fe\u00ff\7\33\2\2\u00ff\u0100\5(\25\2\u0100\63\3\2\2"+
-		"\2\u0101\u0102\7\34\2\2\u0102\u0103\7\16\2\2\u0103\65\3\2\2\2\u0104\u0105"+
-		"\5@!\2\u0105\u0106\7\35\2\2\u0106\u0107\7\16\2\2\u0107\67\3\2\2\2\u0108"+
-		"\u0109\5@!\2\u0109\u010a\7\36\2\2\u010a\u010b\7\16\2\2\u010b9\3\2\2\2"+
-		"\u010c\u010d\7\37\2\2\u010d\u010e\7\25\2\2\u010e\u010f\t\4\2\2\u010f\u0110"+
-		"\7\26\2\2\u0110\u0111\7\16\2\2\u0111;\3\2\2\2\u0112\u0113\7 \2\2\u0113"+
-		"\u0114\5@!\2\u0114=\3\2\2\2\u0115\u0116\7!\2\2\u0116\u0117\7\25\2\2\u0117"+
-		"\u0118\5@!\2\u0118\u0119\7\26\2\2\u0119\u011a\5(\25\2\u011a?\3\2\2\2\u011b"+
-		"\u0121\5B\"\2\u011c\u011d\5B\"\2\u011d\u011e\7\"\2\2\u011e\u011f\5B\""+
-		"\2\u011f\u0121\3\2\2\2\u0120\u011b\3\2\2\2\u0120\u011c\3\2\2\2\u0121A"+
-		"\3\2\2\2\u0122\u0128\5D#\2\u0123\u0124\5D#\2\u0124\u0125\7#\2\2\u0125"+
-		"\u0126\5D#\2\u0126\u0128\3\2\2\2\u0127\u0122\3\2\2\2\u0127\u0123\3\2\2"+
-		"\2\u0128C\3\2\2\2\u0129\u012f\5F$\2\u012a\u012b\5F$\2\u012b\u012c\t\5"+
-		"\2\2\u012c\u012d\5F$\2\u012d\u012f\3\2\2\2\u012e\u0129\3\2\2\2\u012e\u012a"+
-		"\3\2\2\2\u012fE\3\2\2\2\u0130\u0136\5H%\2\u0131\u0132\5H%\2\u0132\u0133"+
-		"\t\6\2\2\u0133\u0134\5H%\2\u0134\u0136\3\2\2\2\u0135\u0130\3\2\2\2\u0135"+
-		"\u0131\3\2\2\2\u0136G\3\2\2\2\u0137\u013d\5J&\2\u0138\u0139\5J&\2\u0139"+
-		"\u013a\t\7\2\2\u013a\u013b\5J&\2\u013b\u013d\3\2\2\2\u013c\u0137\3\2\2"+
-		"\2\u013c\u0138\3\2\2\2\u013dI\3\2\2\2\u013e\u0144\5L\'\2\u013f\u0140\5"+
-		"L\'\2\u0140\u0141\t\b\2\2\u0141\u0142\5L\'\2\u0142\u0144\3\2\2\2\u0143"+
-		"\u013e\3\2\2\2\u0143\u013f\3\2\2\2\u0144K\3\2\2\2\u0145\u0149\5N(\2\u0146"+
-		"\u0147\t\t\2\2\u0147\u0149\5N(\2\u0148\u0145\3\2\2\2\u0148\u0146\3\2\2"+
-		"\2\u0149M\3\2\2\2\u014a\u0150\5P)\2\u014b\u014c\7\25\2\2\u014c\u014d\5"+
-		"P)\2\u014d\u014e\7\26\2\2\u014e\u0150\3\2\2\2\u014f\u014a\3\2\2\2\u014f"+
-		"\u014b\3\2\2\2\u0150O\3\2\2\2\u0151\u0152\t\n\2\2\u0152Q\3\2\2\2\33Z`"+
-		"kt\u0080\u0086\u008b\u008e\u009e\u00aa\u00ae\u00bf\u00c6\u00d2\u00da\u00e5"+
-		"\u00eb\u0120\u0127\u012e\u0135\u013c\u0143\u0148\u014f";
+		"\t!\4\"\t\"\4#\t#\4$\t$\4%\t%\4&\t&\4\'\t\'\4(\t(\4)\t)\4*\t*\4+\t+\4"+
+		",\t,\4-\t-\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\5\3c\n\3\3\4\3\4\3\4\3\4\5"+
+		"\4i\n\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\5\5t\n\5\3\5\3\5\3\5\3\5\3"+
+		"\5\3\5\3\6\5\6}\n\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\7\3\7\5\7\u008a"+
+		"\n\7\3\7\3\7\3\b\3\b\5\b\u0090\n\b\3\b\3\b\3\b\5\b\u0095\n\b\3\t\5\t\u0098"+
+		"\n\t\3\t\3\t\3\t\3\t\3\t\3\n\3\n\3\13\3\13\3\13\3\f\3\f\3\f\3\f\5\f\u00a8"+
+		"\n\f\3\r\3\r\3\16\3\16\3\16\3\16\3\16\3\16\7\16\u00b2\n\16\f\16\16\16"+
+		"\u00b5\13\16\3\17\5\17\u00b8\n\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3"+
+		"\17\3\17\3\17\3\17\3\20\3\20\3\20\3\20\5\20\u00c9\n\20\3\21\3\21\3\21"+
+		"\3\21\3\21\5\21\u00d0\n\21\3\22\3\22\3\22\3\22\3\23\3\23\3\24\3\24\3\24"+
+		"\3\24\5\24\u00dc\n\24\3\25\3\25\3\25\3\25\3\25\3\25\5\25\u00e4\n\25\3"+
+		"\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u00f0\n\26\3\26"+
+		"\3\26\7\26\u00f4\n\26\f\26\16\26\u00f7\13\26\3\27\3\27\3\27\3\30\3\30"+
+		"\3\30\3\31\3\31\3\31\3\31\3\31\5\31\u0104\n\31\3\32\3\32\3\32\3\32\3\33"+
+		"\3\33\3\33\3\33\3\34\3\34\3\34\3\34\3\35\3\35\3\36\3\36\3\36\3\36\3\36"+
+		"\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\5\36\u0122\n\36\3\37\3\37"+
+		"\3 \3 \3 \3!\3!\3!\3\"\3\"\3\"\3\"\3\"\3#\3#\3#\3$\3$\3$\3$\3$\3$\3%\3"+
+		"%\3%\3%\3%\5%\u013f\n%\3&\3&\3&\3&\3&\5&\u0146\n&\3\'\3\'\3\'\3\'\3\'"+
+		"\5\'\u014d\n\'\3(\3(\3(\3(\3(\5(\u0154\n(\3)\3)\3)\3)\3)\5)\u015b\n)\3"+
+		"*\3*\3*\3*\3*\5*\u0162\n*\3+\3+\3+\5+\u0167\n+\3,\3,\3,\3,\3,\5,\u016e"+
+		"\n,\3-\3-\3-\2\4\32*.\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,."+
+		"\60\62\64\668:<>@BDFHJLNPRTVX\2\n\4\2\b\b\17\17\4\2\f\f\21\22\4\2\60\60"+
+		"\62\63\3\2%&\3\2\'(\3\2)*\3\2+-\4\2))..\2\u0169\2Z\3\2\2\2\4b\3\2\2\2"+
+		"\6d\3\2\2\2\bn\3\2\2\2\n|\3\2\2\2\f\u0089\3\2\2\2\16\u0094\3\2\2\2\20"+
+		"\u0097\3\2\2\2\22\u009e\3\2\2\2\24\u00a0\3\2\2\2\26\u00a7\3\2\2\2\30\u00a9"+
+		"\3\2\2\2\32\u00ab\3\2\2\2\34\u00b7\3\2\2\2\36\u00c8\3\2\2\2 \u00cf\3\2"+
+		"\2\2\"\u00d1\3\2\2\2$\u00d5\3\2\2\2&\u00db\3\2\2\2(\u00e3\3\2\2\2*\u00ef"+
+		"\3\2\2\2,\u00f8\3\2\2\2.\u00fb\3\2\2\2\60\u0103\3\2\2\2\62\u0105\3\2\2"+
+		"\2\64\u0109\3\2\2\2\66\u010d\3\2\2\28\u0111\3\2\2\2:\u0121\3\2\2\2<\u0123"+
+		"\3\2\2\2>\u0125\3\2\2\2@\u0128\3\2\2\2B\u012b\3\2\2\2D\u0130\3\2\2\2F"+
+		"\u0133\3\2\2\2H\u013e\3\2\2\2J\u0145\3\2\2\2L\u014c\3\2\2\2N\u0153\3\2"+
+		"\2\2P\u015a\3\2\2\2R\u0161\3\2\2\2T\u0166\3\2\2\2V\u016d\3\2\2\2X\u016f"+
+		"\3\2\2\2Z[\5\4\3\2[\\\5\b\5\2\\]\5\4\3\2]\3\3\2\2\2^_\5\6\4\2_`\5\4\3"+
+		"\2`c\3\2\2\2ac\3\2\2\2b^\3\2\2\2ba\3\2\2\2c\5\3\2\2\2de\7\3\2\2eh\7\60"+
+		"\2\2fg\7\4\2\2gi\7\60\2\2hf\3\2\2\2hi\3\2\2\2ij\3\2\2\2jk\7\5\2\2kl\5"+
+		"\f\7\2lm\7\6\2\2m\7\3\2\2\2no\7\7\2\2op\7\3\2\2ps\7\60\2\2qr\7\4\2\2r"+
+		"t\7\60\2\2sq\3\2\2\2st\3\2\2\2tu\3\2\2\2uv\7\5\2\2vw\5\16\b\2wx\5\n\6"+
+		"\2xy\5\16\b\2yz\7\6\2\2z\t\3\2\2\2{}\7\b\2\2|{\3\2\2\2|}\3\2\2\2}~\3\2"+
+		"\2\2~\177\7\t\2\2\177\u0080\7/\2\2\u0080\u0081\7\n\2\2\u0081\u0082\7\13"+
+		"\2\2\u0082\u0083\7\f\2\2\u0083\u0084\7\5\2\2\u0084\u0085\5$\23\2\u0085"+
+		"\u0086\7\6\2\2\u0086\13\3\2\2\2\u0087\u008a\5\20\t\2\u0088\u008a\5\34"+
+		"\17\2\u0089\u0087\3\2\2\2\u0089\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b"+
+		"\u008c\5\16\b\2\u008c\r\3\2\2\2\u008d\u0090\5\20\t\2\u008e\u0090\5\34"+
+		"\17\2\u008f\u008d\3\2\2\2\u008f\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091"+
+		"\u0092\5\16\b\2\u0092\u0095\3\2\2\2\u0093\u0095\3\2\2\2\u0094\u008f\3"+
+		"\2\2\2\u0094\u0093\3\2\2\2\u0095\17\3\2\2\2\u0096\u0098\5\22\n\2\u0097"+
+		"\u0096\3\2\2\2\u0097\u0098\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009a\7\r"+
+		"\2\2\u009a\u009b\5\24\13\2\u009b\u009c\5\32\16\2\u009c\u009d\7\16\2\2"+
+		"\u009d\21\3\2\2\2\u009e\u009f\t\2\2\2\u009f\23\3\2\2\2\u00a0\u00a1\7\60"+
+		"\2\2\u00a1\u00a2\5\26\f\2\u00a2\25\3\2\2\2\u00a3\u00a4\7\20\2\2\u00a4"+
+		"\u00a5\7\60\2\2\u00a5\u00a8\5\26\f\2\u00a6\u00a8\3\2\2\2\u00a7\u00a3\3"+
+		"\2\2\2\u00a7\u00a6\3\2\2\2\u00a8\27\3\2\2\2\u00a9\u00aa\t\3\2\2\u00aa"+
+		"\31\3\2\2\2\u00ab\u00ac\b\16\1\2\u00ac\u00ad\5\30\r\2\u00ad\u00b3\3\2"+
+		"\2\2\u00ae\u00af\f\3\2\2\u00af\u00b0\7\23\2\2\u00b0\u00b2\7\24\2\2\u00b1"+
+		"\u00ae\3\2\2\2\u00b2\u00b5\3\2\2\2\u00b3\u00b1\3\2\2\2\u00b3\u00b4\3\2"+
+		"\2\2\u00b4\33\3\2\2\2\u00b5\u00b3\3\2\2\2\u00b6\u00b8\5\22\n\2\u00b7\u00b6"+
+		"\3\2\2\2\u00b7\u00b8\3\2\2\2\u00b8\u00b9\3\2\2\2\u00b9\u00ba\7\t\2\2\u00ba"+
+		"\u00bb\7\60\2\2\u00bb\u00bc\7\25\2\2\u00bc\u00bd\5\36\20\2\u00bd\u00be"+
+		"\7\26\2\2\u00be\u00bf\7\13\2\2\u00bf\u00c0\5\32\16\2\u00c0\u00c1\7\5\2"+
+		"\2\u00c1\u00c2\5$\23\2\u00c2\u00c3\7\6\2\2\u00c3\35\3\2\2\2\u00c4\u00c5"+
+		"\5\"\22\2\u00c5\u00c6\5 \21\2\u00c6\u00c9\3\2\2\2\u00c7\u00c9\3\2\2\2"+
+		"\u00c8\u00c4\3\2\2\2\u00c8\u00c7\3\2\2\2\u00c9\37\3\2\2\2\u00ca\u00cb"+
+		"\7\20\2\2\u00cb\u00cc\5\"\22\2\u00cc\u00cd\5 \21\2\u00cd\u00d0\3\2\2\2"+
+		"\u00ce\u00d0\3\2\2\2\u00cf\u00ca\3\2\2\2\u00cf\u00ce\3\2\2\2\u00d0!\3"+
+		"\2\2\2\u00d1\u00d2\7\60\2\2\u00d2\u00d3\7\5\2\2\u00d3\u00d4\5\32\16\2"+
+		"\u00d4#\3\2\2\2\u00d5\u00d6\5&\24\2\u00d6%\3\2\2\2\u00d7\u00d8\5(\25\2"+
+		"\u00d8\u00d9\5&\24\2\u00d9\u00dc\3\2\2\2\u00da\u00dc\3\2\2\2\u00db\u00d7"+
+		"\3\2\2\2\u00db\u00da\3\2\2\2\u00dc\'\3\2\2\2\u00dd\u00de\5*\26\2\u00de"+
+		"\u00df\7\16\2\2\u00df\u00e4\3\2\2\2\u00e0\u00e4\5\66\34\2\u00e1\u00e4"+
+		"\5:\36\2\u00e2\u00e4\5F$\2\u00e3\u00dd\3\2\2\2\u00e3\u00e0\3\2\2\2\u00e3"+
+		"\u00e1\3\2\2\2\u00e3\u00e2\3\2\2\2\u00e4)\3\2\2\2\u00e5\u00e6\b\26\1\2"+
+		"\u00e6\u00f0\5\64\33\2\u00e7\u00f0\58\35\2\u00e8\u00f0\5<\37\2\u00e9\u00f0"+
+		"\5> \2\u00ea\u00f0\5@!\2\u00eb\u00f0\5B\"\2\u00ec\u00f0\5D#\2\u00ed\u00f0"+
+		"\5,\27\2\u00ee\u00f0\3\2\2\2\u00ef\u00e5\3\2\2\2\u00ef\u00e7\3\2\2\2\u00ef"+
+		"\u00e8\3\2\2\2\u00ef\u00e9\3\2\2\2\u00ef\u00ea\3\2\2\2\u00ef\u00eb\3\2"+
+		"\2\2\u00ef\u00ec\3\2\2\2\u00ef\u00ed\3\2\2\2\u00ef\u00ee\3\2\2\2\u00f0"+
+		"\u00f5\3\2\2\2\u00f1\u00f2\f\4\2\2\u00f2\u00f4\7\16\2\2\u00f3\u00f1\3"+
+		"\2\2\2\u00f4\u00f7\3\2\2\2\u00f5\u00f3\3\2\2\2\u00f5\u00f6\3\2\2\2\u00f6"+
+		"+\3\2\2\2\u00f7\u00f5\3\2\2\2\u00f8\u00f9\7\27\2\2\u00f9\u00fa\5.\30\2"+
+		"\u00fa-\3\2\2\2\u00fb\u00fc\5\62\32\2\u00fc\u00fd\5\60\31\2\u00fd/\3\2"+
+		"\2\2\u00fe\u00ff\7\20\2\2\u00ff\u0100\5\62\32\2\u0100\u0101\5\60\31\2"+
+		"\u0101\u0104\3\2\2\2\u0102\u0104\3\2\2\2\u0103\u00fe\3\2\2\2\u0103\u0102"+
+		"\3\2\2\2\u0104\61\3\2\2\2\u0105\u0106\7\60\2\2\u0106\u0107\7\30\2\2\u0107"+
+		"\u0108\5H%\2\u0108\63\3\2\2\2\u0109\u010a\5H%\2\u010a\u010b\7\30\2\2\u010b"+
+		"\u010c\5H%\2\u010c\65\3\2\2\2\u010d\u010e\7\31\2\2\u010e\u010f\5&\24\2"+
+		"\u010f\u0110\7\6\2\2\u0110\67\3\2\2\2\u0111\u0112\7\32\2\2\u01129\3\2"+
+		"\2\2\u0113\u0114\7\33\2\2\u0114\u0115\7\25\2\2\u0115\u0116\5H%\2\u0116"+
+		"\u0117\7\26\2\2\u0117\u0118\5(\25\2\u0118\u0122\3\2\2\2\u0119\u011a\7"+
+		"\33\2\2\u011a\u011b\7\25\2\2\u011b\u011c\5H%\2\u011c\u011d\7\26\2\2\u011d"+
+		"\u011e\5(\25\2\u011e\u011f\7\34\2\2\u011f\u0120\5(\25\2\u0120\u0122\3"+
+		"\2\2\2\u0121\u0113\3\2\2\2\u0121\u0119\3\2\2\2\u0122;\3\2\2\2\u0123\u0124"+
+		"\7\35\2\2\u0124=\3\2\2\2\u0125\u0126\5H%\2\u0126\u0127\7\36\2\2\u0127"+
+		"?\3\2\2\2\u0128\u0129\5H%\2\u0129\u012a\7\37\2\2\u012aA\3\2\2\2\u012b"+
+		"\u012c\7 \2\2\u012c\u012d\7\25\2\2\u012d\u012e\t\4\2\2\u012e\u012f\7\26"+
+		"\2\2\u012fC\3\2\2\2\u0130\u0131\7!\2\2\u0131\u0132\5H%\2\u0132E\3\2\2"+
+		"\2\u0133\u0134\7\"\2\2\u0134\u0135\7\25\2\2\u0135\u0136\5H%\2\u0136\u0137"+
+		"\7\26\2\2\u0137\u0138\5(\25\2\u0138G\3\2\2\2\u0139\u013f\5J&\2\u013a\u013b"+
+		"\5J&\2\u013b\u013c\7#\2\2\u013c\u013d\5J&\2\u013d\u013f\3\2\2\2\u013e"+
+		"\u0139\3\2\2\2\u013e\u013a\3\2\2\2\u013fI\3\2\2\2\u0140\u0146\5L\'\2\u0141"+
+		"\u0142\5L\'\2\u0142\u0143\7$\2\2\u0143\u0144\5L\'\2\u0144\u0146\3\2\2"+
+		"\2\u0145\u0140\3\2\2\2\u0145\u0141\3\2\2\2\u0146K\3\2\2\2\u0147\u014d"+
+		"\5N(\2\u0148\u0149\5N(\2\u0149\u014a\t\5\2\2\u014a\u014b\5N(\2\u014b\u014d"+
+		"\3\2\2\2\u014c\u0147\3\2\2\2\u014c\u0148\3\2\2\2\u014dM\3\2\2\2\u014e"+
+		"\u0154\5P)\2\u014f\u0150\5P)\2\u0150\u0151\t\6\2\2\u0151\u0152\5P)\2\u0152"+
+		"\u0154\3\2\2\2\u0153\u014e\3\2\2\2\u0153\u014f\3\2\2\2\u0154O\3\2\2\2"+
+		"\u0155\u015b\5R*\2\u0156\u0157\5R*\2\u0157\u0158\t\7\2\2\u0158\u0159\5"+
+		"R*\2\u0159\u015b\3\2\2\2\u015a\u0155\3\2\2\2\u015a\u0156\3\2\2\2\u015b"+
+		"Q\3\2\2\2\u015c\u0162\5T+\2\u015d\u015e\5T+\2\u015e\u015f\t\b\2\2\u015f"+
+		"\u0160\5T+\2\u0160\u0162\3\2\2\2\u0161\u015c\3\2\2\2\u0161\u015d\3\2\2"+
+		"\2\u0162S\3\2\2\2\u0163\u0167\5V,\2\u0164\u0165\t\t\2\2\u0165\u0167\5"+
+		"V,\2\u0166\u0163\3\2\2\2\u0166\u0164\3\2\2\2\u0167U\3\2\2\2\u0168\u016e"+
+		"\5X-\2\u0169\u016a\7\25\2\2\u016a\u016b\5X-\2\u016b\u016c\7\26\2\2\u016c"+
+		"\u016e\3\2\2\2\u016d\u0168\3\2\2\2\u016d\u0169\3\2\2\2\u016eW\3\2\2\2"+
+		"\u016f\u0170\t\4\2\2\u0170Y\3\2\2\2\35bhs|\u0089\u008f\u0094\u0097\u00a7"+
+		"\u00b3\u00b7\u00c8\u00cf\u00db\u00e3\u00ef\u00f5\u0103\u0121\u013e\u0145"+
+		"\u014c\u0153\u015a\u0161\u0166\u016d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

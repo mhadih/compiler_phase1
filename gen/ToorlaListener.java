@@ -33,15 +33,15 @@ public interface ToorlaListener extends ParseTreeListener {
 	 */
 	void exitClassStar(ToorlaParser.ClassStarContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ToorlaParser#class}.
+	 * Enter a parse tree produced by {@link ToorlaParser#class1}.
 	 * @param ctx the parse tree
 	 */
-	void enterClass(ToorlaParser.ClassContext ctx);
+	void enterClass1(ToorlaParser.Class1Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link ToorlaParser#class}.
+	 * Exit a parse tree produced by {@link ToorlaParser#class1}.
 	 * @param ctx the parse tree
 	 */
-	void exitClass(ToorlaParser.ClassContext ctx);
+	void exitClass1(ToorlaParser.Class1Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link ToorlaParser#entryClass}.
 	 * @param ctx the parse tree
@@ -163,15 +163,15 @@ public interface ToorlaListener extends ParseTreeListener {
 	 */
 	void exitArgumentList(ToorlaParser.ArgumentListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ToorlaParser#tmpArgument}.
+	 * Enter a parse tree produced by {@link ToorlaParser#argumentStar}.
 	 * @param ctx the parse tree
 	 */
-	void enterTmpArgument(ToorlaParser.TmpArgumentContext ctx);
+	void enterArgumentStar(ToorlaParser.ArgumentStarContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ToorlaParser#tmpArgument}.
+	 * Exit a parse tree produced by {@link ToorlaParser#argumentStar}.
 	 * @param ctx the parse tree
 	 */
-	void exitTmpArgument(ToorlaParser.TmpArgumentContext ctx);
+	void exitArgumentStar(ToorlaParser.ArgumentStarContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ToorlaParser#argument}.
 	 * @param ctx the parse tree
@@ -223,6 +223,46 @@ public interface ToorlaListener extends ParseTreeListener {
 	 */
 	void exitSingleStatement(ToorlaParser.SingleStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ToorlaParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaration(ToorlaParser.DeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ToorlaParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaration(ToorlaParser.DeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ToorlaParser#assignListPlus}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignListPlus(ToorlaParser.AssignListPlusContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ToorlaParser#assignListPlus}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignListPlus(ToorlaParser.AssignListPlusContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ToorlaParser#assignListStar}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignListStar(ToorlaParser.AssignListStarContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ToorlaParser#assignListStar}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignListStar(ToorlaParser.AssignListStarContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ToorlaParser#assignID}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignID(ToorlaParser.AssignIDContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ToorlaParser#assignID}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignID(ToorlaParser.AssignIDContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ToorlaParser#assign}.
 	 * @param ctx the parse tree
 	 */
@@ -243,35 +283,35 @@ public interface ToorlaListener extends ParseTreeListener {
 	 */
 	void exitBlock(ToorlaParser.BlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ToorlaParser#break}.
+	 * Enter a parse tree produced by {@link ToorlaParser#breakRole}.
 	 * @param ctx the parse tree
 	 */
-	void enterBreak(ToorlaParser.BreakContext ctx);
+	void enterBreakRole(ToorlaParser.BreakRoleContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ToorlaParser#break}.
+	 * Exit a parse tree produced by {@link ToorlaParser#breakRole}.
 	 * @param ctx the parse tree
 	 */
-	void exitBreak(ToorlaParser.BreakContext ctx);
+	void exitBreakRole(ToorlaParser.BreakRoleContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ToorlaParser#if}.
+	 * Enter a parse tree produced by {@link ToorlaParser#ifRole}.
 	 * @param ctx the parse tree
 	 */
-	void enterIf(ToorlaParser.IfContext ctx);
+	void enterIfRole(ToorlaParser.IfRoleContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ToorlaParser#if}.
+	 * Exit a parse tree produced by {@link ToorlaParser#ifRole}.
 	 * @param ctx the parse tree
 	 */
-	void exitIf(ToorlaParser.IfContext ctx);
+	void exitIfRole(ToorlaParser.IfRoleContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ToorlaParser#continue}.
+	 * Enter a parse tree produced by {@link ToorlaParser#continueRole}.
 	 * @param ctx the parse tree
 	 */
-	void enterContinue(ToorlaParser.ContinueContext ctx);
+	void enterContinueRole(ToorlaParser.ContinueRoleContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ToorlaParser#continue}.
+	 * Exit a parse tree produced by {@link ToorlaParser#continueRole}.
 	 * @param ctx the parse tree
 	 */
-	void exitContinue(ToorlaParser.ContinueContext ctx);
+	void exitContinueRole(ToorlaParser.ContinueRoleContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ToorlaParser#dec}.
 	 * @param ctx the parse tree
@@ -293,35 +333,35 @@ public interface ToorlaListener extends ParseTreeListener {
 	 */
 	void exitInc(ToorlaParser.IncContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ToorlaParser#print}.
+	 * Enter a parse tree produced by {@link ToorlaParser#printRole}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrint(ToorlaParser.PrintContext ctx);
+	void enterPrintRole(ToorlaParser.PrintRoleContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ToorlaParser#print}.
+	 * Exit a parse tree produced by {@link ToorlaParser#printRole}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrint(ToorlaParser.PrintContext ctx);
+	void exitPrintRole(ToorlaParser.PrintRoleContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ToorlaParser#return}.
+	 * Enter a parse tree produced by {@link ToorlaParser#returnRole}.
 	 * @param ctx the parse tree
 	 */
-	void enterReturn(ToorlaParser.ReturnContext ctx);
+	void enterReturnRole(ToorlaParser.ReturnRoleContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ToorlaParser#return}.
+	 * Exit a parse tree produced by {@link ToorlaParser#returnRole}.
 	 * @param ctx the parse tree
 	 */
-	void exitReturn(ToorlaParser.ReturnContext ctx);
+	void exitReturnRole(ToorlaParser.ReturnRoleContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ToorlaParser#while}.
+	 * Enter a parse tree produced by {@link ToorlaParser#whileRole}.
 	 * @param ctx the parse tree
 	 */
-	void enterWhile(ToorlaParser.WhileContext ctx);
+	void enterWhileRole(ToorlaParser.WhileRoleContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ToorlaParser#while}.
+	 * Exit a parse tree produced by {@link ToorlaParser#whileRole}.
 	 * @param ctx the parse tree
 	 */
-	void exitWhile(ToorlaParser.WhileContext ctx);
+	void exitWhileRole(ToorlaParser.WhileRoleContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ToorlaParser#expression}.
 	 * @param ctx the parse tree

@@ -45,13 +45,13 @@ public class ToorlaBaseListener implements ToorlaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClass(ToorlaParser.ClassContext ctx) { }
+	@Override public void enterClass1(ToorlaParser.Class1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClass(ToorlaParser.ClassContext ctx) { }
+	@Override public void exitClass1(ToorlaParser.Class1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -201,13 +201,13 @@ public class ToorlaBaseListener implements ToorlaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTmpArgument(ToorlaParser.TmpArgumentContext ctx) { }
+	@Override public void enterArgumentStar(ToorlaParser.ArgumentStarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTmpArgument(ToorlaParser.TmpArgumentContext ctx) { }
+	@Override public void exitArgumentStar(ToorlaParser.ArgumentStarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -273,6 +273,54 @@ public class ToorlaBaseListener implements ToorlaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDeclaration(ToorlaParser.DeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclaration(ToorlaParser.DeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignListPlus(ToorlaParser.AssignListPlusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignListPlus(ToorlaParser.AssignListPlusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignListStar(ToorlaParser.AssignListStarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignListStar(ToorlaParser.AssignListStarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignID(ToorlaParser.AssignIDContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignID(ToorlaParser.AssignIDContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAssign(ToorlaParser.AssignContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -297,37 +345,37 @@ public class ToorlaBaseListener implements ToorlaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBreak(ToorlaParser.BreakContext ctx) { }
+	@Override public void enterBreakRole(ToorlaParser.BreakRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBreak(ToorlaParser.BreakContext ctx) { }
+	@Override public void exitBreakRole(ToorlaParser.BreakRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIf(ToorlaParser.IfContext ctx) { }
+	@Override public void enterIfRole(ToorlaParser.IfRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIf(ToorlaParser.IfContext ctx) { }
+	@Override public void exitIfRole(ToorlaParser.IfRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterContinue(ToorlaParser.ContinueContext ctx) { }
+	@Override public void enterContinueRole(ToorlaParser.ContinueRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitContinue(ToorlaParser.ContinueContext ctx) { }
+	@Override public void exitContinueRole(ToorlaParser.ContinueRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -357,37 +405,37 @@ public class ToorlaBaseListener implements ToorlaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrint(ToorlaParser.PrintContext ctx) { }
+	@Override public void enterPrintRole(ToorlaParser.PrintRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrint(ToorlaParser.PrintContext ctx) { }
+	@Override public void exitPrintRole(ToorlaParser.PrintRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReturn(ToorlaParser.ReturnContext ctx) { }
+	@Override public void enterReturnRole(ToorlaParser.ReturnRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReturn(ToorlaParser.ReturnContext ctx) { }
+	@Override public void exitReturnRole(ToorlaParser.ReturnRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhile(ToorlaParser.WhileContext ctx) { }
+	@Override public void enterWhileRole(ToorlaParser.WhileRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhile(ToorlaParser.WhileContext ctx) { }
+	@Override public void exitWhileRole(ToorlaParser.WhileRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

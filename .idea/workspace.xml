@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="30d7b86b-4e85-4157-8cc8-d51ad79c8001" name="Default Changelist" comment="first edition of grammer">
+    <list default="true" id="30d7b86b-4e85-4157-8cc8-d51ad79c8001" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/Toorla.interp" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/Toorla.interp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/Toorla.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/Toorla.tokens" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaBaseListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaCompiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaCompiler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaLexer.interp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaLexer.tokens" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaParser$AdditionExpContext.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaParser$AtomExpContext.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaParser$MultiplyExpContext.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaParser$ProgramContext.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaParser$Temp_addContext.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaParser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/output/production/compiler_phase1/ToorlaVisitor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/src/ToorlaCompiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/src/ToorlaCompiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/Toorla.interp" beforeDir="false" afterPath="$PROJECT_DIR$/gen/Toorla.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/Toorla.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/gen/Toorla.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/ToorlaBaseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/ToorlaBaseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/ToorlaBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/ToorlaBaseVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/ToorlaLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/gen/ToorlaLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/ToorlaLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/ToorlaLexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/ToorlaLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/gen/ToorlaLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/ToorlaListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/ToorlaListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/ToorlaParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/ToorlaParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/ToorlaVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/ToorlaVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample.in" beforeDir="false" afterPath="$PROJECT_DIR$/sample.in" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,23 +31,80 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sample.in">
+        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/ToorlaCompiler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="225">
+              <caret line="15" column="37" lean-forward="true" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sample.in">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="126" lean-forward="true" selection-start-line="126" selection-end-line="126" />
+            <state relative-caret-position="215">
+              <caret line="235" lean-forward="true" selection-start-line="235" selection-end-line="235" />
               <folding>
                 <element signature="e#19#196#1" expanded="true" />
                 <element signature="e#199#296#1" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/Toorla.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gen/ToorlaParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="694">
+              <caret line="2168" column="26" selection-start-line="2168" selection-start-column="26" selection-end-line="2168" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/singleType/UserDefinedType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/Type.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/singleType/SingleType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -62,21 +122,33 @@
         <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/test.g4">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
-              <caret line="30" column="3" lean-forward="true" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/statement/returnStatement/Return.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="31" selection-start-line="31" selection-end-line="31" />
+              <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>userDe</find>
+      <find>if</find>
+      <find>continue</find>
+      <find>return</find>
+      <find>while</find>
+      <find>print</find>
+      <find>entry</find>
+      <find>continue1</find>
+      <find>if1</find>
+      <find>method</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>break1</replace>
+      <replace>ifRole</replace>
+      <replace>whileRole</replace>
+      <replace>continueRole</replace>
+      <replace>printRole</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -85,10 +157,11 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/PLC_Spring98_Toorla/gen/ToorlaParser.java" />
-        <option value="$PROJECT_DIR$/gen/ToorlaParser.java" />
         <option value="$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/test.g4" />
-        <option value="$PROJECT_DIR$/sample.in" />
+        <option value="$PROJECT_DIR$/gen/ToorlaParser.java" />
+        <option value="$PROJECT_DIR$/PLC_Spring98_Toorla/src/ToorlaCompiler.java" />
         <option value="$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4" />
+        <option value="$PROJECT_DIR$/sample.in" />
       </list>
     </option>
   </component>
@@ -133,40 +206,6 @@
               <item name="PLC_Spring98_Toorla" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="compiler_phase1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="compiler_phase1" type="462c0819:PsiDirectoryNode" />
-              <item name="PLC_Spring98_Toorla" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="toorla" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="compiler_phase1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="compiler_phase1" type="462c0819:PsiDirectoryNode" />
-              <item name="PLC_Spring98_Toorla" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="toorla" type="462c0819:PsiDirectoryNode" />
-              <item name="ast" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="compiler_phase1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="compiler_phase1" type="462c0819:PsiDirectoryNode" />
-              <item name="PLC_Spring98_Toorla" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="toorla" type="462c0819:PsiDirectoryNode" />
-              <item name="ast" type="462c0819:PsiDirectoryNode" />
-              <item name="declaration" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="compiler_phase1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="compiler_phase1" type="462c0819:PsiDirectoryNode" />
-              <item name="PLC_Spring98_Toorla" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="toorla" type="462c0819:PsiDirectoryNode" />
-              <item name="ast" type="462c0819:PsiDirectoryNode" />
-              <item name="declaration" type="462c0819:PsiDirectoryNode" />
-              <item name="localVarDecs" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -178,7 +217,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554040259229" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554057545388" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/antlr-4.7.2-complete.jar!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -202,7 +241,7 @@
     <configuration name="TestRig" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.antlr.v4.gui.TestRig" />
       <module name="compiler_phase1" />
-      <option name="PROGRAM_PARAMETERS" value="test program sample.in -gui" />
+      <option name="PROGRAM_PARAMETERS" value="Toorla program sample.in -gui" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -226,7 +265,7 @@
       <option name="presentableId" value="Default" />
       <updated>1553684938204</updated>
       <workItem from="1553684939681" duration="1117000" />
-      <workItem from="1554014666005" duration="17880000" />
+      <workItem from="1554014666005" duration="23736000" />
     </task>
     <task id="LOCAL-00001" summary="first edition of grammer">
       <created>1553958264406</created>
@@ -263,11 +302,18 @@
       <option name="project" value="LOCAL" />
       <updated>1554039769548</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="first edition of grammer">
+      <created>1554040297843</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1554040297843</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27727000" />
+    <option name="totallyTimeSpent" value="33583000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
@@ -282,7 +328,7 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2257361" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.4711014" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -323,23 +369,6 @@
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/gen/ToorlaParser.java" />
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/gen/ToorlaListener.java" />
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/gen/ToorlaBaseVisitor.java" />
-    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/ToorlaCompiler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/Toorla.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/statement/PrintLine.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -427,17 +456,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gen/ToorlaParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="189" column="27" selection-start-line="189" selection-start-column="27" selection-end-line="189" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/test.g4">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
-          <caret line="30" column="3" lean-forward="true" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
+          <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
         </state>
       </provider>
     </entry>
@@ -469,21 +491,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sample.in">
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/Type.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="30">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/singleType/SingleType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/singleType/UserDefinedType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/Toorla.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/ToorlaParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="694">
+          <caret line="2168" column="26" selection-start-line="2168" selection-start-column="26" selection-end-line="2168" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/ToorlaCompiler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="37" lean-forward="true" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="126" lean-forward="true" selection-start-line="126" selection-end-line="126" />
+        <state relative-caret-position="215">
+          <caret line="235" lean-forward="true" selection-start-line="235" selection-end-line="235" />
           <folding>
             <element signature="e#19#196#1" expanded="true" />
             <element signature="e#199#296#1" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
         </state>
       </provider>
     </entry>

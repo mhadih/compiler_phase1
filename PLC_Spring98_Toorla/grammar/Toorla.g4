@@ -24,10 +24,10 @@ program:
     classStar entryClass classStar;
 
 classStar:
-    class classStar | //lamda
+    class1 classStar | //lamda
     ;
 
-class:
+class1:
     'class' ID ('inherits' ID)? ':'
         classBody
     'end'
@@ -42,7 +42,7 @@ entryClass:
      ;
 
 mainFunc:
-    ('public')? 'function' 'main()' 'returns' 'int' ':'
+    ('public')? 'function' Main '()' 'returns' 'int' ':'
         funcBody
     'end'
     ;
@@ -106,11 +106,11 @@ statementStar:
     ;
 
 statement:
-    singleStatement ';' | block | if | while
+    singleStatement ';' | block | ifRole | whileRole
     ;
 
 singleStatement:
-    assign | break | continue | dec | inc | print | return | declaration | singleStatement ';' | //lamda
+    assign | breakRole | continueRole | dec | inc | printRole | returnRole | declaration | singleStatement ';' | //lamda
     ;
 
 declaration:
@@ -139,12 +139,12 @@ block:
     'end'
     ;
 
-break:
+breakRole:
     'break'
     ;
 
-if:
-//    'if' '(' expression ')' statement |
+ifRole:
+    'if' '(' expression ')' statement |
     'if' '(' expression ')' statement 'else' statement
     ;
 
@@ -161,7 +161,7 @@ if:
 //    'if' '(' expression ')' matched 'else' unmatched
 //    ;
 
-continue:
+continueRole:
     'continue'
     ;
 
@@ -173,15 +173,15 @@ inc:
     expression '++'
     ;
 
-print:
+printRole:
     'print' '(' (ID | STRINGCONST | NUMBER) ')'
     ;
 
-return:
+returnRole:
     'return' expression
     ;
 
-while:
+whileRole:
     'while' '(' expression ')'
         statement
      ;
@@ -230,6 +230,10 @@ singleExpression:
     ID | NUMBER | STRINGCONST
     ;
 
+Main:
+    'main'
+    ;
+
 ID:
     LETTER (LETTER | NUMBER)*
     ;
@@ -248,23 +252,22 @@ NUMBER:
     ;
 
 CHARACTER:
-    [a-z] | [A-Z] | [0-9] | [-] | [+]
+    [a-z]
     ;
 
 WS:
     [ \t\n] -> skip
     ;
 
-
 KEYWORD:
-    [if] | [else] | [bool] | [string] | [int] | [class] | [function]
-    | [print] | [private] | [field] | [self] | [false] | [true] | [while]
-    | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
-    | [begin] | [end] | [public] | [var] | [inherits]
+    'if' | 'else' | 'bool' | 'string' | 'int' | 'class' | 'function'
+    | 'print' | 'private' | 'field' | 'self' | 'false' | 'true' | 'while'
+    | 'new' | 'return' | 'elif' | 'returns' | 'break' | 'countine' | 'entry'
+    | 'begin' | 'end' | 'public' | 'var' | 'inherits'
     ;
 
-//
-//SPECIAL
-//    :   [+] | [-] | [*] | [/] | [!] | [%] | [&&] | [||] | [=] | [==] | [,]
-//      | [[] | []] | [.] | [!] | [<] | [>]
-//    ;
+
+SPECIAL
+    :   [:] | [+] | [-] | [*] | [/] | [!] | [%] | [&&] | [||] | [=] | [==] | [,]
+      | [[] | [.] | [!] | [<] | [>]
+    ;

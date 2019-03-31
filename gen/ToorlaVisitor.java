@@ -28,11 +28,11 @@ public interface ToorlaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitClassStar(ToorlaParser.ClassStarContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ToorlaParser#class}.
+	 * Visit a parse tree produced by {@link ToorlaParser#class1}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitClass(ToorlaParser.ClassContext ctx);
+	T visitClass1(ToorlaParser.Class1Context ctx);
 	/**
 	 * Visit a parse tree produced by {@link ToorlaParser#entryClass}.
 	 * @param ctx the parse tree
@@ -106,11 +106,11 @@ public interface ToorlaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArgumentList(ToorlaParser.ArgumentListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ToorlaParser#tmpArgument}.
+	 * Visit a parse tree produced by {@link ToorlaParser#argumentStar}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTmpArgument(ToorlaParser.TmpArgumentContext ctx);
+	T visitArgumentStar(ToorlaParser.ArgumentStarContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ToorlaParser#argument}.
 	 * @param ctx the parse tree
@@ -142,6 +142,30 @@ public interface ToorlaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSingleStatement(ToorlaParser.SingleStatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link ToorlaParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaration(ToorlaParser.DeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ToorlaParser#assignListPlus}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignListPlus(ToorlaParser.AssignListPlusContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ToorlaParser#assignListStar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignListStar(ToorlaParser.AssignListStarContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ToorlaParser#assignID}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignID(ToorlaParser.AssignIDContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ToorlaParser#assign}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -154,23 +178,23 @@ public interface ToorlaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(ToorlaParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ToorlaParser#break}.
+	 * Visit a parse tree produced by {@link ToorlaParser#breakRole}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBreak(ToorlaParser.BreakContext ctx);
+	T visitBreakRole(ToorlaParser.BreakRoleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ToorlaParser#if}.
+	 * Visit a parse tree produced by {@link ToorlaParser#ifRole}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIf(ToorlaParser.IfContext ctx);
+	T visitIfRole(ToorlaParser.IfRoleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ToorlaParser#continue}.
+	 * Visit a parse tree produced by {@link ToorlaParser#continueRole}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitContinue(ToorlaParser.ContinueContext ctx);
+	T visitContinueRole(ToorlaParser.ContinueRoleContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ToorlaParser#dec}.
 	 * @param ctx the parse tree
@@ -184,23 +208,23 @@ public interface ToorlaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInc(ToorlaParser.IncContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ToorlaParser#print}.
+	 * Visit a parse tree produced by {@link ToorlaParser#printRole}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrint(ToorlaParser.PrintContext ctx);
+	T visitPrintRole(ToorlaParser.PrintRoleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ToorlaParser#return}.
+	 * Visit a parse tree produced by {@link ToorlaParser#returnRole}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitReturn(ToorlaParser.ReturnContext ctx);
+	T visitReturnRole(ToorlaParser.ReturnRoleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ToorlaParser#while}.
+	 * Visit a parse tree produced by {@link ToorlaParser#whileRole}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhile(ToorlaParser.WhileContext ctx);
+	T visitWhileRole(ToorlaParser.WhileRoleContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ToorlaParser#expression}.
 	 * @param ctx the parse tree

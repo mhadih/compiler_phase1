@@ -1,11 +1,11 @@
 class father:
-	function main() returns int:
+	function f ( ) returns int:
 
 	end
 end
 
 entry class child inherits father:
-	function populate() returns string:
+	function main () returns int:
 
 		var hadi = 3;
 		while(true)begin
