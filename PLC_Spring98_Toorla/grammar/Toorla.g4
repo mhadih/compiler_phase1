@@ -128,32 +128,37 @@ break:
     ;
 
 if:
-    matched | unmatched
+//    'if' '(' expression ')' statement |
+    'if' '(' expression ')' statement 'else' statement
     ;
 
-matched:
-    'if' '(' expression ')' matched 'else' matched
-    ;
-
-unmatched:
-    'if' '(' expression ')' statement |
-    'if' '(' expression ')' matched 'else' unmatched
-    ;
+//if:
+//    matched | unmatched
+//    ;
+//
+//matched:
+//    'if' '(' expression ')' matched 'else' matched
+//    ;
+//
+//unmatched:
+//    'if' '(' expression ')' statement |
+//    'if' '(' expression ')' matched 'else' unmatched
+//    ;
 
 continue:
-    'continue' ';'
+    'continue'
     ;
 
 dec:
-    expression '--' ';'
+    expression '--'
     ;
 
 inc:
-    expression '++' ';'
+    expression '++'
     ;
 
 print:
-    'print' '(' (ID | STRINGCONST) ')' ';'
+    'print' '(' (ID | STRINGCONST) ')'
     ;
 
 return:
@@ -209,39 +214,37 @@ singleExpression:
     ID | NUMBER | STRINGCONST
     ;
 
-KEYWORD:
-    [if] | [else] | [bool] | [string] | [int] | [class] | [function]
-    | [print] | [private] | [field] | [self] | [false] | [true] | [while]
-    | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
-    | [begin] | [end] | [public] | [var] | [inherits]
-    ;
-
 ID:
     LETTER (LETTER | NUMBER)*
-    ;
-
-//INTEGERCONST
-//    :   NUMBER
-//    ;
-
-STRINGCONST:
-    ["] CHARACTER (CHARACTER)* ["]
     ;
 
 LETTER:
     [a-z] | [A-Z]
     ;
 
-CHARACTER:
-    [a-z] | [A-Z] | [0-9]
+
+STRINGCONST:
+    ["] CHARACTER (CHARACTER)* ["]
     ;
 
 NUMBER:
     [1-9][0-9]* | [0]
     ;
 
+CHARACTER:
+    [a-z] | [A-Z] | [0-9] | [-] | [+]
+    ;
+
 WS:
     [ \t\n] -> skip
+    ;
+
+
+KEYWORD:
+    [if] | [else] | [bool] | [string] | [int] | [class] | [function]
+    | [print] | [private] | [field] | [self] | [false] | [true] | [while]
+    | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
+    | [begin] | [end] | [public] | [var] | [inherits]
     ;
 
 //
