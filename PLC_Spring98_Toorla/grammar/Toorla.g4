@@ -21,7 +21,11 @@ grammar Toorla;
 }
 
 program:
-    classStar enrtyClass classStar;
+    classStar entryClass classStar;
+
+entryClass:
+    class
+    ;
 
 classStar:
     class classStar | //lamda
@@ -84,42 +88,133 @@ argument:
     ;
 
 funcBody:
-    statmentStar
+    statementStar
     ;
 
-statmentStar:
-    statment statmentStar | //lamda
+statementStar:
+    statement statementStar | //lamda
     ;
 
-ID
-    :   LETTER (LETTER | NUMBER)*
+statement:
+    singleStatement ';' | block | if | while
+    ;
+
+singleStatement:
+    assign | break | continue | dec | inc | print | singleStatement ';' | //lamda
+    ;
+
+assign:
+    expression '=' expression
+    ;
+
+block:
+    'begin'
+        statementStar
+    'end'
+    ;
+
+break:
+    'break' ';'
+    ;
+
+if:
+    matched | unmatched
+    ;
+
+matched:
+    'if' '(' expression ')' matched 'else' matched
+    ;
+
+unmatched:
+    'if' '(' expression ')' statement |
+    'if' '(' expression ')' matched 'else' unmatched
+    ;
+
+continue:
+    'continue' ';'
+    ;
+
+dec:
+    expression '--' ';'
+    ;
+
+inc:
+    expression '++' ';'
+    ;
+
+print:
+    'print' '(' (ID | STRINGCONST) ')' ';'
+    ;
+
+while:
+    'while' '(' expression ')'
+        statement
+     ;
+
+expression:
+    expressionL1 '||' expressionL1
+    ;
+
+expressionL1:
+    expressionL2 '&&' expressionL2
+    ;
+
+expressionL2:
+    expressionL3 ( '==' | '<>' ) expressionL3
+    ;
+
+expressionL3:
+    expressionL4 ( '>' | '<' ) expressionL4
+    ;
+
+expressionL4:
+    expressionL5 ( '-' | '+' ) expressionL5
+    ;
+
+expressionL5:
+    expressionL6 ( '/' | '*'  | '%' ) expressionL6
+    ;
+
+expressionL6:
+    ( '-' | '!' ) expressionL7
+    ;
+
+expressionL7:
+    '(' ID ')'
+    ;
+
+
+
+ID:
+    LETTER (LETTER | NUMBER)*
     ;
 
 //INTEGERCONST
 //    :   NUMBER
 //    ;
 
-STRINGCONST
-    :   LETTER (LETTER)*
+STRINGCONST:
+    LETTER (LETTER)*
     ;
 
-LETTER
-    :   [a-z] | [A-Z]
+LETTER:
+    [a-z] | [A-Z]
     ;
 
-NUMBER
-    :    [1-9][0-9]* | [0]
+NUMBER:
+    [1-9][0-9]* | [0]
     ;
 
-WS: [ \t\n] -> skip
+WS:
+    [ \t\n] -> skip
     ;
 
-KEYWORD
-    :   [if] | [else] | [bool] | [string] | [int] | [class] | [function]
-      | [print] | [private] | [field] | [self] | [false] | [true] | [while]
-      | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
-      | [begin] | [end] | [public] | [var] | [inherits]
-     ;
+KEYWORD:
+    [if] | [else] | [bool] | [string] | [int] | [class] | [function]
+    | [print] | [private] | [field] | [self] | [false] | [true] | [while]
+    | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
+    | [begin] | [end] | [public] | [var] | [inherits]
+    ;
 //
 //SPECIAL
 //    :   [+] | [-] | [*] | [/] | [!] | [%] | [&&] | [||] | [=] | [==] | [,]
