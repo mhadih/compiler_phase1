@@ -86,11 +86,11 @@ method:
     ;
 
 argumentList:
-    argument tmpArgument | //lamda
+    argument argumentStar | //lamda
     ;
 
-tmpArgument:
-    ',' argument tmpArgument | //lamda
+argumentStar:
+    ',' argument argumentStar | //lamda
     ;
 
 argument:
@@ -110,7 +110,23 @@ statement:
     ;
 
 singleStatement:
-    assign | break | continue | dec | inc | print | return | singleStatement ';' | //lamda
+    assign | break | continue | dec | inc | print | return | declaration | singleStatement ';' | //lamda
+    ;
+
+declaration:
+    'var' assignListPlus
+    ;
+
+assignListPlus:
+    assignID assignListStar
+    ;
+
+assignListStar:
+    ',' assignID assignListStar | //lamda
+    ;
+
+assignID:
+    ID '=' expression
     ;
 
 assign:
@@ -158,7 +174,7 @@ inc:
     ;
 
 print:
-    'print' '(' (ID | STRINGCONST) ')'
+    'print' '(' (ID | STRINGCONST | NUMBER) ')'
     ;
 
 return:
