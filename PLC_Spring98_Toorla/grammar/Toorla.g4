@@ -140,7 +140,7 @@ block:
     ;
 
 break:
-    'break' ';'
+    'break'
     ;
 
 if:
