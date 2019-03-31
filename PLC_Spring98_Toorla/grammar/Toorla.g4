@@ -23,10 +23,6 @@ grammar Toorla;
 program:
     classStar entryClass classStar;
 
-entryClass:
-    class
-    ;
-
 classStar:
     class classStar | //lamda
     ;
@@ -34,6 +30,20 @@ classStar:
 class:
     'class' ID ('inherits' ID)? ':'
         classBody
+    'end'
+    ;
+
+entryClass:
+    'entry' 'class' ID ('inherits' ID)? ':'
+        classItemStar
+        mainFunc
+        classItemStar
+     'end'
+     ;
+
+mainFunc:
+    ('public')? 'function' 'main()' 'returns' 'int' ':'
+        funcBody
     'end'
     ;
 
@@ -76,7 +86,7 @@ method:
     ;
 
 argumentList:
-    argument tmpArgument
+    argument tmpArgument | //lamda
     ;
 
 tmpArgument:
@@ -100,7 +110,7 @@ statement:
     ;
 
 singleStatement:
-    assign | break | continue | dec | inc | print | singleStatement ';' | //lamda
+    assign | break | continue | dec | inc | print | return | singleStatement ';' | //lamda
     ;
 
 assign:
@@ -146,44 +156,65 @@ print:
     'print' '(' (ID | STRINGCONST) ')' ';'
     ;
 
+return:
+    'return' expression
+    ;
+
 while:
     'while' '(' expression ')'
         statement
      ;
 
 expression:
+    expressionL1 |
     expressionL1 '||' expressionL1
     ;
 
 expressionL1:
+    expressionL2 |
     expressionL2 '&&' expressionL2
     ;
 
 expressionL2:
+    expressionL3 |
     expressionL3 ( '==' | '<>' ) expressionL3
     ;
 
 expressionL3:
+    expressionL4 |
     expressionL4 ( '>' | '<' ) expressionL4
     ;
 
 expressionL4:
+    expressionL5 |
     expressionL5 ( '-' | '+' ) expressionL5
     ;
 
 expressionL5:
+    expressionL6 |
     expressionL6 ( '/' | '*'  | '%' ) expressionL6
     ;
 
 expressionL6:
+    expressionL7 |
     ( '-' | '!' ) expressionL7
     ;
 
 expressionL7:
-    '(' ID ')'
+    singleExpression |
+    '(' singleExpression ')'
     ;
 
+singleExpression:
+    ID | NUMBER | STRINGCONST
+    ;
 
+KEYWORD:
+    [if] | [else] | [bool] | [string] | [int] | [class] | [function]
+    | [print] | [private] | [field] | [self] | [false] | [true] | [while]
+    | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
+    | [begin] | [end] | [public] | [var] | [inherits]
+    ;
 
 ID:
     LETTER (LETTER | NUMBER)*
@@ -194,11 +225,15 @@ ID:
 //    ;
 
 STRINGCONST:
-    LETTER (LETTER)*
+    ["] CHARACTER (CHARACTER)* ["]
     ;
 
 LETTER:
     [a-z] | [A-Z]
+    ;
+
+CHARACTER:
+    [a-z] | [A-Z] | [0-9]
     ;
 
 NUMBER:
@@ -209,12 +244,6 @@ WS:
     [ \t\n] -> skip
     ;
 
-KEYWORD:
-    [if] | [else] | [bool] | [string] | [int] | [class] | [function]
-    | [print] | [private] | [field] | [self] | [false] | [true] | [while]
-    | [new] | [return] | [elif] | [returns] | [break] | [countine] | [entry]
-    | [begin] | [end] | [public] | [var] | [inherits]
-    ;
 //
 //SPECIAL
 //    :   [+] | [-] | [*] | [/] | [!] | [%] | [&&] | [||] | [=] | [==] | [,]
