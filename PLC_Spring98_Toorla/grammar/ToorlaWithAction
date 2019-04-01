@@ -1,4 +1,4 @@
-grammar Toorla;
+grammar ToorlaWithAction;
 
 
 @header
@@ -72,20 +72,73 @@ mainFunc returns [MethodDeclaration main]:
     'end'
     ;
 
-classItemStar returns [ClassMemberDeclaration members]:
-    ( field | method ) classItemStar | //lamda
+classItemStar returns [ArrayList<ClassMemberDeclaration> members]:
+    variables=field list=classItemStar { $members = $list.members; $members.addAll(variables.resField); }
+    |
+    func=method list=classItemStar { $members = $list.members; $members.add(func.resMethod); }
+    |
+    //lamda
+    { $members = new ArrayList<>(); }
     ;
 
-method returns [MethodDeclaration method]:
-    (access=access_modifier 'function' name=ID { method = new MethodDeclaration(name); setAccessModifier($access.access); }
-     | 'function' name=ID { method = new MethodDeclaration(name); } )
-     '(' argumentList ')' 'returns' type ':'
+method returns [MethodDeclaration resMethod]:
+    (access=access_modifier 'function' name=ID { $resMethod = new MethodDeclaration(name); setAccessModifier($access.access); }
+     | 'function' name=ID { $resMethod = new MethodDeclaration(name); } )
+     '(' list=argumentList ')' 'returns' resType=type ':'
         funcBody
     'end'
+    {
+        $resMethod.setReturnType($resType.resType);
+        for (int i = 0; i<$list.args.size(); i++)
+            $resMethod.addArg(list.args.get(i));
+
+    }
     ;
 
-field:
-    access_modifier? 'field' idPlus type ';'
+argumentList returns [ArrayList<ParameterDeclaration> args]:
+    arg=argument list=argumentStar
+    {
+        $args = $list.argList;
+        $args.add(arg.argument);
+    }
+    |
+    //lamda //for empty argument list
+    { $args = new ArrayList<>(); }
+    ;
+
+argumentStar:
+    ',' arg=argument args=argumentStar
+    {
+        $args = $args.argList;
+        $args.add(arg.arg);
+    }
+    |
+    //lamda
+    {
+        $args = new ArrayList<>();
+    }
+    ;
+
+argument returns [ParameterDeclaration arg]:
+    name=ID ':' resType=type
+    {
+        $argument = new ParameterDeclaration(name, resType);
+    }
+    ;
+
+field returns [ArrayList<FieldDeclaration> resField]:
+    access=access_modifier 'field' vars=idPlus resType=type ';'
+    {
+        $resField = new ArrayList<>();
+        for (int i = 0; i<$vars.identifiers.size(); i++)
+            resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType,$access.access))
+    }
+    | 'field' vars=idPlus resType=type ';'
+    {
+        $resField = new ArrayList<>();
+        for (int i = 0; i<$vars.identifiers.size(); i++)
+            resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType))
+    }
     ;
 
 access_modifier returns [AccessModifier access]:
@@ -93,32 +146,36 @@ access_modifier returns [AccessModifier access]:
     | 'private' { $access = ACCESS_MODIFIER_PRIVATE; }
     ;
 
-idPlus:
-    ID idStar
+idPlus returns [ArrayList<String> identifiers]:
+    name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(name); }
     ;
 
-idStar:
-    ',' ID idStar | //lamda
+idStar returns [ArrayList<String> identifiers]:
+    ',' name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(name); }
+    |
+    //lamda
+    { $identifiers = new ArrayList<>(); }
     ;
 
-primitiveType:
-    'int' | 'string' | 'bool'
+primitiveType returns [SingleType resType]:
+    'int' { $resType = new IntType(); }
+    | 'string' { $resType = new StringType(); }
+    | 'bool'{ $resType = new BoolType(); }
     ;
 
-type:
-    primitiveType | type'['']'
+singleType returns [SingleType resType]:
+    prmType=primitiveType { $resType = $prmType.resType; }
+    | className=ID { $resType = new UserDefined(className); }
     ;
 
-argumentList:
-    argument argumentStar | //lamda
+nonPrimitiveType returns [Type resType]:
+    'new' className=ID
+    | 'new'  userDefined=singleType '[]' { $resType = new ArrayType($userDefined.resType); }
     ;
 
-argumentStar:
-    ',' argument argumentStar | //lamda
-    ;
-
-argument:
-    ID ':' type
+type returns [Type resType]:
+    prmType=primitiveType { $resType = $prmType.resType; }
+    | nnprmType=nonPrimitiveType { $resType = $nnprmType.resType; }
     ;
 
 funcBody:
