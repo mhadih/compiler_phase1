@@ -56,7 +56,7 @@ entryClass returns [EntryClassDeclaration resClass]:
     ('entry' 'class' name=ID ':' { $resClass = new ClassDeclaration($name); }
     | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name, $parent); } )
         list1=classItemStar
-        mainFunc=mainFunc
+        mainfunc=mainFunc
         list2=classItemStar
         {
             $resClass.members = $list1.members;
@@ -66,9 +66,13 @@ entryClass returns [EntryClassDeclaration resClass]:
      'end'
      ;
 
-mainFunc returns [MethodDeclaration main]:
+mainFunc returns [MethodDeclaration main]:                           /////need work
     ('public')? 'function' Main '()' 'returns' 'int' ':'
-        funcBody
+        body=funcBody
+    {
+        for (int i = 0; i,$body.statements.size(); i++)
+            $resMethod.addstatement(body.statements.get(i));
+    }
     'end'
     ;
 
@@ -81,13 +85,15 @@ classItemStar returns [ArrayList<ClassMemberDeclaration> members]:
     { $members = new ArrayList<>(); }
     ;
 
-method returns [MethodDeclaration resMethod]:
+method returns [MethodDeclaration resMethod]:        //// need work
     (access=access_modifier 'function' name=ID { $resMethod = new MethodDeclaration(name); setAccessModifier($access.access); }
      | 'function' name=ID { $resMethod = new MethodDeclaration(name); } )
      '(' list=argumentList ')' 'returns' resType=type ':'
-        funcBody
+        body=funcBody
     'end'
     {
+        for (int i = 0; i,$body.statements.size(); i++)
+            $resMethod.addstatement(body.statements.get(i));
         $resMethod.setReturnType($resType.resType);
         for (int i = 0; i<$list.args.size(); i++)
             $resMethod.addArg(list.args.get(i));
@@ -106,23 +112,23 @@ argumentList returns [ArrayList<ParameterDeclaration> args]:
     { $args = new ArrayList<>(); }
     ;
 
-argumentStar:
+argumentStar returns [ArrayList<ParameterDeclaration> Args]: ///fixed :)
     ',' arg=argument args=argumentStar
     {
-        $args = $args.argList;
-        $args.add(arg.arg);
+        $Args = $args.argList;
+        $Args.add(arg.arg);
     }
     |
     //lamda
     {
-        $args = new ArrayList<>();
+        $Args = new ArrayList<>();
     }
     ;
 
 argument returns [ParameterDeclaration arg]:
     name=ID ':' resType=type
     {
-        $argument = new ParameterDeclaration(name, resType);
+        $arg = new ParameterDeclaration(name, resType); ////////////// resType.resType ???
     }
     ;
 
@@ -178,20 +184,43 @@ type returns [Type resType]:
     | nnprmType=nonPrimitiveType { $resType = $nnprmType.resType; }
     ;
 
-funcBody:
-    statementStar
+funcBody returns [ArrayList<Statement> statements]:
+
+     statement1 = statementStar
+    {
+        $statements = $statment1.arraystatements;
+    }
     ;
 
-statementStar:
-    statement statementStar | //lamda
+statementStar returns [ArrayList<Statement> arraystatements]:
+    statement1=statement statement2=statementStar
+    {
+        $arraystatements=statement1;
+        $arraystatements.add(statement2); //////////nabaiad for zad va done done add kard??
+    }
+    | //lamda
+    {   $arraystatements= new ArrayList<>(); }
     ;
 
-statement:
-    singleStatement ';' | block | ifRole | whileRole
+statement returns [ArrayList<Statement> statements]:
+    single=singleStatement ';' { $statements.add( $single.statement); }
+    | statement1 = block { $statements = $statement1.statements); }
+    | statement2 = ifRole { $statements = $statement2.statements); }
+    | statement3 = whileRole { $statements = $statement3.statements); }
     ;
 
-singleStatement:
-    assign | breakRole | continueRole | dec | inc | printRole | returnRole | declaration | singleStatement ';' | //lamda
+singleStatement returns [Statement oneStatement]:
+
+    assign
+    | breakRole
+    | continueRole
+    | dec
+    | inc //expression ?
+    | printRole
+    | returnRole
+    | declaration
+    | singleStatement ';'
+    | //lamda
     ;
 
 declaration:
@@ -214,9 +243,9 @@ assign:
     expression '=' expression
     ;
 
-block:
+block returns [ArrayList <statement> statements]:
     'begin'
-        statementStar
+        statemets1=statementStar { $statement = $statements1;}
     'end'
     ;
 
@@ -224,7 +253,7 @@ breakRole:
     'break'
     ;
 
-ifRole:
+ifRole:                             ///////////HAME STATEMNET DARE HAM EXPRESSION ?
     'if' '(' expression ')' statement |
     'if' '(' expression ')' statement 'else' statement
     ;
@@ -307,8 +336,10 @@ expressionL7:
     '(' singleExpression ')'
     ;
 
-singleExpression:
-    ID | NUMBER | STRINGCONST
+singleExpression returns [Expression expr]:  /// need work
+      name = ID { $expr = new expr.Identifier(name);}
+    | number = NUMBER
+    | stringCons = STRINGCONST  { $expr = new expr.Identifier(stringCons);}
     ;
 
 Main:
