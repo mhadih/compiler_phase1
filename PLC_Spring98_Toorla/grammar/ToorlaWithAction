@@ -20,48 +20,77 @@ grammar Toorla;
     }
 }
 
-program:
-    classStar entryClass classStar
+program returns [Program resProgram]:
+    list1=classStar
+    newClass=entryClass
+    list2=classStar
+    {
+        $resProgram.classes = $list1.classList;
+        $resProgram.classes.add($newClass);
+        $resProgram.classes.addAll($list2.classList);
+    }
     ;
 
-classStar:
-    classRole classStar | //lamda
+classStar returns [ArrayList<ClassDeclaration> classList]:
+    newClass=classRole
+    list=classStar
+    {
+        $classList = $list.classList;
+        $classList.add($newClass.resClass);
+    }
+    |
+    //lamda
     ;
 
-classRole:
-    'class' ID ('inherits' ID)? ':'
-        classBody
+classRole returns [ClassDeclaration resClass]:
+    ('class' name=ID ':' { $resClass = new ClassDeclaration($name); }
+    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name, $parent); } )
+        body=classItemStar
+        {
+            $resClass.members = $body.members;
+        }
     'end'
     ;
 
-entryClass:
-    'entry' 'class' ID ('inherits' ID)? ':'
-        classItemStar
-        mainFunc
-        classItemStar
+entryClass returns [EntryClassDeclaration resClass]:
+    ('entry' 'class' name=ID ':' { $resClass = new ClassDeclaration($name); }
+    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name, $parent); } )
+        list1=classItemStar
+        mainFunc=mainFunc
+        list2=classItemStar
+        {
+            $resClass.members = $list1.members;
+            $resClass.members.add(mainFunc.main);
+            $resClass.members.addAll($list2..members);
+        }
      'end'
      ;
 
-mainFunc:
+mainFunc returns [MethodDeclaration main]:
     ('public')? 'function' Main '()' 'returns' 'int' ':'
         funcBody
     'end'
     ;
 
-classBody:
-    ( field | method ) classItemStar
+classItemStar returns [ClassMemberDeclaration members]:
+    ( field | method ) classItemStar | //lamda
     ;
 
-classItemStar:
-    ( field | method ) classItemStar | //lamda
+method returns [MethodDeclaration method]:
+    (access=access_modifier 'function' name=ID { method = new MethodDeclaration(name); setAccessModifier($access.access); }
+     | 'function' name=ID { method = new MethodDeclaration(name); } )
+     '(' argumentList ')' 'returns' type ':'
+        funcBody
+    'end'
     ;
 
 field:
     access_modifier? 'field' idPlus type ';'
     ;
 
-access_modifier:
-    'public' | 'private'
+access_modifier returns [AccessModifier access]:
+    'public' { $access = ACCESS_MODIFIER_PUBLIC; }
+    | 'private' { $access = ACCESS_MODIFIER_PRIVATE; }
     ;
 
 idPlus:
@@ -78,12 +107,6 @@ primitiveType:
 
 type:
     primitiveType | type'['']'
-    ;
-
-method:
-    (access_modifier)? 'function' ID '(' argumentList ')' 'returns' type ':'
-        funcBody
-    'end'
     ;
 
 argumentList:

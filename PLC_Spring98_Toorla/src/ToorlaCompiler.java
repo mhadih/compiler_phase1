@@ -9,11 +9,8 @@ public class ToorlaCompiler {
     public void compile(CharStream textStream) {
         System.out.println("qqqqq");
         ToorlaLexer toorlaLexer = new ToorlaLexer( textStream );
-//        System.out.println(toorlaLexer);
 
         CommonTokenStream tokenStream = new CommonTokenStream( toorlaLexer );
-
-        System.out.println("wwwwww");
 
         System.out.println(tokenStream);
 
