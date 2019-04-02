@@ -188,7 +188,7 @@ funcBody returns [ArrayList<Statement> statements]:
 
      statement1 = statementStar
     {
-        $statements = $statment1.arraystatements;
+        $statements = $statement1.arraystatements;
     }
     ;
 
@@ -202,7 +202,7 @@ statementStar returns [ArrayList<Statement> arraystatements]:
     {   $arraystatements= new ArrayList<>(); }
     ;
 
-statement returns [ArrayList<Statement> statements]:
+statement returns [ArrayList<Statement> statements]: ////  need work
     single=singleStatement ';' { $statements.add( $single.statement); }
     | statement1 = block { $statements = $statement1.statements); }
     | statement2 = ifRole { $statements = $statement2.statements); }
@@ -215,7 +215,7 @@ singleStatement returns [Statement oneStatement]:
     | breakRole
     | continueRole
     | dec
-    | inc //expression ?
+    | inc
     | printRole
     | returnRole
     | declaration
@@ -223,39 +223,41 @@ singleStatement returns [Statement oneStatement]:
     | //lamda
     ;
 
-declaration:
+declaration:                     ////////////neeed work
     'var' assignListPlus
     ;
 
-assignListPlus:
+assignListPlus:                     ////////////neeed work
     assignID assignListStar
     ;
 
-assignListStar:
+assignListStar:                     ////////////neeed work
     ',' assignID assignListStar | //lamda
     ;
 
-assignID:
+assignID:                                       /////////mesle baedi mishe??
     ID '=' expression
     ;
 
-assign:
-    expression '=' expression
+assign returns [Assign assignment]:
+    expresson1=expression '=' expression2=expression
+    {$assignment = new Assign(expression1.expr,expresson2.expr);}
     ;
 
 block returns [ArrayList <statement> statements]:
     'begin'
-        statemets1=statementStar { $statement = $statements1;}
+        statemets1=statementStar { $statements = $statements1.arraystatements;}
     'end'
     ;
 
-breakRole:
+breakRole returns [Break break]:            //////////need work
     'break'
     ;
 
-ifRole:                             ///////////HAME STATEMNET DARE HAM EXPRESSION ?
-    'if' '(' expression ')' statement |
-    'if' '(' expression ')' statement 'else' statement
+ifRole returns [Conditional ifCondition]:
+    'if' '(' expre=expression ')' then=statement
+    {$ifCondition = new Conditional(expre.expr,then); } //////////statement arry hastesh!!!
+    |   'if' '(' expression ')' statement 'else' statement
     ;
 
 //if:
@@ -271,75 +273,98 @@ ifRole:                             ///////////HAME STATEMNET DARE HAM EXPRESSIO
 //    'if' '(' expression ')' matched 'else' unmatched
 //    ;
 
-continueRole:
+continueRole returns [Continue continue]:                   ////need work
     'continue'
     ;
 
-dec:
-    expression '--'
+dec returns[DecStatement decs]:
+    expression1=expression '--'
+    {#decs = new DecStatement(expression1.expr);}
     ;
 
-inc:
-    expression '++'
+inc returns[IncStatement incs] :
+    expression1=expression '++'
+    {$incs = new IncStatement(expresson1.expr); }
     ;
 
-printRole:
-    'print' '(' (ID | STRINGCONST | NUMBER) ')'
+printRole:                      /////////////need work
+    'print' '(' singleExpression ')'
     ;
 
-returnRole:
-    'return' expression
+returnRole returns [Return return]:
+    'return' expression1=expression
+    {$return =  new Return(expression1.expr);}
     ;
 
-whileRole:
-    'while' '(' expression ')'
-        statement
+whileRole returns [While while]:
+    'while' '(' expression1=expression ')'
+        statement1=statement
+     { $while = new While(expression1.expr,statement1.statement);}
      ;
 
-expression:
-    expressionL1 |
-    expressionL1 '||' expressionL1
+expression returns[Expression expr ]:
+    expressionl1 = expressionL1 { $expr= $expressionl1.expr; }
+    | expressionl1=expressionL1 '||' expressionll1=expressionL1
+    { $expr = new Or(expressionl1.expr,expressionll1.expr); }
     ;
 
-expressionL1:
-    expressionL2 |
-    expressionL2 '&&' expressionL1
+expressionL1 returns[Expression expr ]:
+    expressionl2=expressionL2 {$expr=$expressionl2.expr; }
+    | expressionl2=expressionL2 '&&' expressionl1=expressionL1
+    { $expr = new And(expressionl2.expr,expressionl1.expr; }
     ;
 
-expressionL2:
-    expressionL3 |
-    expressionL3 ( '==' | '<>' ) expressionL2
+expressionL2 returns[Expression expr ]:
+    expressionl3=expressionL3 {$expr=$expressionl3.expr; }
+    | expressionl3=expressionL3 '==' expressionll3=expressionL2
+    { $expr = new Equals(expressionl3.expr,expressionl2.expr; }
+    | expressionl3=expressionL3 '<>' expressionll3=expressionL2
+    { $expr = new NotEquals(expressionl3.expr,expressionl2.expr; }
     ;
 
-expressionL3:
-    expressionL4 |
-    expressionL4 ( '>' | '<' ) expressionL3
+expressionL3 returns [Expression expr]:
+    expressionl4=expressionL4 {$expr=$expressionl4.expr;}
+    |expressionl4=expressionL4 '<' expressionl3=expressionL3
+    { $expr = new LessThan(expressionl4.expr,expressionl3.expr; }
+    |expressionl4=expressionL4 '>' expressionl3=expressionL3
+    { $expr = new GreaterThan(expressionl4.expr,expressionl3.expr; }
     ;
 
-expressionL4:
-    expressionL5 |
-    expressionL5 ( '-' | '+' ) expressionL4
+expressionL4 returns [Expression expr]:
+    expressionl5=expressionL5 {$expr=$expressionl5.expr;}
+    |expressionL5 '+' expressionL4
+    { $expr = new Plus(expressionl5.expr,expressionl4.expr; }
+    |expressionL5 '-' expressionL4
+    { $expr = new Minus(expressionl5.expr,expressionl4.expr; }
     ;
 
-expressionL5:
-    expressionL6 |
-    expressionL6 ( '/' | '*'  | '%' ) expressionL5
+expressionL5 returns [Expression expr]:
+    expressionl6=expressionL6 {$expr=$expressionl6.expr;}
+    |expressionl6=expressionL6 '/' expressionl5=expressionL5
+    { $expr = new Modulo(expressionl6.expr,expressionl5.expr; }
+    |expressionl6=expressionL6 '*' expressionl5=expressionL5
+    { $expr = new Times(expressionl6.expr,expressionl5.expr; }
+    |expressionl6=expressionL6 '%' expressionl5=expressionL5
+    { $expr = new Division(expressionl6.expr,expressionl5.expr; }
     ;
 
-expressionL6:
-    expressionL7 |
-    ( '-' | '!' ) expressionL6
+expressionL6 returns [Expression expr]:
+    expressionl7=expressionL7 {$expr=expressoinl7.expr:}
+    | '!' expressionl6=expressionL6
+    {$expr= new Not(expressionl6.expr);}
+    | '-' expressionl6=expressionL6
+    {$expr= new Neg(expressionl6.expr);}
     ;
 
-expressionL7:
-    singleExpression |
-    '(' singleExpression ')'
+expressionL7 returns [Expression expr]:
+    singleexpression=singleExpression {$singleexpression.expr;}
+    |'(' singleExpression ')' {$singleexpression.expr;}                           ////////////////////okey???????????????
     ;
 
-singleExpression returns [Expression expr]:  /// need work
-      name = ID { $expr = new expr.Identifier(name);}
+singleExpression returns [Expression expr]:                                                             /// need work
+      name = ID { $expr = $expr.setName(name);}
     | number = NUMBER
-    | stringCons = STRINGCONST  { $expr = new expr.Identifier(stringCons);}
+    | stringCons = STRINGCONST  { $expr = $expr.setName(stringCons);}
     ;
 
 Main:
