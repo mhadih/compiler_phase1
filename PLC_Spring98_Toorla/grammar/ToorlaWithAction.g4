@@ -9,6 +9,8 @@ grammar ToorlaWithAction;
     import toorla.ast.expression.unaryExpression.*;
     import toorla.ast.expression.value.*;
     import toorla.ast.statement.*;
+    import toorla.ast.statement.localVarStats.*;
+    import toorla.ast.statement.returnStatement.*;
     import toorla.ast.declaration.*;
     import toorla.ast.declaration.classDecs.*;
     import toorla.ast.declaration.classDecs.classMembersDecs.*;
@@ -194,11 +196,11 @@ primitiveType returns [SingleType resType]:
 
 singleType returns [SingleType resType]:
     prmType=primitiveType { $resType = $prmType.resType; }
-    | className=ID { $resType = new UserDefined($className.text); }
+    | className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text)) ); }
     ;
 
 nonPrimitiveType returns [Type resType]:
-    'new' className=ID { $resType = new UserDefined($className.text); }
+    'new' className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text))); }
     | 'new'  userDefined=singleType '[]' { $resType = new ArrayType($userDefined.resType); }
     ;
 
@@ -217,8 +219,8 @@ funcBody returns [ArrayList<Statement> statements]:
 statementStar returns [ArrayList<Statement> statements]:
     statement1=statement statement2=statementStar
     {
-        $statements=statement2;
-        $statements.add(statement1);
+        $statements=$statement2.statements;
+        $statements.add($statement1.resStatement);
     }
     | //lamda
     {   $statements= new ArrayList<>(); }
@@ -251,7 +253,7 @@ declaration returns [LocalVarsDefinitions defList]:
     'var' def=assignID list=assignListStar
     {
         $defList = $list.defList;
-        $defList.addVarDefinition(def);
+        $defList.addVarDefinition($def.definition);
     }
     ;
 
@@ -259,26 +261,31 @@ assignListStar returns [LocalVarsDefinitions defList]:
     ',' def=assignID list=assignListStar
      {
         $defList = $list.defList;
-        $defList.addVarDefinition(def);
+        $defList.addVarDefinition($def.definition);
      }
      |
      //lamda
-     { defList = new LocalVarsDefinitions(); }
+     { $defList = new LocalVarsDefinitions(); }
     ;
 
 assignID returns [LocalVarDef definition]:
     name=ID '=' init=expression
-    { $definition = new LocalVarDef(new Identifier(name), init.expr); }
+    { $definition = new LocalVarDef(new Identifier($name.text), $init.expr); }
     ;
 
 assign returns [Assign assignment]:
-    expresson1=expression '=' expression2=expression
-    {$assignment = new Assign(expression1.expr,expresson2.expr);}
+    expression1=expression '=' expression2=expression
+    { $assignment = new Assign($expression1.expr,$expression2.expr); }
     ;
 
 block returns [Block resBlock]:
     'begin'
-        statement1=statementStar { $resBlock = $statement1.statements; }
+        statement1=statementStar
+        {
+            $resBlock = new Block();
+            for (int i = 0; i<$statement1.statements.size(); i++)
+                $resBlock.addStatement($statement1.statements.get(i));
+        }
     'end'
     ;
 
@@ -289,9 +296,9 @@ breakRole returns [Break resBreak]:
 
 ifRole returns [Conditional resIf]:
     'if' '(' expr1=expression ')' then1=statement
-    { $resIf = new Conditional(expr1.expr,then1.resStatement); } //////////statement arry hastesh!!!
+    { $resIf = new Conditional($expr1.expr,$then1.resStatement); } //////////statement arry hastesh!!!
     |   'if' '(' expr2=expression ')' then2=statement 'else' elze=statement
-    { $resIf = new Conditional(expr2.expr,then2.resStatement,elze.resStatement); }
+    { $resIf = new Conditional($expr2.expr,$then2.resStatement,$elze.resStatement); }
     ;
 
 //if:
@@ -314,82 +321,82 @@ continueRole returns [Continue resContinue]:
 
 dec returns[DecStatement resDec]:
     expr=expression '--'
-    { #resDec = new DecStatement(expr.expr);}
+    { $resDec = new DecStatement($expr.expr);}
     ;
 
 inc returns[IncStatement resInc] :
     expr=expression '++'
-    { $resInc = new IncStatement(expr.expr); }
+    { $resInc = new IncStatement($expr.expr); }
     ;
 
 printRole returns [PrintLine resPrint]:
     'print' '(' arg=expression ')'
-    { $resPrint = new PrintLine(arg.expr); }
+    { $resPrint = new PrintLine($arg.expr); }
     ;
 
 returnRole returns [Return resReturn]:
     'return' expr=expression
-    { $resReturn =  new Return(expr.expr); }
+    { $resReturn =  new Return($expr.expr); }
     ;
 
 whileRole returns [While resWhile]:
     'while' '(' expr=expression ')'
         state=statement
-     { $resWhile = new While(expr.expr,state.resStatement); }
+     { $resWhile = new While($expr.expr,$state.resStatement); }
      ;
 
 expression returns[Expression expr ]:
     expressionl1 = expressionL1 { $expr= $expressionl1.expr; }
     | expressionl1=expressionL1 '||' expressionr=expression
-    { $expr = new Or(expressionl1.expr,expressionr.expr); }
+    { $expr = new Or($expressionl1.expr,$expressionr.expr); }
     ;
 
 expressionL1 returns[Expression expr ]:
-    expressionl2=expressionL2 {$expr=$expressionl2.expr; }
+    expressionl2=expressionL2 { $expr=$expressionl2.expr; }
     | expressionl2=expressionL2 '&&' expressionl1=expressionL1
-    { $expr = new And(expressionl2.expr,expressionl1.expr; }
+    { $expr = new And($expressionl2.expr,$expressionl1.expr; }
     ;
 
 expressionL2 returns[Expression expr ]:
     expressionl3=expressionL3 { $expr=$expressionl3.expr; }
     | expressionl3=expressionL3 '==' expressionll2=expressionL2
-    { $expr = new Equals(expressionl3.expr,expressionl2.expr; }
+    { $expr = new Equals($expressionl3.expr, $expressionl2.expr); }
     | expressionl3=expressionL3 '<>' expressionll2=expressionL2
-    { $expr = new NotEquals(expressionl3.expr,expressionl2.expr; }
+    { $expr = new NotEquals($expressionl3.expr, $expressionl2.expr); }
     ;
 
 expressionL3 returns [Expression expr]:
     expressionl4=expressionL4 { $expr=$expressionl4.expr; }
     |expressionl4=expressionL4 '<' expressionl3=expressionL3
-    { $expr = new LessThan(expressionl4.expr,expressionl3.expr; }
+    { $expr = new LessThan($expressionl4.expr,$expressionl3.expr; }
     |expressionl4=expressionL4 '>' expressionl3=expressionL3
-    { $expr = new GreaterThan(expressionl4.expr,expressionl3.expr; }
+    { $expr = new GreaterThan($expressionl4.expr,$expressionl3.expr; }
     ;
 
 expressionL4 returns [Expression expr]:
     expressionl5=expressionL5 {$expr=$expressionl5.expr;}
     |expressionl5=expressionL5 '+' expressionl4=expressionL4
-    { $expr = new Plus(expressionl5.expr,expressionl4.expr; }
+    { $expr = new Plus($expressionl5.expr,$expressionl4.expr; }
     |expressionl5=expressionL5 '-' expressionl4=expressionL4
-    { $expr = new Minus(expressionl5.expr,expressionl4.expr; }
+    { $expr = new Minus($expressionl5.expr,$expressionl4.expr; }
     ;
 
 expressionL5 returns [Expression expr]:
-    expressionl6=expressionL6 {$expr=$expressionl6.expr;}
+    expressionl6=expressionL6 { $expr=$expressionl6.expr; }
     |expressionl6=expressionL6 '/' expressionl5=expressionL5
-    { $expr = new Division(expressionl6.expr,expressionl5.expr; }
+    { $expr = new Division($expressionl6.expr,$expressionl5.expr; }
     |expressionl6=expressionL6 '*' expressionl5=expressionL5
-    { $expr = new Times(expressionl6.expr,expressionl5.expr; }
+    { $expr = new Times($expressionl6.expr,$expressionl5.expr; }
     |expressionl6=expressionL6 '%' expressionl5=expressionL5
-    { $expr = new Modulo(expressionl6.expr,expressionl5.expr; }
+    { $expr = new Modulo($expressionl6.expr,$expressionl5.expr; }
     ;
 
 expressionL6 returns [Expression expr]:
-    expressionl7=expressionL7 {$expr=expressoinl7.expr:}
+    expressionl7=expressionL7 { $expr=expressoinl7.expr; }
     | '!' expressionl6=expressionL6
-    {$expr= new Not(expressionl6.expr);}
+    {$expr= new Not($expressionl6.expr);}
     | '-' expressionl6=expressionL6
-    {$expr= new Neg(expressionl6.expr);}
+    {$expr= new Neg($expressionl6.expr);}
     ;
 
 expressionL7 returns [Expression expr]:
