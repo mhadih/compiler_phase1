@@ -3,6 +3,8 @@ package toorla.visitor;
 import toorla.ast.Program;
 import toorla.ast.declaration.classDecs.ClassDeclaration;
 import toorla.ast.declaration.classDecs.EntryClassDeclaration;
+import toorla.ast.declaration.classDecs.classMembersDecs.AccessModifier;
+import toorla.ast.declaration.classDecs.classMembersDecs.ClassMemberDeclaration;
 import toorla.ast.declaration.classDecs.classMembersDecs.FieldDeclaration;
 import toorla.ast.declaration.classDecs.classMembersDecs.MethodDeclaration;
 import toorla.ast.declaration.localVarDecs.ParameterDeclaration;
@@ -17,7 +19,12 @@ import toorla.ast.statement.*;
 import toorla.ast.statement.localVarStats.LocalVarDef;
 import toorla.ast.statement.localVarStats.LocalVarsDefinitions;
 import toorla.ast.statement.returnStatement.Return;
+import toorla.types.Type;
 import toorla.types.singleType.SingleType;
+
+import javax.swing.plaf.nimbus.State;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TreePrinter implements Visitor<Void> {
     //TODO : Implement all visit methods in TreePrinter to print AST as required in phase1 document
@@ -362,51 +369,152 @@ public class TreePrinter implements Visitor<Void> {
     @Override
     public Void visit(MethodCall methodCall)
     {
-
+        System.out.println("method call : ( . ");
+        Expression expr = methodCall.getInstance();
+        Identifier id = methodCall.getMethodName();
+        ArrayList <Expression> args = methodCall.getArgs();
+        expr.accept(this);
+        id.accept(this);
+        for(int i=0; i< args.size();i++)
+        {
+            args.get(i).accept(this);
+        }
+        System.out.println(" )");
         return null;
     }
 
     @Override
     public Void visit(ArrayCall arrayCall)
     {
+        System.out.println("( [] ");
         Expression instance = arrayCall.getInstance();
         Expression index = arrayCall.getIndex();
-
+        instance.accept(this);
+        index.accept(this);
+        System.out.println(" )");
         return null;
     }
 
     @Override
     public Void visit(ClassDeclaration classDeclaration) {
+        System.out.println("( class ");
+        Identifier name = classDeclaration.getName();
+        Identifier parentName = classDeclaration.getParentName();
+        ArrayList <ClassMemberDeclaration> member = classDeclaration.getClassMembers();
+        name.accept(this);
+        parentName.accept(this);
+        for (int i=0; i < member.size();i++)
+        {
+            member.get(i).accept(this);
+        }
+        System.out.println(" )");
         return null;
     }
 
     @Override
-    public Void visit(EntryClassDeclaration entryClassDeclaration) {
+    public Void visit(EntryClassDeclaration entryClassDeclaration)
+    {
+        System.out.println("( class entry ");
+        Identifier name = entryClassDeclaration.getName();
+        Identifier parentName = entryClassDeclaration.getParentName();
+        ArrayList <ClassMemberDeclaration> member = entryClassDeclaration.getClassMembers();
+        name.accept(this);
+        parentName.accept(this);
+        for (int i=0; i < member.size();i++)
+        {
+            member.get(i).accept(this);
+        }
+        System.out.println(" )");
         return null;
     }
 
     @Override
-    public Void visit(FieldDeclaration fieldDeclaration) {
+    public Void visit(FieldDeclaration fieldDeclaration)
+    {
+        System.out.println("( ");
+        AccessModifier accessModifier = fieldDeclaration.getAccessModifier();
+        System.out.println(accessModifier.toString());
+        System.out.println(" field ");
+        Identifier id = fieldDeclaration.getIdentifier();
+        Type type = fieldDeclaration.getType();
+        id.accept(this);
+        System.out.println(type.toString());
+        System.out.println(" )");
         return null;
     }
 
     @Override
-    public Void visit(ParameterDeclaration parameterDeclaration) {
+    public Void visit(ParameterDeclaration parameterDeclaration)
+    {
+        System.out.println("( ");
+        Identifier id = parameterDeclaration.getIdentifier();
+        Type type = parameterDeclaration.getType();
+        id.accept(this);
+        System.out.println(" : ");
+        System.out.println(type.toString());
+        System.out.println(" )");
         return null;
     }
 
     @Override
-    public Void visit(MethodDeclaration methodDeclaration) {
+    public Void visit(MethodDeclaration methodDeclaration)
+    {
+        System.out.println("( ");
+        Type returntype = methodDeclaration.getReturnType();
+        Identifier name = methodDeclaration.getName();
+        AccessModifier accessModifier = methodDeclaration.getAccessModifier();
+        ArrayList <ParameterDeclaration> args = methodDeclaration.getArgs();
+        ArrayList <Statement> body = methodDeclaration.getBody();
+        System.out.println(accessModifier.toString());
+        System.out.println("( method ");
+        name.accept(this);
+        for (int i = 0; i < args.size(); i++)
+            System.out.println("( "+ args.get(i).accept(this) + " )");
+        System.out.println(returntype.toString());
+        System.out.println("( ");
+        for (int i = 0; i < body.size(); i++)
+            body.get(i).accept(this);
+        System.out.println(" )");
+        System.out.println(" )");
         return null;
+
+//        Type returntype = methodDeclaration.getReturnType();
+//        Identifier name = methodDeclaration.getName();
+//        AccessModifier accessModifier = methodDeclaration.getAccessModifier();
+//        ArrayList <ParameterDeclaration> args = methodDeclaration.getArgs();
+//        ArrayList <Statement> body = methodDeclaration.getBody();
+//        System.out.println("( " + accessModifier.toString() + " method " + name.accept(this));
+//        for (int i = 0; i < args.size(); i++)
+//            System.out.println("/t( "+ args.get(i).accept(this) + " )");
+//        System.out.println(returntype.toString());
+//        System.out.println("/t( ");
+//        for (int i = 0; i < body.size(); i++)
+//            System.out.println("/t" + body.get(i).accept(this));
+//        System.out.println("/t )");
+//        System.out.println(" )");
+//        return null;
+
     }
 
     @Override
-    public Void visit(LocalVarsDefinitions localVarsDefinitions) {
+    public Void visit(LocalVarsDefinitions localVarsDefinitions)
+    {
+        System.out.println("( var");
+        List<LocalVarDef> defs = localVarsDefinitions.getVarDefinitions();
+        for(int i = 0 ;i < defs.size() ; i++)
+            defs.get(i).accept(this);
+        System.out.println(" )");
+
+
         return null;
     }
 
     @Override
     public Void visit(Program program) {
+        System.out.println("( ");
+        List <ClassDeclaration> classdeclaration = program.getClasses();
+        for (int i = 0; i < classdeclaration.size(); i++)
+            classdeclaration.get(i).accept(this);
         return null;
     }
 }
