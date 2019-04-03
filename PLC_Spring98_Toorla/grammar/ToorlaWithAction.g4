@@ -4,10 +4,18 @@ grammar ToorlaWithAction;
 @header
 {
     import toorla.ast.*;
-    import toorla.ast.expression.binaryExpression.*;
-    import toorla.ast.expression.value.*;
     import toorla.ast.expression.*;
+    import toorla.ast.expression.binaryExpression.*;
+    import toorla.ast.expression.unaryExpression.*;
+    import toorla.ast.expression.value.*;
     import toorla.ast.statement.*;
+    import toorla.ast.declaration.*;
+    import toorla.ast.declaration.classDecs.*;
+    import toorla.ast.declaration.classDecs.classMembersDecs.*;
+    import toorla.ast.declaration.localVarDecs.*;
+    import toorla.types.*;
+    import toorla.types.singleType.*;
+    import toorla.types.arrayType.*;
 }
 
 
@@ -20,14 +28,16 @@ grammar ToorlaWithAction;
     }
 }
 
-program returns [Program resProgram]:
+program returns [Program resProgram] locals [ArrayList<ClassDeclaration> tmpList] :
     list1=classStar
     newClass=entryClass
     list2=classStar
     {
-        $resProgram.classes = $list1.classList;
-        $resProgram.classes.add($newClass);
-        $resProgram.classes.addAll($list2.classList);
+        $tmpList = $list1.classList;
+        $tmpList.add($newClass.resClass);
+        $tmpList.addAll($list2.classList);
+        for (int i = 0; i<$tmpList.size(); i++)
+            $resProgram.addClass($tmpList.get(i));
     }
     ;
 
@@ -40,11 +50,12 @@ classStar returns [ArrayList<ClassDeclaration> classList]:
     }
     |
     //lamda
+    { classList = new ArrayList<>(); }
     ;
 
 classRole returns [ClassDeclaration resClass]:
-    ('class' name=ID ':' { $resClass = new ClassDeclaration($name); }
-    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name, $parent); } )
+    ('class' name=ID ':' { $resClass = new ClassDeclaration($name.text); }
+    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name.text, $parent.text); } )
         body=classItemStar
         {
             $resClass.members = $body.members;
@@ -53,15 +64,15 @@ classRole returns [ClassDeclaration resClass]:
     ;
 
 entryClass returns [EntryClassDeclaration resClass]:
-    ('entry' 'class' name=ID ':' { $resClass = new ClassDeclaration($name); }
-    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name, $parent); } )
+    ('entry' 'class' name=ID ':' { $resClass = new ClassDeclaration($name.text); }
+    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name.text, $parent.text); } )
         list1=classItemStar
-        mainfunc=mainFunc
+        main=mainFunc
         list2=classItemStar
         {
             $resClass.members = $list1.members;
-            $resClass.members.add(mainFunc.main);
-            $resClass.members.addAll($list2..members);
+            $resClass.members.add($main.main);
+            $resClass.members.addAll($list2.members);
         }
      'end'
      ;
@@ -70,8 +81,8 @@ mainFunc returns [MethodDeclaration main]:                           /////need w
     ('public')? 'function' Main '()' 'returns' 'int' ':'
         body=funcBody
     {
-        for (int i = 0; i,$body.statements.size(); i++)
-            $resMethod.addstatement(body.statements.get(i));
+        for (int i = 0; i<$body.statements.size(); i++)
+            $main.addStatement($body.statements.get(i));
     }
     'end'
     ;
@@ -86,14 +97,14 @@ classItemStar returns [ArrayList<ClassMemberDeclaration> members]:
     ;
 
 method returns [MethodDeclaration resMethod]:        //// need work
-    (access=access_modifier 'function' name=ID { $resMethod = new MethodDeclaration(name); setAccessModifier($access.access); }
-     | 'function' name=ID { $resMethod = new MethodDeclaration(name); } )
+    (access=access_modifier 'function' name=ID { $resMethod = new MethodDeclaration($name.text); setAccessModifier($access.access); }
+     | 'function' name=ID { $resMethod = new MethodDeclaration($name.text); } )
      '(' list=argumentList ')' 'returns' resType=type ':'
         body=funcBody
     'end'
     {
-        for (int i = 0; i,$body.statements.size(); i++)
-            $resMethod.addstatement(body.statements.get(i));
+        for (int i = 0; i<$body.statements.size(); i++)
+            $resMethod.addStatement(body.statements.get(i));
         $resMethod.setReturnType($resType.resType);
         for (int i = 0; i<$list.args.size(); i++)
             $resMethod.addArg(list.args.get(i));
@@ -108,27 +119,27 @@ argumentList returns [ArrayList<ParameterDeclaration> args]:
         $args.add(arg.argument);
     }
     |
-    //lamda //for empty argument list
+    //lamda//for empty argument list
     { $args = new ArrayList<>(); }
     ;
 
-argumentStar returns [ArrayList<ParameterDeclaration> Args]: ///fixed :)
+argumentStar returns [ArrayList<ParameterDeclaration> argList]: ///fixed :)
     ',' arg=argument args=argumentStar
     {
-        $Args = $args.argList;
-        $Args.add(arg.arg);
+        $argList = $args.argList;
+        $argList.add(arg.arg);
     }
     |
     //lamda
     {
-        $Args = new ArrayList<>();
+        $argList = new ArrayList<>();
     }
     ;
 
 argument returns [ParameterDeclaration arg]:
     name=ID ':' resType=type
     {
-        $arg = new ParameterDeclaration(name, resType.resType);
+        $arg = new ParameterDeclaration($name.text, resType.resType);
     }
     ;
 
@@ -153,11 +164,11 @@ access_modifier returns [AccessModifier access]:
     ;
 
 idPlus returns [ArrayList<String> identifiers]:
-    name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(name); }
+    name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add($name.text); }
     ;
 
 idStar returns [ArrayList<String> identifiers]:
-    ',' name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(name); }
+    ',' name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add($name.text); }
     |
     //lamda
     { $identifiers = new ArrayList<>(); }
@@ -171,11 +182,11 @@ primitiveType returns [SingleType resType]:
 
 singleType returns [SingleType resType]:
     prmType=primitiveType { $resType = $prmType.resType; }
-    | className=ID { $resType = new UserDefined(className); }
+    | className=ID { $resType = new UserDefined($className.text); }
     ;
 
 nonPrimitiveType returns [Type resType]:
-    'new' className=ID
+    'new' className=ID { $resType = new UserDefined($className.text); }
     | 'new'  userDefined=singleType '[]' { $resType = new ArrayType($userDefined.resType); }
     ;
 
@@ -354,11 +365,11 @@ expressionL4 returns [Expression expr]:
 expressionL5 returns [Expression expr]:
     expressionl6=expressionL6 {$expr=$expressionl6.expr;}
     |expressionl6=expressionL6 '/' expressionl5=expressionL5
-    { $expr = new Modulo(expressionl6.expr,expressionl5.expr; }
+    { $expr = new Division(expressionl6.expr,expressionl5.expr; }
     |expressionl6=expressionL6 '*' expressionl5=expressionL5
     { $expr = new Times(expressionl6.expr,expressionl5.expr; }
     |expressionl6=expressionL6 '%' expressionl5=expressionL5
-    { $expr = new Division(expressionl6.expr,expressionl5.expr; }
+    { $expr = new Modulo(expressionl6.expr,expressionl5.expr; }
     ;
 
 expressionL6 returns [Expression expr]:
@@ -375,10 +386,10 @@ expressionL7 returns [Expression expr]:
     ;
 
 singleExpression returns [Expression expr]:
-      name = ID { $expr = new Idettifier(name);}
-    | number = NUMBER { $expr = new IntValue(number); }
-    | stringCons = STRINGCONST  { $expr = new StringValue(stringCons);}
-    | bool = BoolValue { $expr = new BoolValue((bool=='false') ? false : true ); }
+      name = ID { $expr = new Idettifier($name.text);}
+    | number = NUMBER { $expr = new IntValue($number.int); }
+    | stringCons = STRINGCONST  { $expr = new StringValue($stringCons.text);}
+    | bool = BoolValue { $expr = new BoolValue(($bool.text == 'false') ? false : true ); }
     ;
 
 Main:
@@ -425,7 +436,7 @@ KEYWORD:
     ;
 
 
-SPECIAL
-    :   [:] | [+] | [-] | [*] | [/] | [!] | [%] | [&&] | [||] | [=] | [==] | [,]
-      | [[] | [.] | [!] | [<] | [>]
-    ;
+//SPECIAL
+//    :   ':' | '+' | '-' | '*' | '/' | '!' | '%] | [&&] | [||] | [=] | [==] | [,]
+//      | [[] | [.] | [!] | [<] | [>]
+//    ;
