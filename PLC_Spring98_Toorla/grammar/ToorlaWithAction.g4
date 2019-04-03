@@ -50,30 +50,42 @@ classStar returns [ArrayList<ClassDeclaration> classList]:
     }
     |
     //lamda
-    { classList = new ArrayList<>(); }
+    { $classList = new ArrayList<>(); }
     ;
 
 classRole returns [ClassDeclaration resClass]:
-    ('class' name=ID ':' { $resClass = new ClassDeclaration($name.text); }
-    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name.text, $parent.text); } )
-        body=classItemStar
-        {
-            $resClass.members = $body.members;
-        }
+    ('class' name=ID ':' { $resClass = new ClassDeclaration( new Identifier($name.text) ); }
+    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration( new Identifier($name.text), new Identifier($parent.text) ); } )
+//        body=classItemStar
+//        {
+//            $resClass.members = $body.members;
+//        }
+          (
+          variables=field { $resClass.addFieldsDeclarations($variables.resField); }
+          |
+          func=method { $resClass.addMethodDeclaration($func.resMethod); }
+          )*
     'end'
     ;
 
 entryClass returns [EntryClassDeclaration resClass]:
-    ('entry' 'class' name=ID ':' { $resClass = new ClassDeclaration($name.text); }
-    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration($name.text, $parent.text); } )
-        list1=classItemStar
-        main=mainFunc
-        list2=classItemStar
-        {
-            $resClass.members = $list1.members;
-            $resClass.members.add($main.main);
-            $resClass.members.addAll($list2.members);
-        }
+    ('entry' 'class' name=ID ':' { $resClass = new EntryClassDeclaration( new Identifier($name.text) ); }
+    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new EntryClassDeclaration( new Identifier($name.text), new Identifier($parent.text) ); } )
+//        list1=classItemStar
+//        main=mainFunc
+//        list2=classItemStar
+//        {
+//            $resClass.members = $list1.members;
+//            $resClass.members.add($main.main);
+//            $resClass.members.addAll($list2.members);
+//        }
+        (
+        variables=field { $resClass.addFieldsDeclarations($variables.resField); }
+        |
+        func=method { $resClass.addMethodDeclaration($func.resMethod); }
+        |
+        main=mainFunc { $resClass.addMethodDeclaration($main.main); }
+        )*
      'end'
      ;
 
@@ -87,27 +99,27 @@ mainFunc returns [MethodDeclaration main]:                           /////need w
     'end'
     ;
 
-classItemStar returns [ArrayList<ClassMemberDeclaration> members]:
-    variables=field list=classItemStar { $members = $list.members; $members.addAll(variables.resField); }
-    |
-    func=method list=classItemStar { $members = $list.members; $members.add(func.resMethod); }
-    |
-    //lamda
-    { $members = new ArrayList<>(); }
-    ;
+//classItemStar returns [ArrayList<ClassMemberDeclaration> members]:
+//    variables=field list=classItemStar { $members = $list.members; $members.addAll(variables.resField); }
+//    |
+//    func=method list=classItemStar { $members = $list.members; $members.add(func.resMethod); }
+//    |
+//    //lamda
+//    { $members = new ArrayList<>(); }
+//    ;
 
 method returns [MethodDeclaration resMethod]:        //// need work
-    (access=access_modifier 'function' name=ID { $resMethod = new MethodDeclaration($name.text); setAccessModifier($access.access); }
-     | 'function' name=ID { $resMethod = new MethodDeclaration($name.text); } )
+    (access=access_modifier 'function' name=ID { $resMethod = new MethodDeclaration(new Identifier($name.text)); setAccessModifier($access.access); }
+     | 'function' name=ID { $resMethod = new MethodDeclaration( new Identifier($name.text) ); } )
      '(' list=argumentList ')' 'returns' resType=type ':'
         body=funcBody
     'end'
     {
         for (int i = 0; i<$body.statements.size(); i++)
-            $resMethod.addStatement(body.statements.get(i));
+            $resMethod.addStatement($body.statements.get(i));
         $resMethod.setReturnType($resType.resType);
         for (int i = 0; i<$list.args.size(); i++)
-            $resMethod.addArg(list.args.get(i));
+            $resMethod.addArg($list.args.get(i));
 
     }
     ;
@@ -116,7 +128,7 @@ argumentList returns [ArrayList<ParameterDeclaration> args]:
     arg=argument list=argumentStar
     {
         $args = $list.argList;
-        $args.add(arg.argument);
+        $args.add($arg.arg);
     }
     |
     //lamda//for empty argument list
@@ -127,7 +139,7 @@ argumentStar returns [ArrayList<ParameterDeclaration> argList]: ///fixed :)
     ',' arg=argument args=argumentStar
     {
         $argList = $args.argList;
-        $argList.add(arg.arg);
+        $argList.add($arg.arg);
     }
     |
     //lamda
@@ -143,32 +155,32 @@ argument returns [ParameterDeclaration arg]:
     }
     ;
 
-field returns [ArrayList<FieldDeclaration> resField]:
+field returns [List<FieldDeclaration> resField]:
     access=access_modifier 'field' vars=idPlus resType=type ';'
     {
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
-            resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType,$access.access))
+            $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType,$access.access))
     }
     | 'field' vars=idPlus resType=type ';'
     {
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
-            resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType))
+            $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType))
     }
     ;
 
 access_modifier returns [AccessModifier access]:
-    'public' { $access = ACCESS_MODIFIER_PUBLIC; }
-    | 'private' { $access = ACCESS_MODIFIER_PRIVATE; }
+    'public' { $access = AccessModifier.ACCESS_MODIFIER_PUBLIC; }
+    | 'private' { $access = AccessModifier.ACCESS_MODIFIER_PRIVATE; }
     ;
 
-idPlus returns [ArrayList<String> identifiers]:
-    name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add($name.text); }
+idPlus returns [ArrayList<Identifier> identifiers]:
+    name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text)); }
     ;
 
-idStar returns [ArrayList<String> identifiers]:
-    ',' name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add($name.text); }
+idStar returns [ArrayList<Identifier> identifiers]:
+    ',' name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text)); }
     |
     //lamda
     { $identifiers = new ArrayList<>(); }
