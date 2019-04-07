@@ -38,6 +38,7 @@ program returns [Program resProgram] locals [ArrayList<ClassDeclaration> tmpList
         $tmpList = $list1.classList;
         $tmpList.add($newClass.resClass);
         $tmpList.addAll($list2.classList);
+        $resProgram = new Program();
         for (int i = 0; i<$tmpList.size(); i++)
             $resProgram.addClass($tmpList.get(i));
     }
@@ -81,13 +82,14 @@ entryClass returns [EntryClassDeclaration resClass]:
 //            $resClass.members.add($main.main);
 //            $resClass.members.addAll($list2.members);
 //        }
-        (
-        variables=field { $resClass.addFieldsDeclarations($variables.resField); }
-        |
-        func=method { $resClass.addMethodDeclaration($func.resMethod); }
-        |
-        main=mainFunc { $resClass.addMethodDeclaration($main.main); }
-        )*
+//       }
+         (
+            variables=field { $resClass.addFieldsDeclarations($variables.resField); }
+            |
+            func=method { $resClass.addMethodDeclaration($func.resMethod); }
+            |
+            main=mainFunc { System.out.println($main.main); $resClass.addMethodDeclaration($main.main); System.out.println("333"); }
+         )
      'end'
      ;
 
@@ -96,8 +98,11 @@ mainFunc returns [MethodDeclaration main]:                           /////need w
         body=funcBody
     {
         System.out.println("111");
+        System.out.println($body.statements);
+        $main = new MethodDeclaration(new Identifier("main"));
         for (int i = 0; i<$body.statements.size(); i++)
-            $main.addStatement($body.statements.get(i));
+            $main.addStatement((Statement)$body.statements.get(i));
+        System.out.println("222");
     }
     'end'
     ;
@@ -210,7 +215,7 @@ type returns [Type resType]:
     | nnprmType=nonPrimitiveType { $resType = $nnprmType.resType; }
     ;
 
-funcBody returns [ArrayList<Statement> statements]:
+funcBody returns [ArrayList<Statement> statements] locals [Statement tmpStatement]:
      statement1 = statementStar
     {
         $statements = $statement1.statements;
@@ -222,7 +227,7 @@ statementStar returns [ArrayList<Statement> statements]:
     statement1=statement statement2=statementStar
     {
         $statements=$statement2.statements;
-        $statements.add($statement1.resStatement);
+        $statements.add((Statement) $statement1.resStatement);
     }
     | //lamda
     {   $statements= new ArrayList<>(); }
