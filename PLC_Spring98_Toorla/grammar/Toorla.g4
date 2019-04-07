@@ -72,7 +72,7 @@ classRole returns [ClassDeclaration resClass]:
 
 entryClass returns [EntryClassDeclaration resClass]:
     ('entry' 'class' name=ID ':' { $resClass = new EntryClassDeclaration( new Identifier($name.text) ); }
-    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new EntryClassDeclaration( new Identifier($name.text), new Identifier($parent.text) ); } )
+    | 'entry' 'class' name=ID 'inherits' parent=ID ':' { $resClass = new EntryClassDeclaration( new Identifier($name.text), new Identifier($parent.text) ); } )
 //        list1=classItemStar
 //        main=mainFunc
 //        list2=classItemStar
@@ -95,6 +95,7 @@ mainFunc returns [MethodDeclaration main]:                           /////need w
     ('public')? 'function' Main '()' 'returns' 'int' ':'
         body=funcBody
     {
+        System.out.println("111");
         for (int i = 0; i<$body.statements.size(); i++)
             $main.addStatement($body.statements.get(i));
     }
@@ -110,7 +111,7 @@ mainFunc returns [MethodDeclaration main]:                           /////need w
 //    { $members = new ArrayList<>(); }
 //    ;
 
-method returns [MethodDeclaration resMethod]:        //// need work
+method returns [MethodDeclaration resMethod]:
     (access=access_modifier 'function' name=ID { $resMethod = new MethodDeclaration(new Identifier($name.text)); $resMethod.setAccessModifier($access.access); }
      | 'function' name=ID { $resMethod = new MethodDeclaration( new Identifier($name.text) ); } )
      '(' list=argumentList ')' 'returns' resType=type ':'
@@ -213,6 +214,7 @@ funcBody returns [ArrayList<Statement> statements]:
      statement1 = statementStar
     {
         $statements = $statement1.statements;
+        System.out.println($statements);
     }
     ;
 
