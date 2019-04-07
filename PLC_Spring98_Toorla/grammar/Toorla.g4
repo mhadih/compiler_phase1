@@ -57,8 +57,8 @@ classStar returns [ArrayList<ClassDeclaration> classList]:
     ;
 
 classRole returns [ClassDeclaration resClass]:
-    ('class' name=ID ':' { $resClass = new ClassDeclaration( new Identifier($name.text) ); }
-    | 'class' name=ID 'inherits' parent=ID ':' { $resClass = new ClassDeclaration( new Identifier($name.text), new Identifier($parent.text) ); } )
+    (CLASS name=ID COLON { $resClass = new ClassDeclaration( new Identifier($name.text) ); }
+    | CLASS name=ID INHERITS parent=ID COLON { $resClass = new ClassDeclaration( new Identifier($name.text), new Identifier($parent.text) ); } )
 //        body=classItemStar
 //        {
 //            $resClass.members = $body.members;
@@ -68,12 +68,12 @@ classRole returns [ClassDeclaration resClass]:
           |
           func=method { $resClass.addMethodDeclaration($func.resMethod); }
           )*
-    'end'
+    END
     ;
 
 entryClass returns [EntryClassDeclaration resClass]:
-    ('entry' 'class' name=ID ':' { $resClass = new EntryClassDeclaration( new Identifier($name.text) ); }
-    | 'entry' 'class' name=ID 'inherits' parent=ID ':' { $resClass = new EntryClassDeclaration( new Identifier($name.text), new Identifier($parent.text) ); } )
+    (ENTRY CLASS name=ID COLON { $resClass = new EntryClassDeclaration( new Identifier($name.text) ); }
+    | ENTRY CLASS name=ID INHERITS parent=ID COLON { $resClass = new EntryClassDeclaration( new Identifier($name.text), new Identifier($parent.text) ); } )
 //        list1=classItemStar
 //        main=mainFunc
 //        list2=classItemStar
@@ -90,21 +90,20 @@ entryClass returns [EntryClassDeclaration resClass]:
             |
             main=mainFunc { System.out.println($main.main); $resClass.addMethodDeclaration($main.main); System.out.println("333"); }
          )
-     'end'
+     END
      ;
 
 mainFunc returns [MethodDeclaration main]:                           /////need work
-    ('public')? 'function' Main '()' 'returns' 'int' ':'
+    (PUBLIC)? FUNCTION MAIN LPAR RPAR RETURNS INT COLON
         body=funcBody
     {
         System.out.println("111");
-        System.out.println($body.statements);
         $main = new MethodDeclaration(new Identifier("main"));
         for (int i = 0; i<$body.statements.size(); i++)
             $main.addStatement((Statement)$body.statements.get(i));
         System.out.println("222");
     }
-    'end'
+    END
     ;
 
 //classItemStar returns [ArrayList<ClassMemberDeclaration> members]:
@@ -117,11 +116,11 @@ mainFunc returns [MethodDeclaration main]:                           /////need w
 //    ;
 
 method returns [MethodDeclaration resMethod]:
-    (access=access_modifier 'function' name=ID { $resMethod = new MethodDeclaration(new Identifier($name.text)); $resMethod.setAccessModifier($access.access); }
-     | 'function' name=ID { $resMethod = new MethodDeclaration( new Identifier($name.text) ); } )
-     '(' list=argumentList ')' 'returns' resType=type ':'
+    (access=access_modifier FUNCTION name=ID { $resMethod = new MethodDeclaration(new Identifier($name.text)); $resMethod.setAccessModifier($access.access); }
+     | FUNCTION name=ID { $resMethod = new MethodDeclaration( new Identifier($name.text) ); } )
+     LPAR list=argumentList RPAR RETURNS resType=type COLON
         body=funcBody
-    'end'
+    END
     {
         for (int i = 0; i<$body.statements.size(); i++)
             $resMethod.addStatement($body.statements.get(i));
@@ -143,8 +142,8 @@ argumentList returns [ArrayList<ParameterDeclaration> args]:
     { $args = new ArrayList<>(); }
     ;
 
-argumentStar returns [ArrayList<ParameterDeclaration> argList]: ///fixed :)
-    ',' arg=argument args=argumentStar
+argumentStar returns [ArrayList<ParameterDeclaration> argList]:
+    COMMA arg=argument args=argumentStar
     {
         $argList = $args.argList;
         $argList.add($arg.arg);
@@ -157,20 +156,20 @@ argumentStar returns [ArrayList<ParameterDeclaration> argList]: ///fixed :)
     ;
 
 argument returns [ParameterDeclaration arg]:
-    name=ID ':' resType=type
+    name=ID COLON resType=type
     {
         $arg = new ParameterDeclaration(new Identifier($name.text), $resType.resType);
     }
     ;
 
 field returns [List<FieldDeclaration> resField]:
-    access=access_modifier 'field' vars=idPlus resType=type ';'
+    access=access_modifier FEILD vars=idPlus resType=type SEMICOLON
     {
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
             $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType,$access.access));
     }
-    | 'field' vars=idPlus resType=type ';'
+    | FEILD vars=idPlus resType=type SEMICOLON
     {
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
@@ -179,8 +178,8 @@ field returns [List<FieldDeclaration> resField]:
     ;
 
 access_modifier returns [AccessModifier access]:
-    'public' { $access = AccessModifier.ACCESS_MODIFIER_PUBLIC; }
-    | 'private' { $access = AccessModifier.ACCESS_MODIFIER_PRIVATE; }
+    PUBLIC { $access = AccessModifier.ACCESS_MODIFIER_PUBLIC; }
+    | PRIVATE { $access = AccessModifier.ACCESS_MODIFIER_PRIVATE; }
     ;
 
 idPlus returns [ArrayList<Identifier> identifiers]:
@@ -188,16 +187,16 @@ idPlus returns [ArrayList<Identifier> identifiers]:
     ;
 
 idStar returns [ArrayList<Identifier> identifiers]:
-    ',' name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text)); }
+    COMMA name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text)); }
     |
     //lamda
     { $identifiers = new ArrayList<>(); }
     ;
 
 primitiveType returns [SingleType resType]:
-    'int' { $resType = new IntType(); }
-    | 'string' { $resType = new StringType(); }
-    | 'bool'{ $resType = new BoolType(); }
+    INT { $resType = new IntType(); }
+    | STRING     { $resType = new StringType(); }
+    | Bool{ $resType = new BoolType(); }
     ;
 
 singleType returns [SingleType resType]:
@@ -206,8 +205,8 @@ singleType returns [SingleType resType]:
     ;
 
 nonPrimitiveType returns [Type resType]:
-    'new' className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text))); }
-    | 'new'  userDefined=singleType '[]' { $resType = new ArrayType($userDefined.resType); }
+    NEW className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text))); }
+    | NEW  userDefined=singleType LBER RBER { $resType = new ArrayType($userDefined.resType); }
     ;
 
 type returns [Type resType]:
@@ -234,13 +233,13 @@ statementStar returns [ArrayList<Statement> statements]:
     ;
 
 statement returns [Statement resStatement]:
-    single=singleStatement ';' { $resStatement = $single.oneStatement; }
+    single=singleStatement SEMICOLON { $resStatement = $single.oneStatement; }
     | statement1 = block { $resStatement = $statement1.resBlock; }
     | statement2 = ifRole { $resStatement = $statement2.resIf; }
     | statement3 = whileRole { $resStatement = $statement3.resWhile; }
     ;
 
-singleStatement returns [Statement oneStatement]: ///////////////need work
+singleStatement returns [Statement oneStatement]:
 
     ass=assign { $oneStatement = $ass.assignment; }
     | brk=breakRole { $oneStatement = $brk.resBreak; }
@@ -250,14 +249,14 @@ singleStatement returns [Statement oneStatement]: ///////////////need work
     | prt=printRole { $oneStatement = $prt.resPrint; }
     | rtn=returnRole { $oneStatement = $rtn.resReturn; }
     | dcl=declaration { $oneStatement = $dcl.defList; }
-    | sState=singleStatement ';' { $oneStatement = $sState.oneStatement; }
+    | sState=singleStatement SEMICOLON { $oneStatement = $sState.oneStatement; }
     |
     //lamda
     { $oneStatement = new Skip(); }
     ;
 
 declaration returns [LocalVarsDefinitions defList]:
-    'var' def=assignID list=assignListStar
+    VAR def=assignID list=assignListStar
     {
         $defList = $list.defList;
         $defList.addVarDefinition($def.definition);
@@ -265,7 +264,7 @@ declaration returns [LocalVarsDefinitions defList]:
     ;
 
 assignListStar returns [LocalVarsDefinitions defList]:
-    ',' def=assignID list=assignListStar
+    COMMA def=assignID list=assignListStar
      {
         $defList = $list.defList;
         $defList.addVarDefinition($def.definition);
@@ -276,35 +275,35 @@ assignListStar returns [LocalVarsDefinitions defList]:
     ;
 
 assignID returns [LocalVarDef definition]:
-    name=ID '=' init=expression
+    name=ID EQUAL init=expression
     { $definition = new LocalVarDef(new Identifier($name.text), $init.expr); }
     ;
 
 assign returns [Assign assignment]:
-    expression1=expression '=' expression2=expression
+    expression1=expression EQUAL expression2=expression
     { $assignment = new Assign($expression1.expr,$expression2.expr); }
     ;
 
 block returns [Block resBlock]:
-    'begin'
+    BEGIN
         statement1=statementStar
         {
             $resBlock = new Block();
             for (int i = 0; i<$statement1.statements.size(); i++)
                 $resBlock.addStatement($statement1.statements.get(i));
         }
-    'end'
+    END
     ;
 
 breakRole returns [Break resBreak]:
-    'break'
+    BREAK
     { $resBreak = new Break(); }
     ;
 
 ifRole returns [Conditional resIf]:
-    'if' '(' expr1=expression ')' then1=statement
+    IF LPAR expr1=expression RPAR then1=statement
     { $resIf = new Conditional($expr1.expr,$then1.resStatement); } //////////statement arry hastesh!!!
-    |   'if' '(' expr2=expression ')' then2=statement 'else' elze=statement
+    |   IF LPAR expr2=expression RPAR then2=statement ELSE elze=statement
     { $resIf = new Conditional($expr2.expr,$then2.resStatement,$elze.resStatement); }
     ;
 
@@ -322,93 +321,93 @@ ifRole returns [Conditional resIf]:
 //    ;
 
 continueRole returns [Continue resContinue]:
-    'continue'
+    COUTINUE
     { $resContinue = new Continue(); }
     ;
 
 dec returns[DecStatement resDec]:
-    expr=expression '--'
+    expr=expression MINUS MINUS
     { $resDec = new DecStatement($expr.expr);}
     ;
 
 inc returns[IncStatement resInc] :
-    expr=expression '++'
+    expr=expression PLUS PLUS
     { $resInc = new IncStatement($expr.expr); }
     ;
 
 printRole returns [PrintLine resPrint]:
-    'print' '(' arg=expression ')'
+    PRINT LPAR arg=expression RPAR
     { $resPrint = new PrintLine($arg.expr); }
     ;
 
 returnRole returns [Return resReturn]:
-    'return' expr=expression
+    RETURN expr=expression
     { $resReturn =  new Return($expr.expr); }
     ;
 
 whileRole returns [While resWhile]:
-    'while' '(' expr=expression ')'
+    WHILE LPAR expr=expression RPAR
         state=statement
      { $resWhile = new While($expr.expr,$state.resStatement); }
      ;
 
 expression returns[Expression expr ]:
     expressionl1 = expressionL1 { $expr= $expressionl1.expr; }
-    | expressionl1=expressionL1 '||' expressionr=expression
+    | expressionl1=expressionL1 OR expressionr=expression
     { $expr = new Or($expressionl1.expr,$expressionr.expr); }
     ;
 
 expressionL1 returns[Expression expr ]:
     expressionl2=expressionL2 { $expr=$expressionl2.expr; }
-    | expressionl2=expressionL2 '&&' expressionl1=expressionL1
+    | expressionl2=expressionL2 AND expressionl1=expressionL1
     { $expr = new And($expressionl2.expr,$expressionl1.expr); }
     ;
 
 expressionL2 returns[Expression expr ]:
     expressionl3=expressionL3 { $expr=$expressionl3.expr; }
-    | expressionl3=expressionL3 '==' expressionl2=expressionL2
+    | expressionl3=expressionL3 EQUALS expressionl2=expressionL2
     { $expr = new Equals($expressionl3.expr, $expressionl2.expr); }
-    | expressionl3=expressionL3 '<>' expressionl2=expressionL2
+    | expressionl3=expressionL3 LESSER GREATER expressionl2=expressionL2
     { $expr = new NotEquals($expressionl3.expr, $expressionl2.expr); }
     ;
 
 expressionL3 returns [Expression expr]:
     expressionl4=expressionL4 { $expr=$expressionl4.expr; }
-    |expressionl4=expressionL4 '<' expressionl3=expressionL3
+    |expressionl4=expressionL4 LESSER expressionl3=expressionL3
     { $expr = new LessThan($expressionl4.expr,$expressionl3.expr); }
-    |expressionl4=expressionL4 '>' expressionl3=expressionL3
+    |expressionl4=expressionL4 GREATER expressionl3=expressionL3
     { $expr = new GreaterThan($expressionl4.expr,$expressionl3.expr); }
     ;
 
 expressionL4 returns [Expression expr]:
     expressionl5=expressionL5 { $expr=$expressionl5.expr; }
-    |expressionl5=expressionL5 '+' expressionl4=expressionL4
+    |expressionl5=expressionL5 PLUS expressionl4=expressionL4
     { $expr = new Plus($expressionl5.expr,$expressionl4.expr); }
-    |expressionl5=expressionL5 '-' expressionl4=expressionL4
+    |expressionl5=expressionL5 MINUS expressionl4=expressionL4
     { $expr = new Minus($expressionl5.expr,$expressionl4.expr); }
     ;
 
 expressionL5 returns [Expression expr]:
     expressionl6=expressionL6 { $expr=$expressionl6.expr; }
-    |expressionl6=expressionL6 '/' expressionl5=expressionL5
+    |expressionl6=expressionL6 DIVIDE expressionl5=expressionL5
     { $expr = new Division($expressionl6.expr,$expressionl5.expr); }
-    |expressionl6=expressionL6 '*' expressionl5=expressionL5
+    |expressionl6=expressionL6 MULTY expressionl5=expressionL5
     { $expr = new Times($expressionl6.expr,$expressionl5.expr); }
-    |expressionl6=expressionL6 '%' expressionl5=expressionL5
+    |expressionl6=expressionL6 MODULO expressionl5=expressionL5
     { $expr = new Modulo($expressionl6.expr,$expressionl5.expr); }
     ;
 
 expressionL6 returns [Expression expr]:
     expressionl7=expressionL7 { $expr=$expressionl7.expr; }
-    | '!' expressionl6=expressionL6
+    | NOT expressionl6=expressionL6
     {$expr= new Not( $expressionl6.expr); }
-    | '-' expressionl6=expressionL6
+    | MINUS expressionl6=expressionL6
     {$expr= new Neg( $expressionl6.expr); }
     ;
 
 expressionL7 returns [Expression expr]:
     sExpr=singleExpression { $expr = $sExpr.expr; }
-    |'(' inExpr=expression ')' { $expr = $inExpr.expr; }
+    |LPAR inExpr=expression RPAR { $expr = $inExpr.expr; }
     ;
 
 singleExpression returns [Expression expr]:
@@ -418,7 +417,7 @@ singleExpression returns [Expression expr]:
     | bool = BoolValue { $expr = new BoolValue(($bool.text == "false") ? false : true ); }
     ;
 
-Main:
+MAIN:
     'main'
     ;
 
@@ -447,22 +446,92 @@ WS:
     [ \t\n] -> skip
     ;
 
-Bool: 'bool'
-    ;
+Bool: 'bool' ;
 
-BoolValue:
-    'false' | 'true'
-    ;
+BoolValue: 'false' | 'true' ;
 
-KEYWORD:
-    'if' | 'else' | 'string' | 'int' | 'class' | 'function'
-    | 'print' | 'private' | 'field' | 'self' | 'while'
-    | 'new' | 'return' | 'elif' | 'returns' | 'break' | 'countine' | 'entry'
-    | 'begin' | 'end' | 'public' | 'var' | 'inherits'
-    ;
+RETURN: 'return' ;
 
+RETURNS: 'returns' ;
 
-//SPECIAL
-//    :   ':' | '+' | '-' | '*' | '/' | '!' | '%] | [&&] | [||] | [=] | [==] | [,]
-//      | [[] | [.] | [!] | [<] | [>]
-//    ;
+PRINT: 'print' ;
+
+BREAK: 'break' ;
+
+END: 'end' ;
+
+COUTINUE: 'contunue' ;
+
+ENTRY: 'entry' ;
+
+NEW: 'new' ;
+
+PRIVATE: 'private' ;
+
+PUBLIC: 'public' ;
+
+VAR: 'var' ;
+
+INHERITS: 'inherits' ;
+
+BEGIN: 'begin' ;
+
+INT: 'int' ;
+
+STRING: 'string' ;
+
+CLASS: 'class' ;
+
+FUNCTION: 'funcion' ;
+
+SELF: 'self' ;
+
+FEILD: 'feild' ;
+
+IF: 'if' ;
+
+WHILE: 'while' ;
+
+ELSE: 'else' ;
+
+ELIF: 'elif' ;
+
+COLON: ':' ;
+
+PLUS: '+' ;
+
+MINUS: '-' ;
+
+MULTY: '*' ;
+
+DIVIDE: '/' ;
+
+MODULO: '%' ;
+
+NOT: '!' ;
+
+AND: '&&' ;
+
+OR: '||' ;
+
+EQUAL: '=' ;
+
+EQUALS: '==' ;
+
+GREATER: '>' ;
+
+LESSER: '<' ;
+
+DOT: '.' ;
+
+COMMA: ',' ;
+
+LPAR: '(' ;
+
+RPAR: ')' ;
+
+LBER: '[' ;
+
+RBER: ']' ;
+
+SEMICOLON: ';' ;
