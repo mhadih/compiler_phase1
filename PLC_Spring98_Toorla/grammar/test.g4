@@ -20,12 +20,7 @@ grammar test;
 }
 
 program returns[ Expression expression]
-    :    expr=additionExp
-    {
-        $expression = $expr.expression;
-        System.out.println( counter );
-        print();
-    }
+    :    HADI
     ;
 
 additionExp returns[ Expression expression ]
@@ -93,5 +88,6 @@ NUMBER
     :    [1-9][0-9]* | [0]
     ;
 
-WS: [ \t\n] -> skip
-;
+WS: [ \t\n] -> skip;
+
+HADI: 'entry';

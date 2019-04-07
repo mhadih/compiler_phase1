@@ -1,11 +1,42 @@
-class father:
-	function f ( ) returns int:
-
+entry class MainClass:
+	private field serri int;
+	public field aashkar , penhan string;
+	field makhfi MoonClass;
+	public function main() returns int:
+		var aaghaz=1 , anjaam = 2 , makhfi = 3 , penhan = "hello";
+		begin
+		    var makhfi = "hello" , myVar = "salam";
+		    print( "makhfi is hello in this scope" );
+		    print( makhfi );
+		    break;
+		end
+		print( "makhfi is integer again in this scope" );
+		print( makhfi );
+        	serri = 2;
+		while(aaghaz<anjaam)begin
+			print(aaghaz*3%2);
+			a = new int[ 2 ];
+			( aaghaz )++;
+		end
+		if( a == 2 ) return 1;
+		elif( a == 1 ) begin
+		    a = 2;
+		    return 2;
+		end
+		elif( a == 3 ) return 3;
+		else return 0;
+		var myVar = callMoon(aaghaz);
+		return 0;
 	end
+	private function callMoon(param:int) returns string:
+		return "ey nam to behtarin saraghaz be nam to nameh key konam baz";
+	end
+	private field myName Class;
 end
-
-entry class child inherits father:
-	function main () returns int:
-		var hadi = 3;
+class MoonClass inherits MainClass:
+	function callMoon(when:int) returns int:
+		print("moon eclipes:");
+		print(param);
+		return 0;
 	end
 end

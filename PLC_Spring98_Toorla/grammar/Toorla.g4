@@ -89,7 +89,7 @@ entryClass returns [EntryClassDeclaration resClass]:
             func=method { $resClass.addMethodDeclaration($func.resMethod); }
             |
             main=mainFunc { System.out.println($main.main); $resClass.addMethodDeclaration($main.main); System.out.println("333"); }
-         )
+         )*
      END
      ;
 
@@ -205,8 +205,8 @@ singleType returns [SingleType resType]:
     ;
 
 nonPrimitiveType returns [Type resType]:
-    NEW className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text))); }
-    | NEW  userDefined=singleType LBER RBER { $resType = new ArrayType($userDefined.resType); }
+    className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text))); }
+    | userDefined=singleType { $resType = new ArrayType($userDefined.resType); }
     ;
 
 type returns [Type resType]:
@@ -226,17 +226,55 @@ statementStar returns [ArrayList<Statement> statements]:
     statement1=statement statement2=statementStar
     {
         $statements=$statement2.statements;
-        $statements.add((Statement) $statement1.resStatement);
+        $statements.add($statement1.resStatement);
     }
     | //lamda
     {   $statements= new ArrayList<>(); }
     ;
 
 statement returns [Statement resStatement]:
-    single=singleStatement SEMICOLON { $resStatement = $single.oneStatement; }
+    statement1 = block { $resStatement = $statement1.resBlock; }
+    | statement2 = openStatement { $resStatement = $statement2.resStatement; }
+    | statement3 = closedStatement { $resStatement = $statement3.resStatement; }
+    ;
+
+openStatement returns [Statement resStatement]:
+    statement1 = block { $resStatement = $statement1.resBlock; }
+    statement2=ifOpen { $resStatement = $statement2.resIf; }
+    | statement3=whileOpen { $resStatement = $statement3.resWhile; }
+    ;
+
+closedStatement returns [Statement resStatement]:
+    sState=singleStatement { $resStatement = $sState.oneStatement; }
     | statement1 = block { $resStatement = $statement1.resBlock; }
-    | statement2 = ifRole { $resStatement = $statement2.resIf; }
-    | statement3 = whileRole { $resStatement = $statement3.resWhile; }
+    | statement2=ifClose { $resStatement = $statement2.resIf; }
+    | statement3=whileClose { $resStatement = $statement3.resWhile; }
+    ;
+
+whileOpen returns [While resWhile]:
+    WHILE LPAR expr=expression RPAR
+        state=openStatement
+     { $resWhile = new While($expr.expr,$state.resStatement); }
+    ;
+
+whileClose returns [While resWhile]:
+    WHILE LPAR expr=expression RPAR
+        state=closedStatement
+     { $resWhile = new While($expr.expr,$state.resStatement); }
+    ;
+
+ifClose returns [Conditional resIf]:
+    IF LPAR expr=expression RPAR then=closedStatement ELSE elze=closedStatement
+    { $resIf = new Conditional($expr.expr,$then.resStatement,$elze.resStatement); }
+    ;
+
+ifOpen returns [Conditional resIf]:
+    IF LPAR expr1=expression RPAR then1=openStatement
+    { $resIf = new Conditional($expr1.expr,$then1.resStatement); } //////////statement arry hastesh!!!
+    | IF LPAR expr2=expression RPAR then2=closedStatement ELSE elze=openStatement
+    { $resIf = new Conditional($expr2.expr,$then2.resStatement,$elze.resStatement); }
+    | IF LPAR expr3=expression RPAR then3=singleStatement
+    { $resIf = new Conditional($expr3.expr,$then3.oneStatement); }
     ;
 
 singleStatement returns [Statement oneStatement]:
@@ -251,6 +289,7 @@ singleStatement returns [Statement oneStatement]:
     | dcl=declaration { $oneStatement = $dcl.defList; }
     | sState=singleStatement SEMICOLON { $oneStatement = $sState.oneStatement; }
     |
+
     //lamda
     { $oneStatement = new Skip(); }
     ;
@@ -300,26 +339,6 @@ breakRole returns [Break resBreak]:
     { $resBreak = new Break(); }
     ;
 
-ifRole returns [Conditional resIf]:
-    IF LPAR expr1=expression RPAR then1=statement
-    { $resIf = new Conditional($expr1.expr,$then1.resStatement); } //////////statement arry hastesh!!!
-    |   IF LPAR expr2=expression RPAR then2=statement ELSE elze=statement
-    { $resIf = new Conditional($expr2.expr,$then2.resStatement,$elze.resStatement); }
-    ;
-
-//if:
-//    matched | unmatched
-//    ;
-//
-//matched:
-//    'if' '(' expression ')' matched 'else' matched
-//    ;
-//
-//unmatched:
-//    'if' '(' expression ')' statement |
-//    'if' '(' expression ')' matched 'else' unmatched
-//    ;
-
 continueRole returns [Continue resContinue]:
     COUTINUE
     { $resContinue = new Continue(); }
@@ -344,12 +363,6 @@ returnRole returns [Return resReturn]:
     RETURN expr=expression
     { $resReturn =  new Return($expr.expr); }
     ;
-
-whileRole returns [While resWhile]:
-    WHILE LPAR expr=expression RPAR
-        state=statement
-     { $resWhile = new While($expr.expr,$state.resStatement); }
-     ;
 
 expression returns[Expression expr ]:
     expressionl1 = expressionL1 { $expr= $expressionl1.expr; }
@@ -431,7 +444,7 @@ LETTER:
 
 
 STRINGCONST:
-    '"' CHARACTER (CHARACTER)* '"'
+    '"' ~["]* '"'
     ;
 
 NUMBER:
@@ -460,9 +473,9 @@ BREAK: 'break' ;
 
 END: 'end' ;
 
-COUTINUE: 'contunue' ;
+COUTINUE: 'continue' ;
 
-ENTRY: 'entry' ;
+ENTRY: 'entry';
 
 NEW: 'new' ;
 
