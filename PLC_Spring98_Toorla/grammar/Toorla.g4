@@ -51,7 +51,7 @@ classStar returns [ArrayList<ClassDeclaration> classList]:
     {
         $classList = $list.classList;
         $classList.add($newClass.resClass);
-        $classList.line=$list.start.getLine();
+       // $classList.line=$list.start.getLine();
     }
     |
     //lamda
@@ -123,7 +123,7 @@ mainFunc returns [MethodDeclaration main]:                           /////need w
 
 method returns [MethodDeclaration resMethod]:
     (access=access_modifier FUNCTION name=ID { $resMethod = new MethodDeclaration(new Identifier($name.text)); $resMethod.setAccessModifier($access.access);
-     $resMethod.line=$ID.getLine(); }
+     $resMethod.line=$FUNCTION.getLine(); }
      | FUNCTION name=ID { $resMethod = new MethodDeclaration( new Identifier($name.text) ); $resMethod.line=$FUNCTION.getLine(); } )
      LPAR list=argumentList RPAR RETURNS resType=type COLON
         body=funcBody
@@ -143,7 +143,7 @@ argumentList returns [ArrayList<ParameterDeclaration> args]:
     {
         $args = $list.argList;
         $args.add($arg.arg);
-        $args.line=$arg.start.getLine();
+//        $args.line=$arg.start.getLine();
     }
     |
     //lamda//for empty argument list
@@ -155,7 +155,7 @@ argumentStar returns [ArrayList<ParameterDeclaration> argList]:
     {
         $argList = $args.argList;
         $argList.add($arg.arg);
-        $argList.line=$COMMA.getLine();
+//        $argList.line=$COMMA.getLine();
     }
     |
     //lamda
@@ -168,7 +168,7 @@ argument returns [ParameterDeclaration arg]:
     name=ID COLON resType=type
     {
         $arg = new ParameterDeclaration(new Identifier($name.text), $resType.resType);
-        $arg.line=$ID.getLine();
+//        $arg.line=$ID.getLine();
     }
     ;
 
@@ -178,30 +178,32 @@ field returns [List<FieldDeclaration> resField]:
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
             $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType,$access.access));
-        $resField.line=$FIELD.getLine();
+//        $resField.line=$FIELD.getLine();
     }
     | FIELD vars=idPlus resType=type SEMICOLON
     {
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
             $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType));
-        $resField.line=$FIELD.getLine();
+//        $resField.line=$FIELD.getLine();
     }
     ;
 
 access_modifier returns [AccessModifier access]:
-    PUBLIC { $access = AccessModifier.ACCESS_MODIFIER_PUBLIC; $access.line=$PUBLIC.getLine();  }
-    | PRIVATE { $access = AccessModifier.ACCESS_MODIFIER_PRIVATE; $access.line=$PRIVATE.getLine();  }
+    PUBLIC { $access = AccessModifier.ACCESS_MODIFIER_PUBLIC;}
+    | PRIVATE { $access = AccessModifier.ACCESS_MODIFIER_PRIVATE;}
     ;
 
 idPlus returns [ArrayList<Identifier> identifiers]:
     name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text));
-    $identifiers.line=$ID.getLine(); }
+    //$identifiers.line=$ID.getLine();
+     }
     ;
 
 idStar returns [ArrayList<Identifier> identifiers]:
     COMMA name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text));
-     $identifiers.line=$ID.getLine(); } ////////////no line
+     //$identifiers.line=$ID.getLine();
+      } ////////////no line
     |
     //lamda
     { $identifiers = new ArrayList<>(); }
@@ -210,24 +212,22 @@ idStar returns [ArrayList<Identifier> identifiers]:
 primitiveType returns [SingleType resType]:
     INT { $resType = new IntType(); }
     | STRING     { $resType = new StringType(); }
-    | Bool{ $resType = new BoolType(); $resType.line=$Bool.getLine();  }
+    | Bool{ $resType = new BoolType(); }
     ;
 
 singleType returns [SingleType resType]:
     prmType=primitiveType { $resType = $prmType.resType; }
-    | className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text)) );
-     $resType.line=$ID.getLine();  }
+    | className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text)) );  }
     ;
 
 nonPrimitiveType returns [Type resType]:
-    className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text)));
-       $resType.line=$ID.getLine(); }
-    | userDefined=singleType { $resType = new ArrayType($userDefined.resType); $resType.line=$userDefined.start.getLine(); }
+    className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text)));}
+    | userDefined=singleType { $resType = new ArrayType($userDefined.resType); }
     ;
 
 type returns [Type resType]:
-    prmType=primitiveType { $resType = $prmType.resType; $resType.line=$prmType.start.getLine(); }
-    | nnprmType=nonPrimitiveType { $resType = $nnprmType.resType; $resType.line=$nnprmType.start.getLine(); }
+    prmType=primitiveType { $resType = $prmType.resType; }
+    | nnprmType=nonPrimitiveType { $resType = $nnprmType.resType; }
     ;
 
 funcBody returns [ArrayList<Statement> statements] locals [Statement tmpStatement]:
@@ -235,7 +235,7 @@ funcBody returns [ArrayList<Statement> statements] locals [Statement tmpStatemen
     {
         $statements = $statement1.statements;
         System.out.println($statements);
-        $statements.line=$statement1.start.getLine();
+     //   $statements.line=$statement1.start.getLine();
     }
     ;
 
@@ -247,7 +247,7 @@ statementStar returns [ArrayList<Statement> statements]
     (statement1=statement)*
     {
         $statements.add($statement1.resStatement);
-        $statements.line=$statement1.start.getLine();
+//        $statements.line=$statement1.start.getLine();
     }
     ;
 
@@ -313,7 +313,7 @@ declaration returns [LocalVarsDefinitions defList]:
     {
         $defList = $list.defList;
         $defList.addVarDefinition($def.definition);
-        $defList.line=$VAR.getLine();
+    //    $defList.line=$VAR.getLine();
     }
     ;
 
@@ -322,7 +322,7 @@ assignListStar returns [LocalVarsDefinitions defList]:
      {
         $defList = $list.defList;
         $defList.addVarDefinition($def.definition);
-        $defList.line=$COMMA.getLine();
+      //  $defList.line=$COMMA.getLine();
      }
      |
      //lamda
@@ -344,7 +344,7 @@ block returns [Block resBlock]:
     BEGIN
         statement1=statementStar
         {
-            $resBlock.line=$statement1.start.getLine();
+//            $resBlock.line=$statement1.start.getLine();
             $resBlock = new Block();
             for (int i = 0; i<$statement1.statements.size(); i++)
                 $resBlock.addStatement($statement1.statements.get(i));
