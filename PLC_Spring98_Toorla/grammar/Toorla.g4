@@ -292,6 +292,17 @@ singleStatement returns [Statement oneStatement]:
 
     //lamda
     { $oneStatement = new Skip(); }
+
+    ;
+
+newArray returns[NewArray resArray]:
+    NEW sType=singleType LBER expr=expression RBER
+    { $resArray =  new NewArray(sType.resType,expr.expr);    }
+    ;
+
+newClassInstance returns[NewClassInstance resCI]:
+    NEW id=ID LBER RBER
+    { $resCI=new NewClassInstance(new Instance(id.text)); }
     ;
 
 declaration returns [LocalVarsDefinitions defList]:
@@ -423,11 +434,20 @@ expressionL7 returns [Expression expr]:
     |LPAR inExpr=expression RPAR { $expr = $inExpr.expr; }
     ;
 
+
 singleExpression returns [Expression expr]:
       name = ID { $expr = new Identifier($name.text); }
     | number = NUMBER { $expr = new IntValue($number.int); }
     | stringCons = STRINGCONST  { $expr = new StringValue($stringCons.text); }
     | bool = BoolValue { $expr = new BoolValue(($bool.text == "false") ? false : true ); }
+    | na=newArray { $expr= $na.resArray; }                 ////////////dout
+    | nci=newClassInstance { $expr = $nci.resCI; }           ////////////dout
+//    | arrayC=arrayCall
+    ;
+//
+//arrayCall returns[ArrayCall resAC]:
+//        instance=expression LBER index=expression RBER
+//    {$}
     ;
 
 MAIN:
