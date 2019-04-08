@@ -583,6 +583,16 @@ RBER: ']' ;
 
 SEMICOLON: ';' ;
 
+SCOMMAND: '//' ;
+
+RCOMMAND: '*/' ;
+
+LCOMMAND: '/*' ;
+
+LINECOMMAND : SCOMMAND (~[\n\r])* -> skip;
+
+COMMAND : LCOMMAND .*? RCOMMAND -> skip;
+
 ID:
     [a-zA-Z][a-zA-Z]*
     ;
