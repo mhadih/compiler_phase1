@@ -41,7 +41,7 @@ program returns [Program resProgram] locals [ArrayList<ClassDeclaration> tmpList
         $resProgram = new Program();
         for (int i = 0; i<$tmpList.size(); i++)
             $resProgram.addClass($tmpList.get(i));
-        $tmpList.line=$list1.start.getLine();
+        $resProgram.line=$list1.start.getLine();
     }
     ;
 
@@ -51,7 +51,7 @@ classStar returns [ArrayList<ClassDeclaration> classList]:
     {
         $classList = $list.classList;
         $classList.add($newClass.resClass);
-        $classList.line=$list.start.getLine();
+//        $classList.line= $list.start.getLine();
     }
     |
     //lamda
@@ -75,9 +75,9 @@ classRole returns [ClassDeclaration resClass]:                                  
     ;
 
 entryClass returns [EntryClassDeclaration resClass]:
-    (ENTRY CLASS name=ID COLON { $resClass = new EntryClassDeclaration( new Identifier($name.text) ); $resClass.line=$ENTRY.getLine(); }
-    | ENTRY CLASS name=ID INHERITS parent=ID COLON { $resClass = new EntryClassDeclaration( new Identifier($name.text), new Identifier($parent.text) );
-      $resClass.line=$ENTRY.getLine();  } )
+    (ENTRY  CLASS name=ID COLON { $resClass = new EntryClassDeclaration( new Identifier($name.text) ); $resClass.line= $ENTRY.getLine();}
+    | ENTRY  CLASS name=ID INHERITS parent=ID COLON { $resClass = new EntryClassDeclaration( new Identifier($name.text), new Identifier($parent.text) );
+     $resClass.line= $ENTRY.getLine();} )
 //        list1=classItemStar
 //        main=mainFunc
 //        list2=classItemStar
@@ -239,34 +239,34 @@ funcBody returns [ArrayList<Statement> statements] locals [Statement tmpStatemen
     }
     ;
 
-statementStar returns [ArrayList<Statement> statements]:
-    statement1=statement statement2=statementStar
+statementStar returns [ArrayList<Statement> statements]
+    @init{
+        $statements= new ArrayList<>();
+    }
+    :
+    (statement1=statement)*
     {
-        $statements=$statement2.statements;
         $statements.add($statement1.resStatement);
         $statements.line=$statement1.start.getLine();
     }
-    | //lamda
-    {   $statements= new ArrayList<>(); }
     ;
 
 statement returns [Statement resStatement]:
-    statement1 = block { $resStatement = $statement1.resBlock; $resStatement.line=$statement1.start.getLine(); }
-    | statement2 = openStatement { $resStatement = $statement2.resStatement; $resStatement.line=$statement2.start.getLine(); }
-    | statement3 = closedStatement { $resStatement = $statement3.resStatement; $resStatement.line=$statement3.start.getLine(); }
+    statement1 = openStatement { $resStatement = $statement1.resStatement; $resStatement.line= $statemet1.start.getLine();}
+    | statement2 = closedStatement { $resStatement = $statement2.resStatement; }
     ;
 
 openStatement returns [Statement resStatement]:
-    statement1 = block { $resStatement = $statement1.resBlock; $resStatement.line=$statement1.start.getLine(); }
-    | statement2=ifOpen { $resStatement = $statement2.resIf; $resStatement.line=$statement2.start.getLine(); }
-    | statement3=whileOpen { $resStatement = $statement3.resWhile; $resStatement.line=$statement3.start.getLine(); }
+    statement1=block { $resStatement = $statement1.resBlock; }
+    | statement2=ifOpen { $resStatement = $statement2.resIf; }
+    | statement3=whileOpen { $resStatement = $statement3.resWhile; }
     ;
 
 closedStatement returns [Statement resStatement]:
-    sState=singleStatement { $resStatement = $sState.oneStatement; $resStatement.line=$sState.start.getLine(); }
-    | statement1 = block { $resStatement = $statement1.resBlock; $resStatement.line=$statement1.start.getLine(); }
-    | statement2=ifClose { $resStatement = $statement2.resIf; $resStatement.line=$statement2.start.getLine(); }
-    | statement3=whileClose { $resStatement = $statement3.resWhile; $resStatement.line=$statement3.start.getLine(); }
+    sState=singleStatement { $resStatement = $sState.oneStatement; }
+    | statement1=block { $resStatement = $statement1.resBlock; }
+    | statement2=ifClose { $resStatement = $statement2.resIf; }
+    | statement3=whileClose { $resStatement = $statement3.resWhile; }
     ;
 
 whileOpen returns [While resWhile]:
@@ -288,7 +288,7 @@ ifClose returns [Conditional resIf]:
 
 ifOpen returns [Conditional resIf]:
     IF LPAR expr1=expression RPAR then1=openStatement
-    { $resIf = new Conditional($expr1.expr,$then1.resStatement); $resIf.line=$IF.getLine(); }
+    { $resIf = new Conditional($expr1.expr,$then1.resStatement,new Skip()); }
     | IF LPAR expr2=expression RPAR then2=closedStatement ELSE elze=openStatement
     { $resIf = new Conditional($expr2.expr,$then2.resStatement,$elze.resStatement); $resIf.line=$IF.getLine(); }
     | IF LPAR expr3=expression RPAR then3=singleStatement
@@ -297,35 +297,19 @@ ifOpen returns [Conditional resIf]:
 
 singleStatement returns [Statement oneStatement]:
 
-    ass=assign { $oneStatement = $ass.assignment; $oneStatement.line=$ass.start.getLine();  }
-    | brk=breakRole { $oneStatement = $brk.resBreak; $oneStatement.line=$brk.start.getLine();  }
-    | cnt=continueRole { $oneStatement = $cnt.resContinue; $oneStatement.line=$cnt.start.getLine();  }
-    | dc=dec { $oneStatement = $dc.resDec; $oneStatement.line=$dc.start.getLine();  }
-    | ic=inc { $oneStatement = $ic.resInc; $oneStatement.line=$ic.start.getLine();  }
-    | prt=printRole { $oneStatement = $prt.resPrint; $oneStatement.line=$prt.start.getLine();  }
-    | rtn=returnRole { $oneStatement = $rtn.resReturn; $oneStatement.line=$rtn.start.getLine();  }
-    | dcl=declaration { $oneStatement = $dcl.defList; $oneStatement.line=$dcl.start.getLine(); }
-    | sState=singleStatement SEMICOLON { $oneStatement = $sState.oneStatement; $oneStatement.line=$SEMICOLON.getLine(); }
-    |
-
-    //lamda                                 line???????
-    { $oneStatement = new Skip(); }
-
-    ;
-
-newArray returns[NewArray resArray]:
-    NEW sType=singleType LBER expr=expression RBER
-    { $resArray =  new NewArray(sType.resType,expr.expr); $resArray.line=$NEW.getLine(); }
-    ;
-
-newClassInstance returns[NewClassInstance resCI]:
-    NEW id=ID LBER RBER
-    { $resCI=new NewClassInstance(new Instance(id.text));
-     $resCI.line=$NEW.getLine(); }
+    ass=assign { $oneStatement = $ass.assignment; }
+    | brk=breakRole { $oneStatement = $brk.resBreak; }
+    | cnt=continueRole { $oneStatement = $cnt.resContinue; }
+    | dc=dec { $oneStatement = $dc.resDec; }
+    | ic=inc { $oneStatement = $ic.resInc; }
+    | prt=printRole { $oneStatement = $prt.resPrint; }
+    | rtn=returnRole { $oneStatement = $rtn.resReturn; }
+    | dcl=declaration { $oneStatement = $dcl.defList; }
+    | SEMICOLON { $oneStatement = new Skip(); }
     ;
 
 declaration returns [LocalVarsDefinitions defList]:
-    VAR def=assignID list=assignListStar
+    VAR def=assignID list=assignListStar SEMICOLON
     {
         $defList = $list.defList;
         $defList.addVarDefinition($def.definition);
@@ -337,7 +321,8 @@ assignListStar returns [LocalVarsDefinitions defList]:
     COMMA def=assignID list=assignListStar
      {
         $defList = $list.defList;
-        $defList.addVarDefinition($def.definition) $defList.line=$COMMA.getLine();;
+        $defList.addVarDefinition($def.definition);
+        $defList.line=$COMMA.getLine();
      }
      |
      //lamda
@@ -351,9 +336,8 @@ assignID returns [LocalVarDef definition]:
     ;
 
 assign returns [Assign assignment]:
-    expression1=expression EQUAL expression2=expression
-    { $assignment = new Assign($expression1.expr,$expression2.expr);
-     assignment.line=$expression1.start.getLine(); }
+    expression1=expression EQUAL expression2=expression SEMICOLON
+    { $assignment = new Assign($expression1.expr,$expression2.expr); }
     ;
 
 block returns [Block resBlock]:
@@ -369,32 +353,32 @@ block returns [Block resBlock]:
     ;
 
 breakRole returns [Break resBreak]:
-    BREAK
+    BREAK SEMICOLON
     { $resBreak = new Break(); $resBreak.line=$BREAK.getLine(); }
     ;
 
 continueRole returns [Continue resContinue]:
-    CONTINUE
+    CONTINUE SEMICOLON
     { $resContinue = new Continue(); $resContinue.line=$CONTINUE.getLine(); }
     ;
 
 dec returns[DecStatement resDec]:
-    expr=expression MINUS MINUS
+    expr=expression MINUS MINUS SEMICOLON
     { $resDec = new DecStatement($expr.expr); $resDec.line=$expr.start.getLine();}
     ;
 
 inc returns[IncStatement resInc] :
-    expr=expression PLUS PLUS
+    expr=expression PLUS PLUS SEMICOLON
     { $resInc = new IncStatement($expr.expr); $resInc.line=$expr.start.getLine(); }
     ;
 
 printRole returns [PrintLine resPrint]:
-    PRINT LPAR arg=expression RPAR
+    PRINT LPAR arg=expression RPAR SEMICOLON
     { $resPrint = new PrintLine($arg.expr); $resPrint.line=$PRINT.getLine(); }
     ;
 
 returnRole returns [Return resReturn]:
-    RETURN expr=expression
+    RETURN expr=expression SEMICOLON
     { $resReturn =  new Return($expr.expr); $resReturn.line=$RETURN.getLine(); }
     ;
 
@@ -464,9 +448,20 @@ singleExpression returns [Expression expr]:
     | stringCons = STRINGCONST  { $expr = new StringValue($stringCons.text); $expr.line=$stringCons.getLine(); }
     | bool = BoolValue { $expr = new BoolValue(($bool.text == "false") ? false : true ); $expr.line=$bool.getLine();}
     | na=newArray { $expr= $na.resArray; $expr.line=$na.start.getLine();}                 ////////////dout
-    | nci=newClassInstance { $expr = $nci.resCI; $expr.line=$nci.start.getLine();}           ////////////dout
+    | nci=newClassInstance { $expr = $nci.resCI; $expr.line=$nci.start.getLine();}
 //    | arrayC=arrayCall
     ;
+
+newArray returns[NewArray resArray]:
+    NEW sType=singleType LBER expr=expression RBER
+    { $resArray =  new NewArray($sType.resType,$expr.expr);    }
+    ;
+
+newClassInstance returns[NewClassInstance resCI]:
+    NEW id=ID LBER RBER
+    { $resCI=new NewClassInstance(new Identifier($id.text)); }
+    ;
+
 //
 //arrayCall returns[ArrayCall resAC]:
 //        instance=expression LBER index=expression RBER
@@ -477,13 +472,9 @@ MAIN:
     'main'
     ;
 
-ID:
-    LETTER (LETTER | NUMBER)*
-    ;
-
-LETTER:
-    [a-z] | [A-Z]
-    ;
+//LETTER:
+//    [a-z] | [A-Z]
+//    ;
 
 
 STRINGCONST:
@@ -494,9 +485,9 @@ NUMBER:
     [1-9][0-9]* | [0]
     ;
 
-CHARACTER:
-    [a-z] | [A-Z] | [-] | [+]
-    ;
+//CHARACTER:
+//    [a-z] | [A-Z] | [-] | [+]
+//    ;
 
 WS:
     [ \t\n] -> skip
@@ -538,11 +529,11 @@ STRING: 'string' ;
 
 CLASS: 'class' ;
 
-FUNCTION: 'funcion' ;
+FUNCTION: 'function' ;
 
 SELF: 'self' ;
 
-FIELD: 'FIELD' ;
+FIELD: 'field' ;
 
 IF: 'if' ;
 
@@ -591,3 +582,7 @@ LBER: '[' ;
 RBER: ']' ;
 
 SEMICOLON: ';' ;
+
+ID:
+    [a-zA-Z][a-zA-Z]*
+    ;
