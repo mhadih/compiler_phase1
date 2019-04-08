@@ -51,7 +51,7 @@ classStar returns [ArrayList<ClassDeclaration> classList]:
     {
         $classList = $list.classList;
         $classList.add($newClass.resClass);
-        $classList.line=$list.start.getLine();
+//        $classList.line=$list.start.getLine();
     }
     |
     //lamda
@@ -143,7 +143,7 @@ argumentList returns [ArrayList<ParameterDeclaration> args]:
     {
         $args = $list.argList;
         $args.add($arg.arg);
-        $args.line=$arg.start.getLine();
+     //   $args.line=$arg.start.getLine();
     }
     |
     //lamda//for empty argument list
@@ -155,7 +155,7 @@ argumentStar returns [ArrayList<ParameterDeclaration> argList]:
     {
         $argList = $args.argList;
         $argList.add($arg.arg);
-        $argList.line=$COMMA.getLine();
+   //     $argList.line=$COMMA.getLine();
     }
     |
     //lamda
@@ -178,14 +178,14 @@ field returns [List<FieldDeclaration> resField]:
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
             $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType,$access.access));
-        $resField.line=$FIELD.getLine();
+       // $resField.line=$FIELD.getLine();
     }
     | FIELD vars=idPlus resType=type SEMICOLON
     {
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
             $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType));
-        $resField.line=$FIELD.getLine();
+      //  $resField.line=$FIELD.getLine();
     }
     ;
 
@@ -196,12 +196,14 @@ access_modifier returns [AccessModifier access]:
 
 idPlus returns [ArrayList<Identifier> identifiers]:
     name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text));
-    $identifiers.line=$ID.getLine(); }
+    //$identifiers.line=$ID.getLine();
+    }
     ;
 
 idStar returns [ArrayList<Identifier> identifiers]:
     COMMA name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text));
-     $identifiers.line=$ID.getLine(); } ////////////no line
+     //$identifiers.line=$ID.getLine();
+      } ////////////no line
     |
     //lamda
     { $identifiers = new ArrayList<>(); }
@@ -235,7 +237,7 @@ funcBody returns [ArrayList<Statement> statements] locals [Statement tmpStatemen
     {
         $statements = $statement1.statements;
         System.out.println($statements);
-        $statements.line=$statement1.start.getLine();
+       // $statements.line=$statement1.start.getLine();
     }
     ;
 
@@ -247,7 +249,7 @@ statementStar returns [ArrayList<Statement> statements]
     (statement1=statement)*
     {
         $statements.add($statement1.resStatement);
-        $statements.line=$statement1.start.getLine();
+     //   $statements.line=$statement1.start.getLine();
     }
     ;
 
@@ -313,7 +315,7 @@ declaration returns [LocalVarsDefinitions defList]:
     {
         $defList = $list.defList;
         $defList.addVarDefinition($def.definition);
-        $defList.line=$VAR.getLine();
+      //  $defList.line=$VAR.getLine();
     }
     ;
 
@@ -322,7 +324,7 @@ assignListStar returns [LocalVarsDefinitions defList]:
      {
         $defList = $list.defList;
         $defList.addVarDefinition($def.definition);
-        $defList.line=$COMMA.getLine();
+      //  $defList.line=$COMMA.getLine();
      }
      |
      //lamda
@@ -437,8 +439,40 @@ expressionL6 returns [Expression expr]:
     ;
 
 expressionL7 returns [Expression expr]:
-    sExpr=singleExpression { $expr = $sExpr.expr; $expr.line=$sExpr.start.getLine(); }
+    calls=call { $expr = $calls.resExp; $expr.line=$calls.start.getLine(); }
     |LPAR inExpr=expression RPAR { $expr = $inExpr.expr; $expr.line=$inExpr.start.getLine(); }
+    | sExp=singleExpression { $expr = $sExp.expr; $expr.line= $sExp.start.getLine(); }
+    ;
+
+call returns [Expression resExp]:
+    call1=callItem { $resExp = $call1.resExp; }
+    ( '.' call2=callItem { $resExp = FieldCall($resExp, call2.firstIdnt); })*
+    ;
+
+callItem returns [Expression resExp, Identifier firstIdnt]:
+    methodSeq { $resExp = $methodSeq.resExp; $firstIdnt = $methodSeq.firstIdnt; }
+    ( '[' expression ']' { $resExp = new ArrayCall($resExp, $expression.expr); } | )
+;
+
+methodSeq returns [Expression resExp, Identifier firstIdnt]:
+    name=ID { $resExp = new Identifier(name.text); $firstIdnt = $resExp; }
+    methodStar[ $resExp ]
+    {
+        if ($methodStar.resMethod!=null)
+            $resExp = $methodStar.resMethod;
+    }
+;
+
+methodStar[Expression inst] returns [MethodCall resMethod]:
+    '.'
+    (name1=ID '(' ')' { $resMethod = new MethodCall(inst, name1.text); }
+    | name2=ID '(' { $resMethod = new MethodCall(inst, name2.text); }
+        expr1=expression { $resMethod.addArg($expr1.expr); }
+        (',' expr2=expression { $resMethod.addArg($expr2.expr); } )* ')' )
+    mthds=methodStar[ $resMethod ]
+    { $resMethod = mths.resMethod; }
+    |
+    { $resMethod =  null; }
     ;
 
 
