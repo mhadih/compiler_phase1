@@ -51,7 +51,7 @@ classStar returns [ArrayList<ClassDeclaration> classList]:
     {
         $classList = $list.classList;
         $classList.add($newClass.resClass);
-//        $classList.line= $list.start.getLine();
+        $classList.line=$list.start.getLine();
     }
     |
     //lamda
@@ -252,21 +252,21 @@ statementStar returns [ArrayList<Statement> statements]
     ;
 
 statement returns [Statement resStatement]:
-    statement1 = openStatement { $resStatement = $statement1.resStatement; $resStatement.line= $statemet1.start.getLine();}
-    | statement2 = closedStatement { $resStatement = $statement2.resStatement; }
+    statement1 = openStatement { $resStatement = $statement1.resStatement; $resStatement.line= $statement1.start.getLine();}
+    | statement2 = closedStatement { $resStatement = $statement2.resStatement; $resStatement.line= $statement2.start.getLine(); }
     ;
 
 openStatement returns [Statement resStatement]:
-    statement1=block { $resStatement = $statement1.resBlock; }
-    | statement2=ifOpen { $resStatement = $statement2.resIf; }
-    | statement3=whileOpen { $resStatement = $statement3.resWhile; }
+    statement1 = block { $resStatement = $statement1.resBlock; $resStatement.line=$statement1.start.getLine(); }
+    | statement2=ifOpen { $resStatement = $statement2.resIf; $resStatement.line=$statement2.start.getLine(); }
+    | statement3=whileOpen { $resStatement = $statement3.resWhile; $resStatement.line=$statement3.start.getLine(); }
     ;
 
 closedStatement returns [Statement resStatement]:
-    sState=singleStatement { $resStatement = $sState.oneStatement; }
-    | statement1=block { $resStatement = $statement1.resBlock; }
-    | statement2=ifClose { $resStatement = $statement2.resIf; }
-    | statement3=whileClose { $resStatement = $statement3.resWhile; }
+    sState=singleStatement { $resStatement = $sState.oneStatement; $resStatement.line=$sState.start.getLine(); }
+    | statement1 = block { $resStatement = $statement1.resBlock; $resStatement.line=$statement1.start.getLine(); }
+    | statement2=ifClose { $resStatement = $statement2.resIf; $resStatement.line=$statement2.start.getLine(); }
+    | statement3=whileClose { $resStatement = $statement3.resWhile; $resStatement.line=$statement3.start.getLine(); }
     ;
 
 whileOpen returns [While resWhile]:
@@ -288,7 +288,7 @@ ifClose returns [Conditional resIf]:
 
 ifOpen returns [Conditional resIf]:
     IF LPAR expr1=expression RPAR then1=openStatement
-    { $resIf = new Conditional($expr1.expr,$then1.resStatement,new Skip()); }
+    { $resIf = new Conditional($expr1.expr,$then1.resStatement,new Skip()); $resIf.line=$IF.getLine(); }
     | IF LPAR expr2=expression RPAR then2=closedStatement ELSE elze=openStatement
     { $resIf = new Conditional($expr2.expr,$then2.resStatement,$elze.resStatement); $resIf.line=$IF.getLine(); }
     | IF LPAR expr3=expression RPAR then3=singleStatement
