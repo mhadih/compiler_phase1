@@ -51,7 +51,7 @@ classStar returns [ArrayList<ClassDeclaration> classList]:
     {
         $classList = $list.classList;
         $classList.add($newClass.resClass);
-       // $classList.line=$list.start.getLine();
+//        $classList.line=$list.start.getLine();
     }
     |
     //lamda
