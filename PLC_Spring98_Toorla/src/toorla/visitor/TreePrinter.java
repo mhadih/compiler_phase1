@@ -419,7 +419,9 @@ public class TreePrinter implements Visitor<Void> {
         Identifier parentName = entryClassDeclaration.getParentName();
         ArrayList <ClassMemberDeclaration> member = entryClassDeclaration.getClassMembers();
         name.accept(this);
-        parentName.accept(this);
+        if(parentName != null) {
+            parentName.accept(this);
+        }
         for (int i=0; i < member.size();i++)
         {
             member.get(i).accept(this);
@@ -470,7 +472,11 @@ public class TreePrinter implements Visitor<Void> {
         name.accept(this);
         for (int i = 0; i < args.size(); i++)
             System.out.println("( "+ args.get(i).accept(this) + " )");
+
+        if(returntype != null)
+        {
         System.out.println(returntype.toString());
+        }
         System.out.println("( ");
         for (int i = 0; i < body.size(); i++)
             body.get(i).accept(this);
