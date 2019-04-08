@@ -447,14 +447,14 @@ singleExpression returns [Expression expr]:
     | number = NUMBER { $expr = new IntValue($number.int); $expr.line=$number.getLine();}
     | stringCons = STRINGCONST  { $expr = new StringValue($stringCons.text); $expr.line=$stringCons.getLine(); }
     | bool = BoolValue { $expr = new BoolValue(($bool.text == "false") ? false : true ); $expr.line=$bool.getLine();}
-    | na=newArray { $expr= $na.resArray; $expr.line=$na.start.getLine();}                 ////////////dout
+    | na=newArray { $expr= $na.resArray; $expr.line=$na.start.getLine();}
     | nci=newClassInstance { $expr = $nci.resCI; $expr.line=$nci.start.getLine();}
 //    | arrayC=arrayCall
     ;
 
 newArray returns[NewArray resArray]:
     NEW sType=singleType LBER expr=expression RBER
-    { $resArray =  new NewArray($sType.resType,$expr.expr);    }
+    { $resArray =  new NewArray($sType.resType,$expr.expr); }
     ;
 
 newClassInstance returns[NewClassInstance resCI]:

@@ -1,36 +1,41 @@
-entry class MainClass:
-	private field serri int;
-	public field aashkar , penhan string;
-	field makhfi MoonClass;
-	public function main() returns int:
-		var aaghaz=1 , anjaam = 2 , makhfi = 3 , penhan = "hello";
-		begin
-		    var makhfi = "hello" , myVar = "salam";
-		    print( "makhfi is hello in this scope" );
-		    print( makhfi );
-		    break;
-		end
-		print( "makhfi is integer again in this scope" );
-		print( makhfi );
-        	serri = 2;
-		while(aaghaz<anjaam)begin
-			print(aaghaz*3%2);
-			a = new int[ 2 ];
-			aaghaz++;
-		end
-		if( a == 2 ) return 1;
-		return 0;
+
+class felanJaa:
+	function bedeEsmRo() returns string:
+		return esm;
 	end
-	private function callMoon(param:int) returns string:
-		var myVar = makhfi;
-		return "ey nam to behtarin saraghaz be nam to nameh key konam baz";
+	field esm string;
+	function hasProfitForMe(you:felanAagha)returns boolean:
+		if(felanAagha.makan=="oonjaa" || felanAagha.makan=="degarJaa")
+			return true;
+		return false;
 	end
-	private field myName Class;
 end
-class MoonClass inherits MainClass:
-	function callMoon(when:int) returns int:
-		print("moon eclipes:");
-		print(param);
+
+class felanAagha inherits felanJaa:
+	public field makan string;
+	function boroBe(jaa:felanJaa) returns int:
+		esmesh=jaa.bedeEsmRo();
+		print("raftam be ");
+		if( esmesh <> 2 ) begin
+		    return 0;
+		end
+		else return 1;
+		print(esmesh);
+	end
+end
+entry class donyaa:
+	private field felani felanAagha;
+	private field felanJaaHaa felanJaa[];
+	function main() returns int:
+		felani=new felanAagha();
+		felanJaaHaa=new felanJaa[20];
+		i=0;
+		while(i<felanJaaHaa.length)begin
+			if(!felanJaaHaa[i].hasProfitForMe(felani , i + 1 * 2))
+				continue;
+			var a = felani.boroBe(felanJaaHaa[i]);
+			i++;
+		end
 		return 0;
 	end
 end

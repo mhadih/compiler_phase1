@@ -17,11 +17,11 @@ public class ToorlaCompiler {
 
 
         ToorlaParser toorlaParser = new ToorlaParser( tokenStream );
-////        Program toorlaASTCode = toorlaParser.program().mProgram;
-//        Expression toorlaASTCode = toorlaParser.program().expression;
-//        System.out.println(toorlaASTCode);
-//
-//        Visitor<Void> treePrinter = new TreePrinter();
-//        toorlaASTCode.accept( treePrinter );
+        Program toorlaASTCode = toorlaParser.program().resProgram;
+//        Expression toorlaASTCode = toorlaParser.program().resProgram;
+        System.out.println(toorlaASTCode);
+
+        Visitor<Void> treePrinter = new TreePrinter();
+        toorlaASTCode.accept( treePrinter );
     }
 }
