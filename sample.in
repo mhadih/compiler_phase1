@@ -1,41 +1,45 @@
-
-class felanJaa:
-	function bedeEsmRo() returns string:
-		return esm;
-	end
-	field esm string;
-	function hasProfitForMe(you:felanAagha)returns boolean:
-		if(felanAagha.makan=="oonjaa" || felanAagha.makan=="degarJaa")
-			return true;
-		return false;
-	end
-end
-
-class felanAagha inherits felanJaa:
-	public field makan string;
-	function boroBe(jaa:felanJaa) returns int:
-		esmesh=jaa.bedeEsmRo();
-		print("raftam be ");
-		if( esmesh <> 2 ) begin
-		    return 0;
-		end
-		else return 1;
-		print(esmesh);
-	end
-end
-entry class donyaa:
-	private field felani felanAagha;
-	private field felanJaaHaa felanJaa[];
+/**
+*
+*  An example of Toorla
+*
+**/
+class father:
 	function main() returns int:
-		felani=new felanAagha();
-		felanJaaHaa=new felanJaa[20];
 		i=0;
-		while(i<felanJaaHaa.length)begin
-			if(!felanJaaHaa[i].hasProfitForMe(felani , i + 1 * 2))
-				continue;
-			var a = felani.boroBe(felanJaaHaa[i]);
+		while(i<11)begin
+			if(i%3==0)
+				print("3k");
+			elif(i%3==1)
+				print("3k+1");
+			else
+				print("3k+2");
 			i++;
 		end
 		return 0;
+	end
+end
+entry class child inherits father:
+	field goods int[];
+	function length() returns int:
+		return goods.length;
+	end
+	function populate() returns string:
+		goods=new int[10];
+		i=0;
+		var j=0;
+		if( a == 1 )
+		    if( a == 2 )
+		        return 0;
+		    else
+		        return 1;
+		return "hello";
+		while( true );;;
+		while(true)begin
+			goods[i]=j*3;
+			i++;
+			return "papa";
+			if(i==10)
+				break;
+		end
 	end
 end

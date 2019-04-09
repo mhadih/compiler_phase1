@@ -69,6 +69,7 @@ public class TreePrinter implements Visitor<Void> {
         Statement elze = conditional.getElseStatement();
         condition.accept(this);
         then.accept(this);
+//        if(elze != null)
         elze.accept(this);
         System.out.println(" )");
         return null;
@@ -402,7 +403,8 @@ public class TreePrinter implements Visitor<Void> {
         Identifier parentName = classDeclaration.getParentName();
         ArrayList <ClassMemberDeclaration> member = classDeclaration.getClassMembers();
         name.accept(this);
-        parentName.accept(this);
+        if (parentName != null)
+            parentName.accept(this);
         for (int i=0; i < member.size();i++)
         {
             member.get(i).accept(this);
@@ -414,7 +416,7 @@ public class TreePrinter implements Visitor<Void> {
     @Override
     public Void visit(EntryClassDeclaration entryClassDeclaration)
     {
-        System.out.println("( class entry ");
+        System.out.println("( entry  class ");
         Identifier name = entryClassDeclaration.getName();
         Identifier parentName = entryClassDeclaration.getParentName();
         ArrayList <ClassMemberDeclaration> member = entryClassDeclaration.getClassMembers();
@@ -478,8 +480,9 @@ public class TreePrinter implements Visitor<Void> {
         System.out.println(returntype.toString());
         }
         System.out.println("( ");
-        for (int i = 0; i < body.size(); i++)
-            body.get(i).accept(this);
+        if(body.size() != 0)
+            for (int i = 0; i < body.size(); i++)
+                body.get(i).accept(this);
         System.out.println(" )");
         System.out.println(" )");
         return null;

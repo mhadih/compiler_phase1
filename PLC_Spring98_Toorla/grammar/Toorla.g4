@@ -21,51 +21,22 @@ grammar Toorla;
 }
 
 
-@members
-{
-    int counter;
-    void print()
-    {
-        System.out.println( "hello" );
-    }
-}
-
-program returns [Program resProgram] locals [ArrayList<ClassDeclaration> tmpList] :
-    list1=classStar
-    newClass=entryClass
-    list2=classStar
-    {
-        $tmpList = $list1.classList;
-        $tmpList.add($newClass.resClass);
-        $tmpList.addAll($list2.classList);
+program returns [Program resProgram] locals [ArrayList<ClassDeclaration> tmpList]
+    @init{
         $resProgram = new Program();
-        for (int i = 0; i<$tmpList.size(); i++)
-            $resProgram.addClass($tmpList.get(i));
-        $resProgram.line=$list1.start.getLine();
-    }
-    ;
+    } :
 
-classStar returns [ArrayList<ClassDeclaration> classList]:
-    newClass=classRole
-    list=classStar
-    {
-        $classList = $list.classList;
-        $classList.add($newClass.resClass);
-//        $classList.line=$list.start.getLine();
-    }
-    |
-    //lamda
-    { $classList = new ArrayList<>(); }
+    ( class1=classRole
+        { $resProgram.addClass($class1.resClass); } ) *
+    class2=entryClass { $resProgram.addClass($class2.resClass); }
+    ( class3=classRole
+    { $resProgram.addClass($class3.resClass); } )*
     ;
 
 classRole returns [ClassDeclaration resClass]:                                                              //////need work
     (CLASS name=ID COLON { $resClass = new ClassDeclaration( new Identifier($name.text) ); $resClass.line=$CLASS.getLine(); }
     | CLASS name=ID INHERITS parent=ID COLON { $resClass = new ClassDeclaration( new Identifier($name.text), new Identifier($parent.text) );
         $resClass.line=$CLASS.getLine();} )
-//        body=classItemStar
-//        {
-//            $resClass.members = $body.members;
-//        }
           (
           variables=field { $resClass.addFieldsDeclarations($variables.resField); $resClass.line=$variables.start.getLine(); }
           |
@@ -78,47 +49,30 @@ entryClass returns [EntryClassDeclaration resClass]:
     (ENTRY  CLASS name=ID COLON { $resClass = new EntryClassDeclaration( new Identifier($name.text) ); $resClass.line= $ENTRY.getLine();}
     | ENTRY  CLASS name=ID INHERITS parent=ID COLON { $resClass = new EntryClassDeclaration( new Identifier($name.text), new Identifier($parent.text) );
      $resClass.line= $ENTRY.getLine();} )
-//        list1=classItemStar
-//        main=mainFunc
-//        list2=classItemStar
-//        {
-//            $resClass.members = $list1.members;
-//            $resClass.members.add($main.main);
-//            $resClass.members.addAll($list2.members);
-//        }
-//       }
+
          (
-            variables=field { $resClass.addFieldsDeclarations($variables.resField); $resClass.line=$variables.start.getLine(); }
+            variables=field { $resClass.addFieldsDeclarations($variables.resField); $resClass.line=$variables.start.getLine();
+            }
             |
-            func=method { $resClass.addMethodDeclaration($func.resMethod); $resClass.line=$func.start.getLine(); }
-            |
-            main=mainFunc { System.out.println($main.main); $resClass.addMethodDeclaration($main.main); System.out.println("333");
-             $resClass.line=$main.start.getLine();}
+            func=method { $resClass.addMethodDeclaration($func.resMethod); $resClass.line=$func.start.getLine();
+            }
+//            |
+//            main=mainFunc { $resClass.addMethodDeclaration($main.main);
+//             $resClass.line=$main.start.getLine(); }
          )*
      END
      ;
 
-mainFunc returns [MethodDeclaration main]:                           /////need work
-    (PUBLIC)? FUNCTION MAIN LPAR RPAR RETURNS INT COLON
-        body=funcBody
-    {
-        System.out.println("111");
-        $main = new MethodDeclaration(new Identifier("main"));
-        for (int i = 0; i<$body.statements.size(); i++)
-            $main.addStatement((Statement)$body.statements.get(i));
-        System.out.println("222");
-        $main.line=$FUNCTION.getLine();
-    }
-    END
-    ;
-
-//classItemStar returns [ArrayList<ClassMemberDeclaration> members]:
-//    variables=field list=classItemStar { $members = $list.members; $members.addAll(variables.resField); }
-//    |
-//    func=method list=classItemStar { $members = $list.members; $members.add(func.resMethod); }
-//    |
-//    //lamda
-//    { $members = new ArrayList<>(); }
+//mainFunc returns [MethodDeclaration main]:                           /////need work
+//    (PUBLIC)? FUNCTION 'main' LPAR RPAR RETURNS INT COLON
+//        body=funcBody
+//    {
+//        $main = new MethodDeclaration(new Identifier("main"));
+//        for (int i = 0; i<$body.statements.size(); i++)
+//            $main.addStatement((Statement)$body.statements.get(i));
+//        $main.line=$FUNCTION.getLine();
+//    }
+//    END
 //    ;
 
 method returns [MethodDeclaration resMethod]:
@@ -138,37 +92,22 @@ method returns [MethodDeclaration resMethod]:
     }
     ;
 
-argumentList returns [ArrayList<ParameterDeclaration> args]:
-    arg=argument list=argumentStar
+argumentList returns [ArrayList<ParameterDeclaration> args]
+    @init
     {
-        $args = $list.argList;
-        $args.add($arg.arg);
-//        $args.line=$arg.start.getLine();
-    }
+        $args = new ArrayList<>();
+    }:
+    arg1=argument { $args.add($arg1.arg); }
+    ( COMMA arg2=argument
+        { $args.add($arg2.arg); } )*
     |
-    //lamda//for empty argument list
-    { $args = new ArrayList<>(); }
-    ;
-
-argumentStar returns [ArrayList<ParameterDeclaration> argList]:
-    COMMA arg=argument args=argumentStar
-    {
-        $argList = $args.argList;
-        $argList.add($arg.arg);
-   //     $argList.line=$COMMA.getLine();
-    }
-    |
-    //lamda
-    {
-        $argList = new ArrayList<>();
-    }
+    //lamda //for empty argument list
     ;
 
 argument returns [ParameterDeclaration arg]:
     name=ID COLON resType=type
     {
         $arg = new ParameterDeclaration(new Identifier($name.text), $resType.resType);
-//        $arg.line=$ID.getLine();
     }
     ;
 
@@ -178,14 +117,12 @@ field returns [List<FieldDeclaration> resField]:
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
             $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType,$access.access));
-//        $resField.line=$FIELD.getLine();
     }
     | FIELD vars=idPlus resType=type SEMICOLON
     {
         $resField = new ArrayList<>();
         for (int i = 0; i<$vars.identifiers.size(); i++)
             $resField.add(new FieldDeclaration($vars.identifiers.get(i),$resType.resType));
-//        $resField.line=$FIELD.getLine();
     }
     ;
 
@@ -194,19 +131,13 @@ access_modifier returns [AccessModifier access]:
     | PRIVATE { $access = AccessModifier.ACCESS_MODIFIER_PRIVATE;}
     ;
 
-idPlus returns [ArrayList<Identifier> identifiers]:
-    name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text));
-    //$identifiers.line=$ID.getLine();
-     }
-    ;
-
-idStar returns [ArrayList<Identifier> identifiers]:
-    COMMA name=ID list=idStar { $identifiers = $list.identifiers; $identifiers.add(new Identifier($name.text));
-     //$identifiers.line=$ID.getLine();
-      } ////////////no line
-    |
-    //lamda
-    { $identifiers = new ArrayList<>(); }
+idPlus returns [ArrayList<Identifier> identifiers]
+    @init
+    {
+        $identifiers = new ArrayList<>();
+    }:
+    name1=ID { $identifiers.add(new Identifier($name1.text)); }
+    ( COMMA name2=ID { $identifiers.add(new Identifier($name2.text)); } )*
     ;
 
 primitiveType returns [SingleType resType]:
@@ -222,7 +153,7 @@ singleType returns [SingleType resType]:
 
 nonPrimitiveType returns [Type resType]:
     className=ID { $resType = new UserDefinedType( new ClassDeclaration( new Identifier($className.text)));}
-    | userDefined=singleType { $resType = new ArrayType($userDefined.resType); }
+    | userDefined=singleType '[' ']' { $resType = new ArrayType($userDefined.resType); }
     ;
 
 type returns [Type resType]:
@@ -230,12 +161,11 @@ type returns [Type resType]:
     | nnprmType=nonPrimitiveType { $resType = $nnprmType.resType; }
     ;
 
-funcBody returns [ArrayList<Statement> statements] locals [Statement tmpStatement]:
+
+funcBody returns [ArrayList<Statement> statements]:
      statement1 = statementStar
     {
         $statements = $statement1.statements;
-        System.out.println($statements);
-     //   $statements.line=$statement1.start.getLine();
     }
     ;
 
@@ -244,11 +174,10 @@ statementStar returns [ArrayList<Statement> statements]
         $statements= new ArrayList<>();
     }
     :
-    (statement1=statement)*
+    (statement1=statement
     {
-        $statements.add($statement1.resStatement);
-//        $statements.line=$statement1.start.getLine();
-    }
+          $statements.add($statement1.resStatement);
+    } )*
     ;
 
 statement returns [Statement resStatement]:
@@ -281,18 +210,40 @@ whileClose returns [While resWhile]:
      { $resWhile = new While($expr.expr,$state.resStatement); $resWhile.line=$WHILE.getLine(); }
     ;
 
-ifClose returns [Conditional resIf]:
-    IF LPAR expr=expression RPAR then=closedStatement ELSE elze=closedStatement
-    { $resIf = new Conditional($expr.expr,$then.resStatement,$elze.resStatement); $resIf.line=$IF.getLine(); }
+ifClose returns [Conditional resIf] locals [Conditional tmpCon]:
+    IF LPAR expr=expression RPAR then=closedStatement
+    elifAndElsePlusClose
+    { $resIf = new Conditional($expr.expr,$then.resStatement,$elifAndElsePlusClose.resIf); }
     ;
 
 ifOpen returns [Conditional resIf]:
-    IF LPAR expr1=expression RPAR then1=openStatement
+    IF LPAR expr1=expression RPAR then1=statement
     { $resIf = new Conditional($expr1.expr,$then1.resStatement,new Skip()); $resIf.line=$IF.getLine(); }
-    | IF LPAR expr2=expression RPAR then2=closedStatement ELSE elze=openStatement
-    { $resIf = new Conditional($expr2.expr,$then2.resStatement,$elze.resStatement); $resIf.line=$IF.getLine(); }
-    | IF LPAR expr3=expression RPAR then3=singleStatement
-    { $resIf = new Conditional($expr3.expr,$then3.oneStatement); $resIf.line=$IF.getLine();  }
+    | IF LPAR expr2=expression RPAR then2=closedStatement
+    elifAndElsePlusOpen
+    { $resIf = new Conditional($expr2.expr,$then2.resStatement,$elifAndElsePlusOpen.resIf); $resIf.line=$IF.getLine(); }
+    ;
+
+elifAndElsePlusClose returns [Statement resIf]:
+    'elif' '(' expression ')'
+        closedStatement
+    elifAndElsePlusClose
+    { $resIf = new Conditional($expression.expr,$closedStatement.resStatement,$elifAndElsePlusClose.resIf); }
+    |
+    ( 'elif' '(' expression ')'
+        closedStatement { $resIf = new Conditional($expression.expr,$closedStatement.resStatement,new Skip()); }
+        | 'else' closedStatement { $resIf = $closedStatement.resStatement; } )
+    ;
+
+elifAndElsePlusOpen returns [Statement resIf]:
+    'elif' '(' expression ')'
+        closedStatement
+    elifAndElsePlusOpen
+    { $resIf = new Conditional($expression.expr,$closedStatement.resStatement,$elifAndElsePlusOpen.resIf); }
+    |
+    ( 'elif' '(' expression ')'
+        openStatement { $resIf = new Conditional($expression.expr,$openStatement.resStatement,new Skip()); }
+        | 'else' openStatement { $resIf = $openStatement.resStatement; } )
     ;
 
 singleStatement returns [Statement oneStatement]:
@@ -308,25 +259,15 @@ singleStatement returns [Statement oneStatement]:
     | SEMICOLON { $oneStatement = new Skip(); }
     ;
 
-declaration returns [LocalVarsDefinitions defList]:
-    VAR def=assignID list=assignListStar SEMICOLON
+declaration returns [LocalVarsDefinitions defList]
+    @init
     {
-        $defList = $list.defList;
-        $defList.addVarDefinition($def.definition);
-    //    $defList.line=$VAR.getLine();
-    }
-    ;
-
-assignListStar returns [LocalVarsDefinitions defList]:
-    COMMA def=assignID list=assignListStar
-     {
-        $defList = $list.defList;
-        $defList.addVarDefinition($def.definition);
-      //  $defList.line=$COMMA.getLine();
-     }
-     |
-     //lamda
-     { $defList = new LocalVarsDefinitions(); }
+        $defList = new LocalVarsDefinitions();
+    }:
+    VAR def1=assignID { $defList.addVarDefinition($def1.definition); }
+    ( COMMA def2=assignID
+        {  $defList.addVarDefinition($def2.definition); } )*
+    SEMICOLON
     ;
 
 assignID returns [LocalVarDef definition]:
@@ -344,7 +285,6 @@ block returns [Block resBlock]:
     BEGIN
         statement1=statementStar
         {
-//            $resBlock.line=$statement1.start.getLine();
             $resBlock = new Block();
             for (int i = 0; i<$statement1.statements.size(); i++)
                 $resBlock.addStatement($statement1.statements.get(i));
@@ -444,7 +384,7 @@ expressionL7 returns [Expression expr]:
 
 call returns [Expression resExp]:
     call1=callItem { $resExp = $call1.resExp; }
-    ( '.' call2=callItem { $resExp = FieldCall($resExp, call2.firstIdnt); })*
+    ( '.' call2=callItem { $resExp = new FieldCall($resExp, $call2.firstIdnt); })*
     ;
 
 callItem returns [Expression resExp, Identifier firstIdnt]:
@@ -453,7 +393,7 @@ callItem returns [Expression resExp, Identifier firstIdnt]:
 ;
 
 methodSeq returns [Expression resExp, Identifier firstIdnt]:
-    name=ID { $resExp = new Identifier(name.text); $firstIdnt = $resExp; }
+    name=ID { $resExp = $firstIdnt = new Identifier($name.text); }
     methodStar[ $resExp ]
     {
         if ($methodStar.resMethod!=null)
@@ -463,24 +403,24 @@ methodSeq returns [Expression resExp, Identifier firstIdnt]:
 
 methodStar[Expression inst] returns [MethodCall resMethod]:
     '.'
-    (name1=ID '(' ')' { $resMethod = new MethodCall(inst, name1.text); }
-    | name2=ID '(' { $resMethod = new MethodCall(inst, name2.text); }
+    (name1=ID '(' ')' { $resMethod = new MethodCall($inst, new Identifier($name1.text)); }
+    | name2=ID '(' { $resMethod = new MethodCall($inst, new Identifier($name2.text)); }
         expr1=expression { $resMethod.addArg($expr1.expr); }
         (',' expr2=expression { $resMethod.addArg($expr2.expr); } )* ')' )
     mthds=methodStar[ $resMethod ]
-    { $resMethod = mths.resMethod; }
+    { $resMethod = $mthds.resMethod; }
     |
     { $resMethod =  null; }
     ;
 
-
 singleExpression returns [Expression expr]:
-      name = ID { $expr = new Identifier($name.text); $expr.line=$name.getLine();}
-    | number = NUMBER { $expr = new IntValue($number.int); $expr.line=$number.getLine();}
+      name = ID { $expr = new Identifier($name.text); $expr.line=$name.getLine(); }
+    | number = NUMBER { $expr = new IntValue($number.int); $expr.line=$number.getLine(); }
     | stringCons = STRINGCONST  { $expr = new StringValue($stringCons.text); $expr.line=$stringCons.getLine(); }
-    | bool = BoolValue { $expr = new BoolValue(($bool.text == "false") ? false : true ); $expr.line=$bool.getLine();}
-    | na=newArray { $expr= $na.resArray; $expr.line=$na.start.getLine();}
-    | nci=newClassInstance { $expr = $nci.resCI; $expr.line=$nci.start.getLine();}
+    | bool = BoolValue { $expr = new BoolValue(($bool.text == "false") ? false : true ); $expr.line=$bool.getLine(); }
+    | na=newArray { $expr= $na.resArray; $expr.line=$na.start.getLine(); }
+    | nci=newClassInstance { $expr = $nci.resCI; $expr.line=$nci.start.getLine(); }
+    | slf=SELF { $expr = new Self(); $expr.line= $slf.getLine(); }
 //    | arrayC=arrayCall
     ;
 
@@ -490,18 +430,8 @@ newArray returns[NewArray resArray]:
     ;
 
 newClassInstance returns[NewClassInstance resCI]:
-    NEW id=ID LBER RBER
+    NEW id=ID '(' ')'
     { $resCI=new NewClassInstance(new Identifier($id.text)); }
-    ;
-
-//
-//arrayCall returns[ArrayCall resAC]:
-//        instance=expression LBER index=expression RBER
-//    {$}
-
-
-MAIN:
-    'main'
     ;
 
 //LETTER:
