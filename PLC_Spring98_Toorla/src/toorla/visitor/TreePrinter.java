@@ -211,7 +211,7 @@ public class TreePrinter implements Visitor<Void> {
     @Override
     public Void visit(Equals equalsExpr)
     {
-        System.out.println("( =");
+        System.out.println("( ==");
         Expression right = equalsExpr.getRhs();
         Expression left = equalsExpr.getLhs();
         left.accept(this);
@@ -376,10 +376,12 @@ public class TreePrinter implements Visitor<Void> {
         ArrayList <Expression> args = methodCall.getArgs();
         expr.accept(this);
         id.accept(this);
+        System.out.println("(");
         for(int i=0; i< args.size();i++)
         {
             args.get(i).accept(this);
         }
+        System.out.println(")");
         System.out.println(" )");
         return null;
     }
@@ -473,7 +475,7 @@ public class TreePrinter implements Visitor<Void> {
         System.out.println("( method ");
         name.accept(this);
         for (int i = 0; i < args.size(); i++)
-            System.out.println("( "+ args.get(i).accept(this) + " )");
+            System.out.println( args.get(i).accept(this) );
 
         if(returntype != null)
         {
@@ -524,6 +526,7 @@ public class TreePrinter implements Visitor<Void> {
         List <ClassDeclaration> classdeclaration = program.getClasses();
         for (int i = 0; i < classdeclaration.size(); i++)
             classdeclaration.get(i).accept(this);
+        System.out.println(") ");
         return null;
     }
 }
