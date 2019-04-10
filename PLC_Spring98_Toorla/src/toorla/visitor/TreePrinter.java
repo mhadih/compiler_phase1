@@ -510,11 +510,11 @@ public class TreePrinter implements Visitor<Void> {
     @Override
     public Void visit(LocalVarsDefinitions localVarsDefinitions)
     {
-        System.out.println("(");
+//        System.out.println("(");
         List<LocalVarDef> defs = localVarsDefinitions.getVarDefinitions();
         for(int i = 0 ;i < defs.size() ; i++)
             defs.get(i).accept(this);
-        System.out.println(" )");
+//        System.out.println(" )");
 
 
         return null;
