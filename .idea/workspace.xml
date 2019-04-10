@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="30d7b86b-4e85-4157-8cc8-d51ad79c8001" name="Default Changelist" comment="merge">
+    <list default="true" id="30d7b86b-4e85-4157-8cc8-d51ad79c8001" name="Default Changelist" comment="Add elif&#10;final edition">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/src/Toorla.java" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/src/Toorla.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/src/ToorlaCompiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/src/ToorlaCompiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/visitor/TreePrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/visitor/TreePrinter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample.in" beforeDir="false" afterPath="$PROJECT_DIR$/sample.in" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gen/ToorlaParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-671">
-              <caret line="2112" column="32" selection-start-line="2112" selection-start-column="32" selection-end-line="2112" selection-end-column="32" />
+            <state relative-caret-position="214">
+              <caret line="3680" column="52" selection-start-line="3680" selection-start-column="52" selection-end-line="3680" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -32,11 +29,29 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
+            <state relative-caret-position="465">
+              <caret line="389" column="5" lean-forward="true" selection-start-line="389" selection-start-column="5" selection-end-line="389" selection-end-column="5" />
               <folding>
                 <element signature="e#18#672#1" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/FieldCall.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/MethodCall.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="26" column="23" lean-forward="true" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -51,46 +66,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/declaration/classDecs/classMembersDecs/FieldDeclaration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/arrayType/ArrayType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/declaration/VariableDeclaration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/NewArray.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sample.in">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="22" column="34" selection-end-line="44" selection-end-column="3" />
+            <state relative-caret-position="345">
+              <caret line="23" column="22" lean-forward="true" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -173,7 +152,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -288,6 +266,26 @@
               <item name="PLC_Spring98_Toorla" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="toorla" type="462c0819:PsiDirectoryNode" />
+              <item name="ast" type="462c0819:PsiDirectoryNode" />
+              <item name="statement" type="462c0819:PsiDirectoryNode" />
+              <item name="localVarStats" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="compiler_phase1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="compiler_phase1" type="462c0819:PsiDirectoryNode" />
+              <item name="PLC_Spring98_Toorla" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="toorla" type="462c0819:PsiDirectoryNode" />
+              <item name="ast" type="462c0819:PsiDirectoryNode" />
+              <item name="statement" type="462c0819:PsiDirectoryNode" />
+              <item name="returnStatement" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="compiler_phase1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="compiler_phase1" type="462c0819:PsiDirectoryNode" />
+              <item name="PLC_Spring98_Toorla" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="toorla" type="462c0819:PsiDirectoryNode" />
               <item name="types" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -311,12 +309,13 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554837458874" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554914078037" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../phase 1/PLC_Spring98_Toorla-master" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -385,7 +384,8 @@
       <workItem from="1554629426165" duration="20500000" />
       <workItem from="1554724449014" duration="11884000" />
       <workItem from="1554751434782" duration="4352000" />
-      <workItem from="1554805925060" duration="19774000" />
+      <workItem from="1554805925060" duration="20482000" />
+      <workItem from="1554906559197" duration="7376000" />
     </task>
     <task id="LOCAL-00001" summary="first edition of grammer">
       <created>1553958264406</created>
@@ -513,11 +513,18 @@
       <option name="project" value="LOCAL" />
       <updated>1554751930278</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Add elif&#10;final edition">
+      <created>1554837487333</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1554837487333</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="162648000" />
+    <option name="totallyTimeSpent" value="170732000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -532,7 +539,7 @@
     <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28334257" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28666297" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -541,7 +548,7 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.24863686" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.24863686" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3991276" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -553,7 +560,7 @@
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3293348" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" auto_hide="true" id="ANTLR Preview" order="13" weight="0.3293348" />
-      <window_info anchor="bottom" id="Messages" order="14" weight="0.24100327" />
+      <window_info active="true" anchor="bottom" id="Messages" order="14" visible="true" weight="0.24100327" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24958494" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -616,7 +623,8 @@
     <MESSAGE value="face fundamental bug" />
     <MESSAGE value="last" />
     <MESSAGE value="merge" />
-    <option name="LAST_COMMIT_MESSAGE" value="merge" />
+    <MESSAGE value="Add elif&#10;final edition" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add elif&#10;final edition" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -781,13 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/FieldCall.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/visitor/Visitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-252">
@@ -799,13 +800,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/MethodCall.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="37" column="22" selection-start-line="37" selection-start-column="16" selection-end-line="37" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -878,13 +872,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/NewArray.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/declaration/TypedVariableDeclaration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -899,17 +886,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/declaration/VariableDeclaration.java">
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/statement/Conditional.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/arrayType/ArrayType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+        <state relative-caret-position="315">
+          <caret line="22" column="32" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="32" />
         </state>
       </provider>
     </entry>
@@ -920,34 +900,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/statement/Conditional.java">
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/types/arrayType/ArrayType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="22" column="32" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="32" />
+        <state relative-caret-position="75">
+          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/declaration/VariableDeclaration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/NewArray.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/FieldCall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="22" lean-forward="true" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/src/toorla/ast/expression/MethodCall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="26" column="23" lean-forward="true" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gen/ToorlaParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-671">
-          <caret line="2112" column="32" selection-start-line="2112" selection-start-column="32" selection-end-line="2112" selection-end-column="32" />
+        <state relative-caret-position="214">
+          <caret line="3680" column="52" selection-start-line="3680" selection-start-column="52" selection-end-line="3680" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sample.in">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="22" column="34" selection-end-line="44" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PLC_Spring98_Toorla/grammar/Toorla.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
+        <state relative-caret-position="465">
+          <caret line="389" column="5" lean-forward="true" selection-start-line="389" selection-start-column="5" selection-end-line="389" selection-end-column="5" />
           <folding>
             <element signature="e#18#672#1" expanded="true" />
           </folding>

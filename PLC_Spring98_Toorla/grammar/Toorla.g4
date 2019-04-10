@@ -378,39 +378,37 @@ expressionL6 returns [Expression expr]:
 
 expressionL7 returns [Expression expr]:
     calls=call { $expr = $calls.resExp; $expr.line=$calls.start.getLine(); }
+    | fCall=funcCall[new Self()] { $expr = $fCall.resMethod; $expr.line=$fCall.start.getLine(); }
     |LPAR inExpr=expression RPAR { $expr = $inExpr.expr; $expr.line=$inExpr.start.getLine(); }
     | sExp=singleExpression { $expr = $sExp.expr; $expr.line= $sExp.start.getLine(); }
     ;
 
 call returns [Expression resExp]:
-    call1=callItem { $resExp = $call1.resExp; }
-    ( '.' call2=callItem { $resExp = new FieldCall($resExp, $call2.firstIdnt); })*
+    ( name1=ID { $resExp = new Identifier($name1.text); }
+    | name2=ID '[' expr = expression ']' { $resExp = new ArrayCall(new Identifier($name2.text),$expr.expr); } )
+    ( call2=callItem[$resExp] { $resExp = $call2.resExp; })*
     ;
 
-callItem returns [Expression resExp, Identifier firstIdnt]:
-    methodSeq { $resExp = $methodSeq.resExp; $firstIdnt = $methodSeq.firstIdnt; }
+callItem[Expression prvExp] returns [Expression resExp]:
+    callSeq[$prvExp] { $resExp = $callSeq.resExp; }
     ( '[' expression ']' { $resExp = new ArrayCall($resExp, $expression.expr); } | )
-;
+    ;
 
-methodSeq returns [Expression resExp, Identifier firstIdnt]:
-    name=ID { $resExp = $firstIdnt = new Identifier($name.text); }
-    methodStar[ $resExp ]
+callSeq[Expression prvExp] returns [Expression resExp]
+    @init
     {
-        if ($methodStar.resMethod!=null)
-            $resExp = $methodStar.resMethod;
-    }
-;
-
-methodStar[Expression inst] returns [MethodCall resMethod]:
+        $resExp = $prvExp;
+    }:
     '.'
-    (name1=ID '(' ')' { $resMethod = new MethodCall($inst, new Identifier($name1.text)); }
-    | name2=ID '(' { $resMethod = new MethodCall($inst, new Identifier($name2.text)); }
-        expr1=expression { $resMethod.addArg($expr1.expr); }
-        (',' expr2=expression { $resMethod.addArg($expr2.expr); } )* ')' )
-    mthds=methodStar[ $resMethod ]
-    { $resMethod = $mthds.resMethod; }
-    |
-    { $resMethod =  null; }
+    ( name=ID { $resExp = new FieldCall($prvExp,new Identifier($name.text)); }
+    | fCall = funcCall[$resExp] { $resExp = $fCall.resMethod; } )
+    ;
+
+funcCall[Expression prvExp] returns [MethodCall resMethod]:
+    (name1=ID '(' ')' { $resMethod = new MethodCall($prvExp, new Identifier($name1.text)); }
+    | name2=ID '(' { $resMethod = new MethodCall($prvExp, new Identifier($name2.text)); }
+    expr1=expression { $resMethod.addArg($expr1.expr); }
+    (',' expr2=expression { $resMethod.addArg($expr2.expr); } )* ')' )
     ;
 
 singleExpression returns [Expression expr]:
