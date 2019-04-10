@@ -385,6 +385,7 @@ expressionL7 returns [Expression expr]:
 
 call returns [Expression resExp]:
     ( name1=ID { $resExp = new Identifier($name1.text); }
+    | SELF { $resExp = new Self(); }
     | name2=ID '[' expr = expression ']' { $resExp = new ArrayCall(new Identifier($name2.text),$expr.expr); } )
     ( call2=callItem[$resExp] { $resExp = $call2.resExp; })*
     ;
@@ -400,7 +401,7 @@ callSeq[Expression prvExp] returns [Expression resExp]
         $resExp = $prvExp;
     }:
     '.'
-    ( name=ID { $resExp = new FieldCall($prvExp,new Identifier($name.text)); }
+    ( name=ID{ $resExp = new FieldCall($prvExp,new Identifier($name.text)); }
     | fCall = funcCall[$resExp] { $resExp = $fCall.resMethod; } )
     ;
 
