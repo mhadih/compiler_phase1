@@ -43,8 +43,8 @@ public class TreePrinter implements Visitor<Void> {
         System.out.println("( = ");
         Expression right = assignStat.getRvalue();
         Expression left = assignStat.getLvalue();
-        right.accept(this);
         left.accept(this);
+        right.accept(this);
         System.out.println(" )");
         return null;
     }
@@ -358,7 +358,7 @@ public class TreePrinter implements Visitor<Void> {
     @Override
     public Void visit(FieldCall fieldCall)
     {
-        System.out.println("field call : ( . ");
+        System.out.println(" ( . ");
         Expression expr = fieldCall.getInstance();
         Identifier id = fieldCall.getField();
         expr.accept(this);
@@ -370,7 +370,7 @@ public class TreePrinter implements Visitor<Void> {
     @Override
     public Void visit(MethodCall methodCall)
     {
-        System.out.println("method call : ( . ");
+        System.out.println(" ( . ");
         Expression expr = methodCall.getInstance();
         Identifier id = methodCall.getMethodName();
         ArrayList <Expression> args = methodCall.getArgs();
@@ -472,10 +472,10 @@ public class TreePrinter implements Visitor<Void> {
         ArrayList <ParameterDeclaration> args = methodDeclaration.getArgs();
         ArrayList <Statement> body = methodDeclaration.getBody();
         System.out.println(accessModifier.toString());
-        System.out.println("( method ");
+        System.out.println(" method ");
         name.accept(this);
         for (int i = 0; i < args.size(); i++)
-            System.out.println( args.get(i).accept(this) );
+            args.get(i).accept(this) ;
 
         if(returntype != null)
         {
