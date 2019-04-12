@@ -360,12 +360,12 @@ expressionL4 returns [Expression expr]:
 
 expressionL5 returns [Expression expr]:
     expressionl6=expressionL6 { $expr=$expressionl6.expr; $expr.line=$expressionl6.start.getLine(); }
-    |expressionl6=expressionL6 DIVIDE expressionl5=expressionL5
-    { $expr = new Division($expressionl6.expr,$expressionl5.expr); $expr.line=$expressionl6.start.getLine(); }
-    |expressionl6=expressionL6 MULTY expressionl5=expressionL5
-    { $expr = new Times($expressionl6.expr,$expressionl5.expr); $expr.line=$expressionl6.start.getLine(); }
-    |expressionl6=expressionL6 MODULO expressionl5=expressionL5
-    { $expr = new Modulo($expressionl6.expr,$expressionl5.expr); $expr.line=$expressionl6.start.getLine(); }
+    |expressionl5=expressionL5 DIVIDE expressionl6=expressionL6
+    { $expr = new Division($expressionl5.expr,$expressionl6.expr); $expr.line=$expressionl6.start.getLine(); }
+    |expressionl5=expressionL5 MULTY expressionl6=expressionL6
+    { $expr = new Times($expressionl5.expr,$expressionl6.expr); $expr.line=$expressionl6.start.getLine(); }
+    |expressionl5=expressionL5 MODULO expressionl6=expressionL6
+    { $expr = new Modulo($expressionl5.expr,$expressionl6.expr); $expr.line=$expressionl6.start.getLine(); }
     ;
 
 expressionL6 returns [Expression expr]:
@@ -416,7 +416,7 @@ singleExpression returns [Expression expr]:
       name = ID { $expr = new Identifier($name.text); $expr.line=$name.getLine(); }
     | number = NUMBER { $expr = new IntValue($number.int); $expr.line=$number.getLine(); }
     | stringCons = STRINGCONST  { $expr = new StringValue($stringCons.text); $expr.line=$stringCons.getLine(); }
-    | bool = BoolValue { $expr = new BoolValue(($bool.text == "false") ? false : true ); $expr.line=$bool.getLine(); }
+    | bool = BoolValue { $expr = new BoolValue(($bool.text.equals("false")) ? false : true ); $expr.line=$bool.getLine(); }
     | na=newArray { $expr= $na.resArray; $expr.line=$na.start.getLine(); }
     | nci=newClassInstance { $expr = $nci.resCI; $expr.line=$nci.start.getLine(); }
     | slf=SELF { $expr = new Self(); $expr.line= $slf.getLine(); }

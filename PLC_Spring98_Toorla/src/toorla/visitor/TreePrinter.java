@@ -327,6 +327,7 @@ public class TreePrinter implements Visitor<Void> {
         SingleType singletype = newArray.getType();
         System.out.println(singletype.toString());
         expr.accept(this);
+        System.out.println(" ) ");
         return null;
     }
 
